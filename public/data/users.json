@@ -1,0 +1,10 @@
+[
+  {
+    "id": "admin-001",
+    "name": "Administración",
+    "email": "administracion@sintaxia.com",
+    "password": "12345678",
+    "role": "admin",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  }
+]

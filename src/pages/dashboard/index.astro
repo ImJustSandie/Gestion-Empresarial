@@ -1,20 +1,27 @@
 ---
-
+import AppHeader from "../../components/AppHeader.tsx";
+import "../../styles/global.css";
 ---
 
 <html lang="es">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Dashboard - Gestión Empresarial</title>
-	</head>
-	<body class="bg-gray-50 text-gray-900">
-		<main class="container mx-auto px-4 py-8">
-			<h1 class="text-3xl font-bold mb-4">Dashboard</h1>
-			<p class="text-gray-700">Estadísticas y métricas de los módulos de enseñanza y actividades.</p>
-		</main>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Dashboard - Gestión Empresarial</title>
+  </head>
+  <body class="bg-gray-50 text-gray-900 min-h-screen">
+    <AppHeader client:load currentPath="/dashboard" />
+    <main class="container mx-auto px-4 py-8">
+      <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
+        <h1 class="text-3xl font-bold mb-2">Dashboard</h1>
+        <p class="text-gray-600 mb-6">Estadísticas y métricas de los módulos de enseñanza y actividades.</p>
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800">
+          Este módulo está en construcción. Aquí se visualizarán métricas agregadas de los otros módulos.
+        </div>
+      </div>
+    </main>
+  </body>
 </html>

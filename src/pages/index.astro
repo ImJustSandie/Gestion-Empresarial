@@ -1,17 +1,46 @@
 ---
-
+import Auth from "../components/Auth.tsx";
+import "../styles/global.css";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Gestión Empresarial - Iniciar sesión</title>
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-gray-50 via-indigo-50/40 to-violet-50/60 text-gray-900 antialiased">
+    <!-- Decorative background -->
+    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+      <div class="absolute -top-32 -right-32 w-[500px] h-[500px] bg-gradient-to-br from-indigo-200/30 to-violet-200/30 rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-32 -left-32 w-[600px] h-[600px] bg-gradient-to-tr from-indigo-100/40 to-purple-100/30 rounded-full blur-3xl"></div>
+    </div>
+
+    <main class="min-h-screen flex flex-col">
+      <!-- Top nav minimal -->
+      <nav class="w-full max-w-6xl mx-auto px-4 sm:px-6 py-6 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center">
+            <span class="text-white text-sm font-bold">S</span>
+          </div>
+          <span class="font-semibold text-gray-900">Sintaxia</span>
+          <span class="hidden sm:inline text-gray-300 mx-1">|</span>
+          <span class="hidden sm:inline text-sm text-gray-500">Gestión Empresarial</span>
+        </div>
+        <span class="text-xs text-gray-400 hidden sm:block">Plataforma educativa</span>
+      </nav>
+
+      <!-- Auth container -->
+      <section class="flex-1 flex items-center justify-center px-4 py-8 sm:py-12">
+        <Auth client:load />
+      </section>
+
+      <footer class="text-center py-6 text-xs text-gray-400">
+        © 2026 Sintaxia — Usuarios en JSON local (<code class="bg-white/60 px-1 rounded">src/data/users.json</code> + IndexedDB)
+      </footer>
+    </main>
+  </body>
 </html>

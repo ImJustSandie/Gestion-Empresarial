@@ -1,6 +1,6 @@
 ---
+import AdminPanel from "../../components/AdminPanel.tsx";
 import AppHeader from "../../components/AppHeader.tsx";
-import ActividadesView from "../../components/ActividadesView.tsx";
 import "../../styles/global.css";
 ---
 
@@ -8,11 +8,13 @@ import "../../styles/global.css";
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Cursos / Actividades - Gestión Empresarial</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Administración - Gestión Empresarial</title>
   </head>
   <body class="bg-gray-50 text-gray-900 min-h-screen">
-    <AppHeader client:load currentPath="/actividades" />
-    <ActividadesView client:load />
+    <AppHeader client:load currentPath="/admin" />
+    <main>
+      <AdminPanel client:load />
+    </main>
   </body>
 </html>

@@ -253,7 +253,7 @@ export default function Auth() {
           </div>
         </div>
         <p class="text-center text-xs text-gray-400 mt-4">
-          Sesión en sessionStorage • JSON local (IndexedDB + /data/users.json) •{" "}
+          Sesión en localStorage • JSON local (IndexedDB + /data/users.json) •{" "}
           <span class="font-mono">{new Date(session.loggedAt).toLocaleString("es-CO")}</span>
         </p>
       </div>

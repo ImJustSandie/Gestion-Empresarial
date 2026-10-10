@@ -1,0 +1,23 @@
+---
+title: Seguridad en IA generativa
+description: Prompt injection, filtración y riesgos de agentes con permisos.
+---
+
+# Seguridad en IA generativa {#4-2-seguridad-en-ia-generativa-titulo}
+
+Prompt injection, filtración y riesgos de agentes con permisos. {#4-2-seguridad-en-ia-generativa-intro}
+
+## Temáticas {#4-2-seguridad-en-ia-generativa-temas}
+
+- Prompt injection
+- Instrucciones maliciosas
+- Filtración de información
+- Output handling
+- Uso inseguro de herramientas
+- Riesgos de agentes con permisos y exceso de autonomía
+
+## Referentes {#4-2-seguridad-en-ia-generativa-referentes}
+
+- OWASP — Top 10 for LLM Applications
+- OWASP GenAI — Top 10 for LLM and GenAI
+- NIST — AI Risk Management Framework / Generative AI Profile

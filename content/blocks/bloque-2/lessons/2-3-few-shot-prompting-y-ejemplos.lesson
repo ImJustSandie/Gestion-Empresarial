@@ -1,0 +1,34 @@
+---
+title: Ejemplos y prompting con ejemplos
+description: Zero-shot vs. few-shot, cuándo usar ejemplos y cómo evitar inconsistencias.
+---
+
+# Ejemplos y prompting con ejemplos {#titulo}
+
+A veces describir no basta para mostrar estilo o patrón. Puedes incluir **ejemplos del resultado esperado**. Sin ejemplos hablamos de **zero-shot**; con algunos ejemplos, de **few-shot**. {#intro}
+
+Imagina clasificar comentarios como `positivo`, `neutral` o `negativo`. Puedes explicar categorías, pero también mostrar: `La actividad fue muy útil` → positivo; `La actividad empezó a las nueve` → neutral; `No entendí las instrucciones` → negativo. Luego pides clasificar nuevos con el mismo criterio. {#ejemplo-clasificacion}
+
+Los ejemplos deben representar bien lo que quieres. Si son ambiguos o contradictorios, la IA imitará esas inconsistencias. Orientan, pero no garantizan aplicación correcta en todos los casos. {#calidad}
+
+## Cuándo pueden ser útiles {#cuando}
+
+- Para mantener un formato constante en varias respuestas. {#u-formato}
+- Para mostrar tono, detalle o estructura deseada. {#u-tono}
+- Para clasificar o transformar con una convención definida. {#u-clasificar}
+- Para explicar cómo debe verse un resultado, sin incluir información que no debería compartirse. {#u-pertinencia}
+
+--- {#corte-ejercicio}
+
+## Ejercicio práctico de observación {#ejercicio}
+
+- Pide: `Clasifica estos comentarios como positivo, neutral o negativo: La explicación fue clara / La clase fue el martes / La actividad fue confusa`. {#paso-1}
+- Después da dos ejemplos etiquetados y pide clasificar tres nuevos con el mismo criterio. {#paso-2}
+- Comprueba consistencia y ajusta si interpreta categorías distinto a lo esperado. {#paso-3}
+
+> ¿Qué observar? Los ejemplos reducen ambigüedad de formato y criterio, pero revisa clasificaciones, sobre todo si un comentario admite varias lecturas. {#ejercicio-cierre}
+
+## Referentes para profundizar {#referentes}
+
+- Google — LLM: Fine-tuning, distillation and prompt engineering
+- Anthropic — Prompting best practices {#referentes-lista}

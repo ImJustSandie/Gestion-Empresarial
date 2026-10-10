@@ -1,0 +1,27 @@
+---
+title: ¿Cómo se entrenan los modelos generativos?
+description: Datos, preentrenamiento, fine-tuning y alineación. Sin matemáticas ni implementación desde cero.
+---
+
+# ¿Cómo se entrenan los modelos generativos? {#1-4-como-se-entrenan-los-modelos-generativos-titulo}
+
+Datos, preentrenamiento, fine-tuning y alineación. Sin matemáticas ni implementación desde cero. {#1-4-como-se-entrenan-los-modelos-generativos-intro}
+
+## Temáticas {#1-4-como-se-entrenan-los-modelos-generativos-temas}
+
+- Datos de entrenamiento y corpus
+- Preentrenamiento y patrones aprendidos
+- Parámetros e inferencia
+- Fine-tuning / ajuste fino
+- Instrucción y alineación
+- Modelo vs. prompt
+
+## Referentes {#1-4-como-se-entrenan-los-modelos-generativos-referentes}
+
+- Google — Introduction to Large Language Models
+- Google — LLM: Fine-tuning, distillation and prompt engineering
+- Google — Machine Learning Crash Course
+
+## Alcance {#1-4-como-se-entrenan-los-modelos-generativos-alcance}
+
+No es necesario profundizar en: descenso del gradiente, backpropagation, arquitecturas neuronales completas, clasificación/regresión ni implementación desde cero. {#1-4-como-se-entrenan-los-modelos-generativos-alcance-t}

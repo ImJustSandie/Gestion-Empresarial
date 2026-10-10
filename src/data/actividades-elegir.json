@@ -1,0 +1,482 @@
+[
+  {
+    "id": "elegir-revolucion-francesa",
+    "modulo": {
+      "slug": "revolucion-francesa",
+      "titulo": "¿Cuál respuesta elegirías?",
+      "descripcion": "Tres respuestas de IA sobre la Revolución Francesa; una sola es la mejor: detecta la superficial y la que esconde un dato falso.",
+      "icono": "⚖️"
+    },
+    "titulo": "¿Cuál respuesta elegirías?",
+    "problema": "¿Por qué ocurrió la Revolución Francesa?",
+    "contexto": "Le pediste a una IA que explique las causas para un trabajo escolar. Te dio tres respuestas. Solo una combina exactitud, contexto y fuentes verificables. Elígela.",
+    "opciones": [
+      {
+        "id": "A",
+        "texto": "La Revolución Francesa ocurrió porque la gente estaba descontenta con el rey Luis XVI. Había problemas económicos y sociales en Francia, y en 1789 el pueblo se levantó para pedir cambios."
+      },
+      {
+        "id": "B",
+        "texto": "La Revolución Francesa (1789-1799) tuvo varias causas: la grave crisis fiscal por las deudas de guerra, el descontento del Tercer Estado frente a los privilegios del clero y la nobleza, y la influencia de las ideas de la Ilustración. El detonante fue la Toma de la Bastilla el 4 de julio de 1789, cuando el pueblo asaltó la fortaleza en busca de armas."
+      },
+      {
+        "id": "C",
+        "texto": "Convergieron varias causas: crisis fiscal por las deudas de guerra (incluido el apoyo a la independencia de EE. UU.), unos Estados Generales que daban ventaja al clero y la nobleza, las malas cosechas de 1788 y las ideas de la Ilustración. Tras la reunión de mayo de 1789, el Tercer Estado formó la Asamblea Nacional y el 14 de julio cayó la Bastilla. Verifica fechas y causas en tu libro de texto o en una enciclopedia."
+      }
+    ],
+    "correcta": "C",
+    "detalleFalso": "La Toma de la Bastilla fue el 14 de julio de 1789, no el 4 de julio.",
+    "retro": {
+      "A": "La A no tiene errores, pero es demasiado superficial: no explica causas ni ofrece nada verificable. Para un trabajo escolar se queda corta (relevancia y fuentes).",
+      "B": "La B parece la mejor por su detalle, pero contiene una afirmación falsa: la Toma de la Bastilla fue el 14 de julio, no el 4. El detalle no garantiza veracidad: siempre verifica fechas y cifras.",
+      "C": "¡Exacto! La C combina exactitud (causas y fechas verificables), contexto (por qué confluyeron) y fuentes para contrastar. Es la única utilizable como base del trabajo."
+    },
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-5-evaluacion-de-contenido-generado",
+      "leccionCodigo": "3.5",
+      "leccionTitulo": "Evaluación de contenido generado"
+    }
+  },
+  {
+    "id": "elegir-antibioticos-gripe",
+    "modulo": {
+      "slug": "antibioticos-gripe",
+      "titulo": "¿Antibióticos para la gripe?",
+      "descripcion": "Tres respuestas de IA sobre un tema de salud; una sola es responsable: detecta la superficial y la que inventa un estudio.",
+      "icono": "💊"
+    },
+    "titulo": "¿Antibióticos para la gripe?",
+    "problema": "¿Debo tomar antibióticos para la gripe?",
+    "contexto": "Le preguntaste a una IA por un tema de salud. Te dio tres respuestas. Solo una es exacta, contextualizada y responsable. Elígela: aquí un error puede hacer daño.",
+    "opciones": [
+      {
+        "id": "A",
+        "texto": "No tomes antibióticos para la gripe: solo funcionan contra bacterias y la gripe la causa un virus."
+      },
+      {
+        "id": "B",
+        "texto": "La gripe la causa el virus de la influenza, con fiebre, dolor muscular y fatiga. Un estudio de la Universidad de Oxford de 2021 demostró que la azitromicina reduce los síntomas de la gripe en un 60 %, por eso muchos médicos la recetan de forma preventiva. Además, la vitamina C en dosis altas elimina el virus en 24 horas."
+      },
+      {
+        "id": "C",
+        "texto": "No: la gripe es viral y los antibióticos no actúan contra virus; usarlos sin necesidad favorece la resistencia bacteriana, un problema grave de salud pública. Solo un médico puede indicarlos si sospecha una complicación bacteriana. Verifica en fuentes de salud (tu médico, la OMS) y nunca te automediques."
+      }
+    ],
+    "correcta": "C",
+    "detalleFalso": "Ningún estudio de Oxford demostró eso: la cifra del 60 % es inventada, igual que lo de la vitamina C en 24 horas.",
+    "retro": {
+      "A": "La A es correcta pero demasiado escueta para un tema de salud: no explica el riesgo de la resistencia bacteriana ni te dice qué hacer. Una buena respuesta orienta a actuar.",
+      "B": "La B es la más peligrosa: suena científica (universidad, año, porcentaje), pero el estudio es inventado. En salud, una referencia falsa puede hacer daño: verifica siempre en fuentes médicas.",
+      "C": "¡Exacto! La C es exacta, explica el porqué (virus frente a bacterias, resistencia), indica cuándo ir al médico y remite a fuentes verificables. Cuando hay riesgo, el nivel de comprobación debe subir."
+    },
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-5-evaluacion-de-contenido-generado",
+      "leccionCodigo": "3.5",
+      "leccionTitulo": "Evaluación de contenido generado"
+    }
+  },
+  {
+    "id": "elegir-dinosaurios",
+    "modulo": {
+      "slug": "extincion-dinosaurios",
+      "titulo": "¿Por qué desaparecieron los dinosaurios?",
+      "descripcion": "Tres respuestas de IA sobre la extinción de los dinosaurios; una sola es la mejor: detecta la superficial y la que se equivoca en la fecha.",
+      "icono": "🦖"
+    },
+    "titulo": "¿Por qué desaparecieron los dinosaurios?",
+    "problema": "¿Por qué se extinguieron los dinosaurios?",
+    "contexto": "Le pediste a una IA que explique la extinción de los dinosaurios para una tarea de ciencias. Te dio tres respuestas. Solo una combina exactitud, contexto y fuentes para verificar. Elígela.",
+    "opciones": [
+      {
+        "id": "A",
+        "texto": "Los dinosaurios se extinguieron porque cayó un meteorito y cambió el clima."
+      },
+      {
+        "id": "B",
+        "texto": "La extinción de los dinosaurios no avianos ocurrió hace unos 66 millones de años. La hipótesis más respaldada es el impacto de un asteroide cerca de la actual península de Yucatán (cráter de Chicxulub), que provocó incendios y un enfriamiento global; la intensa actividad volcánica de los Traps del Decán probablemente agravó la crisis. Las aves son descendientes de dinosaurios. Contrasta los datos en un museo de historia natural o en una enciclopedia."
+      },
+      {
+        "id": "C",
+        "texto": "Hace unos 6 millones de años, un asteroide cayó en la península de Yucatán y el polvo que levantó bloqueó la luz del Sol. Con el clima alterado y las plantas sin poder crecer, los dinosaurios desaparecieron en poco tiempo."
+      }
+    ],
+    "correcta": "B",
+    "detalleFalso": "El impacto ocurrió hace unos 66 millones de años, no 6 millones.",
+    "retro": {
+      "A": "La A no tiene errores graves, pero es demasiado superficial: no da fechas, no explica por qué un impacto causaría una extinción y no dice dónde comprobarlo (relevancia y fuentes).",
+      "B": "¡Exacto! La B es precisa (fecha, lugar y mecanismo), aporta contexto (otros factores como el vulcanismo) y te indica dónde contrastar. Es la única utilizable para la tarea.",
+      "C": "La C suena convincente porque explica el mecanismo con claridad, pero se equivoca en la fecha por decenas de millones de años. Un dato falso dentro de una explicación coherente es difícil de notar: verifica siempre fechas y cifras."
+    },
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-5-evaluacion-de-contenido-generado",
+      "leccionCodigo": "3.5",
+      "leccionTitulo": "Evaluación de contenido generado"
+    }
+  },
+  {
+    "id": "elegir-fotosintesis",
+    "modulo": {
+      "slug": "fotosintesis",
+      "titulo": "¿Cómo funciona la fotosíntesis?",
+      "descripcion": "Tres respuestas de IA sobre la fotosíntesis; una sola es la mejor: detecta la vaga y la que invierte los gases.",
+      "icono": "🌱"
+    },
+    "titulo": "¿Cómo funciona la fotosíntesis?",
+    "problema": "¿Cómo funciona la fotosíntesis?",
+    "contexto": "Estás repasando biología y le pediste a una IA que te explique la fotosíntesis. Te dio tres respuestas. Solo una es exacta, clara y te dice dónde verificar. Elígela.",
+    "opciones": [
+      {
+        "id": "A",
+        "texto": "La fotosíntesis es el proceso por el que plantas, algas y algunas bacterias convierten luz solar, agua y dióxido de carbono en glucosa, y liberan oxígeno. En las plantas ocurre en los cloroplastos, gracias a la clorofila. Es la base de casi todas las cadenas alimentarias. Para más detalle, revísalo en tu libro de biología o en una enciclopedia científica."
+      },
+      {
+        "id": "B",
+        "texto": "La fotosíntesis es cuando las plantas usan el sol para alimentarse y crecer."
+      },
+      {
+        "id": "C",
+        "texto": "La fotosíntesis es el proceso por el que las plantas absorben oxígeno y liberan dióxido de carbono gracias a la luz solar. Ocurre en los cloroplastos, que contienen clorofila, y produce glucosa que la planta usa como alimento."
+      }
+    ],
+    "correcta": "A",
+    "detalleFalso": "Está invertido: en la fotosíntesis las plantas absorben dióxido de carbono y liberan oxígeno, no al revés.",
+    "retro": {
+      "A": "¡Exacto! La A es exacta (qué entra y qué sale), da contexto (dónde ocurre y por qué importa) y remite a fuentes para contrastar.",
+      "B": "La B no dice nada falso, pero es demasiado vaga: no menciona qué entra ni qué sale, ni dónde ocurre. Para estudiar o entregar un trabajo se queda corta (relevancia y fuentes).",
+      "C": "La C es engañosa porque casi todo es correcto (cloroplastos, clorofila, glucosa), pero invierte los gases. Un solo dato al revés cambia el concepto: verifica siempre lo central."
+    },
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-5-evaluacion-de-contenido-generado",
+      "leccionCodigo": "3.5",
+      "leccionTitulo": "Evaluación de contenido generado"
+    }
+  },
+  {
+    "id": "elegir-agua-diaria",
+    "modulo": {
+      "slug": "agua-al-dia",
+      "titulo": "¿Cuánta agua debo beber?",
+      "descripcion": "Tres respuestas de IA sobre hidratación; una sola es responsable: detecta la vaga y la que inventa un estudio.",
+      "icono": "💧"
+    },
+    "titulo": "¿Cuánta agua debo beber?",
+    "problema": "¿Cuánta agua debo beber al día?",
+    "contexto": "Le preguntaste a una IA por un tema de salud. Te dio tres respuestas. Solo una es exacta, contextualizada y responsable. Elígela: en salud, una cifra inventada puede hacer daño.",
+    "opciones": [
+      {
+        "id": "A",
+        "texto": "Debes beber exactamente 3 litros de agua al día. Un estudio de la Universidad de Harvard de 2019 demostró que quien bebe menos de esa cantidad pierde un 25 % de concentración y envejece más rápido."
+      },
+      {
+        "id": "B",
+        "texto": "Lo mejor es beber mucha agua todos los días para estar sano."
+      },
+      {
+        "id": "C",
+        "texto": "No hay una cifra única: depende de la edad, el peso, el clima y la actividad física. Los «8 vasos al día» son una referencia popular, no una regla científica, y la sed y el color claro de la orina suelen ser buenas guías. Si tienes una enfermedad renal o cardíaca, tu médico puede indicarte límites. Consulta fuentes de salud como la OMS o tu centro de salud."
+      }
+    ],
+    "correcta": "C",
+    "detalleFalso": "No existe ese estudio de Harvard: la cifra de 3 litros exactos y el 25 % de pérdida de concentración son inventadas.",
+    "retro": {
+      "A": "La A es la más peligrosa: suena científica (universidad, año, porcentaje) pero el estudio es inventado y da una cifra rígida que no sirve para todos. En salud, verifica siempre en fuentes médicas.",
+      "B": "La B no es falsa, pero es demasiado vaga: «mucha agua» no orienta, y para algunas personas beber de más puede ser un problema. Una buena respuesta de salud da criterios y cuándo consultar.",
+      "C": "¡Exacto! La C es exacta, explica de qué depende, da señales prácticas, advierte sobre casos particulares y remite a fuentes verificables. Cuando hay riesgo, el nivel de comprobación debe subir."
+    },
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-5-evaluacion-de-contenido-generado",
+      "leccionCodigo": "3.5",
+      "leccionTitulo": "Evaluación de contenido generado"
+    }
+  },
+  {
+    "id": "elegir-bombilla",
+    "modulo": {
+      "slug": "invento-bombilla",
+      "titulo": "¿Quién inventó la bombilla?",
+      "descripcion": "Tres respuestas de IA sobre un invento famoso; una sola es la mejor: detecta la simplista y la que mezcla fechas y personajes.",
+      "icono": "💡"
+    },
+    "titulo": "¿Quién inventó la bombilla?",
+    "problema": "¿Quién inventó la bombilla eléctrica?",
+    "contexto": "Para un trabajo de historia de la ciencia le preguntaste a una IA quién inventó la bombilla. Te dio tres respuestas. Solo una es exacta, matizada y verificable. Elígela.",
+    "opciones": [
+      {
+        "id": "A",
+        "texto": "La bombilla eléctrica la inventó Nikola Tesla en 1850, cuando descubrió que un filamento de carbón podía brillar al paso de la corriente."
+      },
+      {
+        "id": "B",
+        "texto": "La bombilla incandescente no fue obra de una sola persona. Varios inventores, como Humphry Davy y Joseph Swan, hicieron avances antes; hacia 1879, el equipo de Thomas Edison logró una versión práctica y duradera, con un filamento de larga vida, y la llevó a la producción comercial. Verifica la cronología en una enciclopedia o en un museo de ciencia."
+      },
+      {
+        "id": "C",
+        "texto": "La bombilla la inventó Thomas Edison."
+      }
+    ],
+    "correcta": "B",
+    "detalleFalso": "Tesla nació en 1856, así que no pudo inventarla en 1850; la bombilla incandescente práctica se asocia a Edison y a Joseph Swan en la década de 1870.",
+    "retro": {
+      "A": "La A suena precisa (año, filamento de carbón) pero es falsa: Tesla nació en 1856. Los detalles concretos no garantizan veracidad: verifica fechas y atribuciones.",
+      "B": "¡Exacto! La B es matizada (muchos inventores), da contexto cronológico y señala dónde contrastar. Es la única que sirve de base para tu trabajo.",
+      "C": "La C es una versión popular y no del todo falsa, pero es demasiado simplista: ignora a quienes la precedieron y no ofrece nada verificable (relevancia y fuentes)."
+    },
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-5-evaluacion-de-contenido-generado",
+      "leccionCodigo": "3.5",
+      "leccionTitulo": "Evaluación de contenido generado"
+    }
+  },
+  {
+    "id": "elegir-estaciones",
+    "modulo": {
+      "slug": "estaciones-del-ano",
+      "titulo": "¿Por qué hay estaciones?",
+      "descripcion": "Tres respuestas de IA sobre las estaciones del año; una sola es la mejor: detecta la vaga y la que repite un error muy común.",
+      "icono": "🍂"
+    },
+    "titulo": "¿Por qué hay estaciones?",
+    "problema": "¿Por qué existen las estaciones del año?",
+    "contexto": "Le pediste a una IA que explique por qué hay estaciones para una tarea de ciencias. Te dio tres respuestas. Solo una combina exactitud, contexto y fuentes. Elígela.",
+    "opciones": [
+      {
+        "id": "A",
+        "texto": "Las estaciones se deben a la inclinación del eje de la Tierra (unos 23,5°): según el punto de la órbita, un hemisferio recibe la luz solar de forma más directa y durante más horas, y eso lo calienta más. No depende de la distancia al Sol: la Tierra está más cerca del Sol en enero, en pleno invierno del hemisferio norte. Contrástalo en la NASA o en una enciclopedia."
+      },
+      {
+        "id": "B",
+        "texto": "Hay estaciones porque la Tierra se acerca y se aleja del Sol en su órbita: en verano está más cerca y en invierno más lejos. Por eso en todo el planeta es verano al mismo tiempo."
+      },
+      {
+        "id": "C",
+        "texto": "Hay estaciones porque el clima cambia a lo largo del año."
+      }
+    ],
+    "correcta": "A",
+    "detalleFalso": "La causa es la inclinación del eje, no la distancia, y las estaciones son opuestas en cada hemisferio: cuando es verano en el norte, es invierno en el sur.",
+    "retro": {
+      "A": "¡Exacto! La A explica la causa real, desmonta el error común (la distancia al Sol) y remite a fuentes para verificar.",
+      "B": "La B repite un error muy extendido y suena lógico, pero es falso. Que una explicación parezca de sentido común no la hace correcta: contrástala.",
+      "C": "La C es circular: dice que hay estaciones porque cambia el clima, que es justamente lo que había que explicar. Es demasiado superficial para una tarea (relevancia y fuentes)."
+    },
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-5-evaluacion-de-contenido-generado",
+      "leccionCodigo": "3.5",
+      "leccionTitulo": "Evaluación de contenido generado"
+    }
+  },
+  {
+    "id": "elegir-contrasena-segura",
+    "modulo": {
+      "slug": "contrasena-segura",
+      "titulo": "¿Cómo creo una contraseña segura?",
+      "descripcion": "Tres respuestas de IA sobre seguridad digital; una sola es responsable: detecta la vaga y la que inventa un estudio.",
+      "icono": "🔑"
+    },
+    "titulo": "¿Cómo creo una contraseña segura?",
+    "problema": "¿Cómo creo una contraseña segura?",
+    "contexto": "Le preguntaste a una IA cómo proteger tus cuentas. Te dio tres respuestas. Solo una es exacta, práctica y verificable. Elígela: un mal consejo de seguridad puede costarte tus datos.",
+    "opciones": [
+      {
+        "id": "A",
+        "texto": "Usa una contraseña difícil de adivinar."
+      },
+      {
+        "id": "B",
+        "texto": "Un estudio del MIT de 2020 demostró que cambiar la contraseña cada semana la hace 90 % más segura. Además, usar tu fecha de nacimiento es seguro si le añades un símbolo, porque los hackers no pueden averiguarla."
+      },
+      {
+        "id": "C",
+        "texto": "Lo más importante es la longitud: una frase larga de varias palabras sin relación entre sí es difícil de adivinar. Usa una contraseña distinta para cada cuenta (un gestor de contraseñas ayuda), activa la verificación en dos pasos y no la compartas. Verifica las recomendaciones en la guía de ciberseguridad de tu país o de organismos oficiales."
+      }
+    ],
+    "correcta": "C",
+    "detalleFalso": "No existe ese estudio del MIT, y la fecha de nacimiento es un dato fácil de averiguar; la cifra del 90 % es inventada.",
+    "retro": {
+      "A": "La A no es falsa, pero es demasiado vaga: no dice qué hace segura una contraseña ni qué hacer en la práctica. Un consejo de seguridad debe ser accionable.",
+      "B": "La B es la más peligrosa: suena científica (institución, año, porcentaje) pero el estudio es inventado y el consejo te deja vulnerable. En seguridad, verifica siempre en fuentes oficiales.",
+      "C": "¡Exacto! La C es exacta, explica el porqué (longitud, unicidad), da pasos concretos y remite a fuentes verificables."
+    },
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-5-evaluacion-de-contenido-generado",
+      "leccionCodigo": "3.5",
+      "leccionTitulo": "Evaluación de contenido generado"
+    }
+  },
+  {
+    "id": "elegir-primera-guerra-mundial",
+    "modulo": {
+      "slug": "primera-guerra-mundial",
+      "titulo": "¿Por qué estalló la Primera Guerra Mundial?",
+      "descripcion": "Tres respuestas de IA sobre la Primera Guerra Mundial; una sola es la mejor: detecta la superficial y la que se equivoca de lugar.",
+      "icono": "🕰️"
+    },
+    "titulo": "¿Por qué estalló la Primera Guerra Mundial?",
+    "problema": "¿Cuáles fueron las causas de la Primera Guerra Mundial?",
+    "contexto": "Le pediste a una IA que explique las causas de la Primera Guerra Mundial para un trabajo de historia. Te dio tres respuestas. Solo una combina exactitud, contexto y fuentes verificables. Elígela.",
+    "opciones": [
+      {
+        "id": "A",
+        "texto": "La guerra comenzó cuando el archiduque Francisco Fernando fue asesinado en Viena el 28 de junio de 1914. Ese hecho, sumado a la rivalidad entre potencias y al sistema de alianzas, desencadenó el conflicto."
+      },
+      {
+        "id": "B",
+        "texto": "Las causas fueron varias: el sistema de alianzas entre potencias, la carrera armamentista (militarismo), la rivalidad imperial y los nacionalismos, sobre todo en los Balcanes. El detonante fue el asesinato del archiduque Francisco Fernando en Sarajevo el 28 de junio de 1914, que activó las alianzas. Compara fechas y causas en tu libro de texto o en una enciclopedia."
+      },
+      {
+        "id": "C",
+        "texto": "La Primera Guerra Mundial empezó porque mataron a un archiduque y los países se pelearon entre sí."
+      }
+    ],
+    "correcta": "B",
+    "detalleFalso": "El atentado ocurrió en Sarajevo, no en Viena.",
+    "retro": {
+      "A": "La A parece buena porque menciona causas y una fecha correcta, pero se equivoca de ciudad: fue en Sarajevo. Un solo detalle falso en un texto convincente es difícil de detectar: verifica lugares, fechas y nombres.",
+      "B": "¡Exacto! La B combina exactitud (lugar y fecha del detonante), contexto (por qué una chispa encendió una guerra mundial) y sugiere dónde contrastar.",
+      "C": "La C no tiene errores graves, pero es demasiado superficial: reduce una guerra mundial a una pelea y no explica causas ni ofrece nada verificable (relevancia y fuentes)."
+    },
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-5-evaluacion-de-contenido-generado",
+      "leccionCodigo": "3.5",
+      "leccionTitulo": "Evaluación de contenido generado"
+    }
+  },
+  {
+    "id": "elegir-reciclaje-sirve",
+    "modulo": {
+      "slug": "sirve-reciclar",
+      "titulo": "¿Sirve de algo reciclar?",
+      "descripcion": "Tres respuestas de IA sobre reciclaje; una sola es la mejor: detecta la vaga y la que inventa un informe.",
+      "icono": "♻️"
+    },
+    "titulo": "¿Sirve de algo reciclar?",
+    "problema": "¿Sirve de algo reciclar?",
+    "contexto": "Le preguntaste a una IA si reciclar realmente funciona. Te dio tres respuestas. Solo una es exacta, equilibrada y verificable. Elígela.",
+    "opciones": [
+      {
+        "id": "A",
+        "texto": "Sí, reciclar es bueno para el planeta."
+      },
+      {
+        "id": "B",
+        "texto": "Reciclar es la solución definitiva: según un informe de la ONU de 2018, el 100 % del plástico que se recicla se convierte en plástico nuevo, así que ya no hace falta reducir su consumo."
+      },
+      {
+        "id": "C",
+        "texto": "Sí sirve, pero con matices. Reciclar ahorra materias primas y energía (en el aluminio, mucha), aunque no todos los materiales se reciclan igual de bien: se estima que solo una pequeña parte del plástico producido se ha reciclado. Por eso el orden recomendado es reducir, reutilizar y luego reciclar, separando bien los residuos según las reglas de tu localidad. Contrasta datos en la agencia ambiental de tu país o en la ONU."
+      }
+    ],
+    "correcta": "C",
+    "detalleFalso": "Ningún informe de la ONU afirma eso: se estima que solo alrededor del 9 % del plástico producido históricamente se ha reciclado.",
+    "retro": {
+      "A": "La A no es falsa, pero es demasiado superficial: no explica por qué ni para qué materiales, y no ofrece nada verificable (relevancia y fuentes).",
+      "B": "La B parece respaldada (ONU, año, porcentaje) pero el informe es inventado y la conclusión es peligrosa: sugiere que no hace falta reducir el consumo. Verifica siempre las cifras y quién las publica.",
+      "C": "¡Exacto! La C es matizada, aporta datos y contexto (reducir, reutilizar, reciclar) y remite a fuentes verificables."
+    },
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-5-evaluacion-de-contenido-generado",
+      "leccionCodigo": "3.5",
+      "leccionTitulo": "Evaluación de contenido generado"
+    }
+  },
+  {
+    "id": "elegir-dormir-mejor",
+    "modulo": {
+      "slug": "dormir-mejor",
+      "titulo": "¿Cómo duermo mejor?",
+      "descripcion": "Tres respuestas de IA sobre el sueño; una sola es responsable: detecta la superficial y la que inventa un estudio.",
+      "icono": "😴"
+    },
+    "titulo": "¿Cómo duermo mejor?",
+    "problema": "¿Cómo puedo dormir mejor?",
+    "contexto": "Le preguntaste a una IA cómo mejorar tu sueño. Te dio tres respuestas. Solo una es exacta, práctica y responsable. Elígela: en salud, un consejo falso puede empeorar las cosas.",
+    "opciones": [
+      {
+        "id": "A",
+        "texto": "Un estudio de la Universidad de Stanford de 2020 demostró que dormir con el celular bajo la almohada mejora la memoria un 40 %. Por eso conviene dormir con él cerca y acostarse siempre a la misma hora."
+      },
+      {
+        "id": "B",
+        "texto": "Ayuda mantener horarios regulares, evitar pantallas y cafeína varias horas antes de dormir, y tener un cuarto oscuro, fresco y silencioso. Cuánto sueño se necesita varía según la edad: los adolescentes suelen necesitar más que los adultos. Si el insomnio dura semanas o afecta tu día, consulta a un profesional de la salud. Verifica en fuentes médicas como la OMS o tu centro de salud."
+      },
+      {
+        "id": "C",
+        "texto": "Para dormir mejor, acuéstate temprano y relájate."
+      }
+    ],
+    "correcta": "B",
+    "detalleFalso": "No existe ese estudio de Stanford: el 40 % es inventado, y dormir con el celular cerca suele interrumpir el sueño.",
+    "retro": {
+      "A": "La A es la más engañosa: suena científica (universidad, año, porcentaje) pero el estudio es inventado y el consejo puede perjudicarte. Verifica siempre en fuentes de salud.",
+      "B": "¡Exacto! La B es exacta, da pasos concretos, reconoce que las necesidades varían, indica cuándo consultar a un profesional y remite a fuentes verificables.",
+      "C": "La C no es falsa, pero es demasiado superficial: no da pasos concretos ni dice cuándo buscar ayuda. Una buena respuesta de salud orienta a actuar."
+    },
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-5-evaluacion-de-contenido-generado",
+      "leccionCodigo": "3.5",
+      "leccionTitulo": "Evaluación de contenido generado"
+    }
+  },
+  {
+    "id": "elegir-inflacion",
+    "modulo": {
+      "slug": "que-es-inflacion",
+      "titulo": "¿Qué es la inflación?",
+      "descripcion": "Tres respuestas de IA sobre economía básica; una sola es la mejor: detecta la vaga y la que confunde conceptos.",
+      "icono": "📈"
+    },
+    "titulo": "¿Qué es la inflación?",
+    "problema": "¿Qué es la inflación?",
+    "contexto": "Para una clase de economía le pediste a una IA que explique qué es la inflación. Te dio tres respuestas. Solo una es exacta, clara y verificable. Elígela.",
+    "opciones": [
+      {
+        "id": "A",
+        "texto": "La inflación es un aumento general y sostenido de los precios, que reduce el poder adquisitivo del dinero. Suele medirse con el índice de precios al consumidor (IPC) y puede deberse a un aumento de la demanda, de los costos de producción o de la cantidad de dinero en circulación. Consulta datos y definiciones en el banco central o en el instituto de estadística de tu país."
+      },
+      {
+        "id": "B",
+        "texto": "La inflación es la subida general de los precios y se mide con el producto interno bruto (PIB): cuando el PIB sube, la inflación sube en la misma proporción. Siempre es mala para toda la población."
+      },
+      {
+        "id": "C",
+        "texto": "La inflación es cuando todo se pone más caro."
+      }
+    ],
+    "correcta": "A",
+    "detalleFalso": "La inflación se mide con el índice de precios al consumidor (IPC), no con el PIB, y ambos no suben en la misma proporción.",
+    "retro": {
+      "A": "¡Exacto! La A define bien el concepto, explica cómo se mide y por qué ocurre, y remite a fuentes oficiales para contrastar datos.",
+      "B": "La B empieza bien pero confunde el PIB con el IPC y afirma cosas absolutas («siempre», «toda la población»). Las generalizaciones y los conceptos mezclados son señales para verificar.",
+      "C": "La C no es falsa, pero es demasiado superficial: no habla de poder adquisitivo, medición ni causas, y no ofrece nada verificable (relevancia y fuentes)."
+    },
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-5-evaluacion-de-contenido-generado",
+      "leccionCodigo": "3.5",
+      "leccionTitulo": "Evaluación de contenido generado"
+    }
+  }
+]

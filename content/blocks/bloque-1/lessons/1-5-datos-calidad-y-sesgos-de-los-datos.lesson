@@ -1,0 +1,61 @@
+---
+title: Datos, calidad y sesgos de los datos
+description: Procedencia, calidad, representación desigual, datos sintéticos y conocimiento aprendido vs. información del prompt.
+---
+
+# Datos, calidad y sesgos de los datos {#titulo}
+
+Una IA es como un estudiante para un examen gigante: no nace sabiendo nada. Todo lo que responde depende de los **libros y apuntes** con los que estudió en su entrenamiento: los **datos**. {#intro}
+
+## ¿De dónde salen los datos? {#procedencia}
+
+Se recolectan miles de millones de textos de internet: libros, noticias, blogs, foros y páginas web. Pero no todo es de buena calidad. Si aprende de errores o mentiras, repetirá esos fallos. {#procedencia-def}
+
+> Si entra basura, sale basura. {#cita-basura}
+
+## Sesgos y representación desigual {#sesgos}
+
+Como los datos los escribimos las personas, la IA aprende nuestros prejuicios. A esto se llama **sesgo**: {#sesgo-def}
+
+- **Representación desigual:** si el 80% de los textos están en inglés y de un solo país, sabrá mucho de ese lugar y poco de América Latina, su historia o modismos. {#sesgo-rep}
+- **Estereotipos:** si `médico` siempre aparecía asociado a hombres y `enfermera` a mujeres, tenderá a repetir esa idea equivocada. {#sesgo-est}
+
+## ¿Qué son los datos sintéticos? {#sinteticos}
+
+Cuando no hay suficientes datos reales o para evitar usar información privada, se crean **datos sintéticos**: datos generados por computadora para simular situaciones reales y seguir aprendiendo de forma segura. {#sinteticos-def}
+
+## Conocimiento aprendido vs. información que tú le das {#aprendido-vs-dado}
+
+Es fundamental diferenciar: {#diferencia-intro}
+
+- **Conocimiento aprendido (entrenamiento):** lo que leyó en el pasado al construirla. Si algo no estaba allí, no lo sabrá. {#aprendido}
+- **Información proporcionada (tu prompt):** el texto o documento que adjuntas hoy en el chat. Puede usar esa información fresca aunque no la haya aprendido antes. {#dado}
+
+--- {#corte-quiz}
+
+## Pregunta de comprobación {#quiz}
+
+:::quiz {#quiz-1-5}
+Si pides una historia sobre un científico famoso y siempre genera hombres mayores de 50 años, ¿a qué se debe?
+- A que tiene un chip que le impide procesar nombres de mujeres.
+- [x] A un sesgo en sus datos de entrenamiento, donde esos perfiles eran mucho más abundantes.
+- A que consultó en tiempo real la lista oficial de científicos del mundo.
+- A que los datos sintéticos borraron a las mujeres de su memoria.
+> Los desequilibrios en los datos se reflejan en el comportamiento.
+:::
+
+--- {#corte-ejercicio}
+
+## Ejercicio práctico de observación {#ejercicio}
+
+Abre un chat nuevo y escribe: {#ejercicio-intro}
+
+- **Prueba de asociación rápida:** `Completa con la primera profesión que se te ocurra: 1. María trabaja como... 2. Juan trabaja como... 3. El grupo de científicos estaba liderado por...` {#prueba}
+
+> ¿Qué observar? Fíjate en roles elegidos para cada caso. ¿Muestra estereotipos o fue neutra? Así ves cómo los patrones de entrenamiento influyen de forma invisible. {#ejercicio-cierre}
+
+## Referentes para profundizar {#referentes}
+
+- Google — Datasets and Generalization
+- UNESCO — AI Competency Framework for Students
+- Stanford HAI — AI Index, Responsible AI {#referentes-lista}

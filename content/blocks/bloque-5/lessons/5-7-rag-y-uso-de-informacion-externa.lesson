@@ -1,0 +1,25 @@
+---
+title: RAG y uso de información externa
+description: "Retrieval-Augmented Generation conceptual: recuperación + generación basada en documentos."
+---
+
+# RAG y uso de información externa {#5-7-rag-y-uso-de-informacion-externa-titulo}
+
+Retrieval-Augmented Generation conceptual: recuperación + generación basada en documentos. {#5-7-rag-y-uso-de-informacion-externa-intro}
+
+## Temáticas {#5-7-rag-y-uso-de-informacion-externa-temas}
+
+- Conocimiento limitado del modelo
+- Retrieval-Augmented Generation
+- Recuperación y generación basada en documentos
+- Fuentes externas, ventajas y limitaciones
+- RAG vs. entrenamiento
+- Riesgos de recuperar información incorrecta
+
+## Referentes {#5-7-rag-y-uso-de-informacion-externa-referentes}
+
+- Anthropic — Building Effective Agents
+
+## Alcance {#5-7-rag-y-uso-de-informacion-externa-alcance}
+
+Conceptual; no es necesario construir un sistema RAG. {#5-7-rag-y-uso-de-informacion-externa-alcance-t}

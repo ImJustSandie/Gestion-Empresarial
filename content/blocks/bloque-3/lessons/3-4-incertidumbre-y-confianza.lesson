@@ -1,0 +1,37 @@
+---
+title: Incertidumbre, confianza no es certeza
+description: Seguridad del lenguaje vs. certeza, preguntas para precisar y cuándo verificar por otros medios.
+---
+
+# Incertidumbre: confianza no es certeza {#titulo}
+
+Una respuesta puede sonar segura y ser incorrecta. Y una prudente no es inútil: puede indicar qué se sabe, qué falta y qué permitiría avanzar. **El estilo no mide la probabilidad de verdad.** {#intro}
+
+Los modelos responden incompleto cuando la pregunta admite varias lecturas, falta información o queda fuera de lo fiable. En vez de asumir una única solución, pide supuestos y limitaciones. {#ambiguedad}
+
+## Preguntas útiles para precisar una respuesta {#preguntas}
+
+- ¿Qué partes son hechos verificables y cuáles inferencias? {#q-hechos}
+- ¿Qué información falta para mayor precisión? {#q-falta}
+- ¿Qué supuestos estás haciendo? {#q-supuestos}
+- ¿Qué puntos debería comprobar en una fuente externa? {#q-fuente}
+
+> Estas preguntas organizan la verificación, pero la respuesta del modelo no es prueba independiente de su exactitud. Si importa, comprueba por otros medios. {#nota-verificar}
+
+--- {#corte-actividad}
+
+## Actividad: confianza aparente {#actividad}
+
+Compara dos respuestas a la misma pregunta: una categórica y otra que reconoce límites. Identifica afirmaciones compartidas y verifica al menos una. Decide qué información adicional necesitarías antes de usar cualquiera. {#actividad-t}
+
+--- {#corte-quiz}
+
+## Pregunta de comprobación {#quiz}
+
+:::quiz {#quiz-3-4}
+Una respuesta afirma con total seguridad una cifra exacta, sin fuentes. ¿Qué concluir?
+- Que está confirmada por la seguridad del tono.
+- Que debe considerarse falsa automáticamente.
+- [x] Que el tono no la confirma y hace falta comprobarla.
+> La ausencia de fuentes no prueba falsedad, pero sí falta de verificación.
+:::

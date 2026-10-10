@@ -1,0 +1,7 @@
+{
+  "title": "Entender la IA generativa",
+  "short": "Entender",
+  "description": "Qué son los modelos generativos y los LLM: tokens, contexto, entrenamiento, datos, transformers y multimodalidad. Base conceptual sin profundizar en ML tradicional.",
+  "icon": "🧠",
+  "color": "emerald"
+}

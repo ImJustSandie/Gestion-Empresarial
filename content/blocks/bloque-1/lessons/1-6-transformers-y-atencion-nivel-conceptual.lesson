@@ -1,0 +1,24 @@
+---
+title: Transformers y atención — nivel conceptual
+description: Qué es un Transformer y la atención, solo a nivel conceptual.
+---
+
+# Transformers y atención — nivel conceptual {#1-6-transformers-y-atencion-nivel-conceptual-titulo}
+
+Qué es un Transformer y la atención, solo a nivel conceptual. {#1-6-transformers-y-atencion-nivel-conceptual-intro}
+
+## Temáticas {#1-6-transformers-y-atencion-nivel-conceptual-temas}
+
+- Qué es un Transformer
+- Atención / self-attention
+- Relación entre palabras y contexto
+- Por qué la atención permite relacionar partes de una secuencia
+
+## Referentes {#1-6-transformers-y-atencion-nivel-conceptual-referentes}
+
+- Google — What's a Large Language Model?
+- Vaswani et al. — Attention Is All You Need (2017)
+
+## Alcance {#1-6-transformers-y-atencion-nivel-conceptual-alcance}
+
+Explicación conceptual. No es necesario enseñar matrices, ecuaciones ni implementación matemática. {#1-6-transformers-y-atencion-nivel-conceptual-alcance-t}

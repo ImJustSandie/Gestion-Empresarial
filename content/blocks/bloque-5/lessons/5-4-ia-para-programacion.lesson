@@ -1,0 +1,21 @@
+---
+title: IA para programación
+description: Explicar, generar, depurar, refactorizar, testear y documentar. Leer y probar antes de integrar.
+---
+
+# IA para programación {#5-4-ia-para-programacion-titulo}
+
+Explicar, generar, depurar, refactorizar, testear y documentar. Leer y probar antes de integrar. {#5-4-ia-para-programacion-intro}
+
+## Temáticas {#5-4-ia-para-programacion-temas}
+
+- Explicar código y generar funciones
+- Encontrar errores y refactorizar
+- Generar tests y documentar
+- Explorar APIs y aprender lenguajes
+- Leer, ejecutar en entorno seguro, probar y revisar seguridad
+
+## Referentes {#5-4-ia-para-programacion-referentes}
+
+- Documentación de asistentes de programación
+- Anthropic — Building Effective Agents

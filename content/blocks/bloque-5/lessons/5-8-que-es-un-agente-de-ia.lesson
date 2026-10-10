@@ -1,0 +1,25 @@
+---
+title: ¿Qué es un agente de IA?
+description: "Chatbot vs. agente: herramientas, memoria, planificación y human-in-the-loop."
+---
+
+# ¿Qué es un agente de IA? {#5-8-que-es-un-agente-de-ia-titulo}
+
+Chatbot vs. agente: herramientas, memoria, planificación y human-in-the-loop. {#5-8-que-es-un-agente-de-ia-intro}
+
+## Temáticas {#5-8-que-es-un-agente-de-ia-temas}
+
+- Chatbot vs. agente
+- LLM aumentado: herramientas y memoria
+- Recuperación, planificación, ejecución y observación
+- Autonomía, workflows vs. agentes
+- Human-in-the-loop
+- Riesgos de delegar acciones
+
+> Actividad: Determinar si una tarea requiere un chatbot, un workflow o un agente. {#5-8-que-es-un-agente-de-ia-actividad}
+
+## Referentes {#5-8-que-es-un-agente-de-ia-referentes}
+
+- Anthropic — Building Effective Agents
+- OWASP — Top 10 for LLM and GenAI
+- Stanford HAI — AI Index Report

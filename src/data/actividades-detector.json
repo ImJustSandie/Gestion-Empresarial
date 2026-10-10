@@ -1,0 +1,614 @@
+[
+  {
+    "id": "detector-mitos",
+    "modulo": {
+      "slug": "afirmaciones-mezcladas",
+      "titulo": "Detector de alucinaciones",
+      "descripcion": "Modo forense digital: clasifica 5 afirmaciones mezcladas y revela el peritaje de cada una.",
+      "icono": "🔍"
+    },
+    "titulo": "Detector de alucinaciones",
+    "introduccion": "Una IA generó este texto. Contiene 5 afirmaciones: algunas son verdaderas y otras inventadas. Clasifica cada una como Correcta, Incorrecta o Necesita verificación. Después pulsa cada afirmación para ver la explicación.",
+    "textoIA": "Los pulpos tienen tres corazones y sangre azul. La Gran Muralla China se ve desde la Luna a simple vista. El agua hierve a 100 °C al nivel del mar. Los humanos solo usamos el 10 % del cerebro. Comer zanahorias mejora notablemente la visión nocturna.",
+    "afirmaciones": [
+      {
+        "id": "pulpos",
+        "texto": "Los pulpos tienen tres corazones y sangre azul.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: los pulpos tienen tres corazones y su sangre usa cobre (hemocianina), por eso es azul. Aparece respaldada en fuentes de biología marina."
+      },
+      {
+        "id": "muralla",
+        "texto": "La Gran Muralla China se ve desde la Luna a simple vista.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: es un mito persistente. Ningún astronauta la ha visto a simple vista desde la Luna; apenas se distingue desde órbita baja y con ayuda óptica."
+      },
+      {
+        "id": "agua",
+        "texto": "El agua hierve a 100 °C al nivel del mar.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera a 1 atmósfera de presión (nivel del mar). En la montaña hierve a menor temperatura: el contexto físico importa al verificar."
+      },
+      {
+        "id": "cerebro",
+        "texto": "Los humanos solo usamos el 10 % del cerebro.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: es un neuromito. Las neuroimágenes muestran que usamos prácticamente todo el cerebro, aunque no todo a la vez."
+      },
+      {
+        "id": "zanahorias",
+        "texto": "Comer zanahorias mejora notablemente la visión nocturna.",
+        "veredicto": "pendiente",
+        "explicacion": "Necesita verificación: la vitamina A ayuda solo si hay deficiencia; en personas sanas el efecto es mínimo. El mito lo popularizó propaganda británica en la Segunda Guerra Mundial. Sin una fuente a mano, lo prudente es no clasificarla como verdadera ni falsa."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-2-verificacion-de-informacion",
+      "leccionCodigo": "3.2",
+      "leccionTitulo": "Verificar información y fuentes"
+    }
+  },
+  {
+    "id": "detector-mitos-cotidianos",
+    "modulo": {
+      "slug": "mitos-cotidianos",
+      "titulo": "Cazadores de mitos",
+      "descripcion": "Segundo caso forense: montañas, rayos, miel, chicle y vitamina C bajo la lupa.",
+      "icono": "🧬"
+    },
+    "titulo": "Cazadores de mitos",
+    "introduccion": "Nuevo caso para el laboratorio forense: otra IA generó este texto con 5 afirmaciones cotidianas. Clasifícalas y luego revela el peritaje. Ojo: hay una que ni los expertos zanjan sin fuentes.",
+    "textoIA": "El Monte Everest crece unos milímetros cada año. Los rayos nunca caen dos veces en el mismo lugar. La miel nunca se daña. Tragarse un chicle tarda siete años en digerirse. Tomar vitamina C previene los resfriados.",
+    "afirmaciones": [
+      {
+        "id": "everest",
+        "texto": "El Monte Everest crece unos milímetros cada año.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: el choque de placas tectónicas lo eleva unos milímetros al año (aunque los terremotos y la erosión lo ajustan). Medido por GPS y respaldado en fuentes geológicas."
+      },
+      {
+        "id": "rayos",
+        "texto": "Los rayos nunca caen dos veces en el mismo lugar.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: los puntos altos reciben rayos una y otra vez; el Empire State registra decenas de impactos al año. Un dicho popular no es evidencia."
+      },
+      {
+        "id": "miel",
+        "texto": "La miel nunca se daña.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera en la práctica: su baja humedad y acidez impiden bacterias; se halló miel comestible en tumbas egipcias. Vale si está bien sellada y almacenada."
+      },
+      {
+        "id": "chicle",
+        "texto": "Tragarse un chicle tarda siete años en digerirse.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: el chicle no se digiere, pero atraviesa el sistema digestivo en días como otra fibra. La cifra de los 7 años es inventada."
+      },
+      {
+        "id": "vitamina-c",
+        "texto": "Tomar vitamina C previene los resfriados.",
+        "veredicto": "pendiente",
+        "explicacion": "Necesita verificación: puede acortar algo los resfriados en ciertos grupos, pero no está probado que los prevenga en la población general. Sin la fuente original a mano, clasifícala como pendiente, no como falsa."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-2-verificacion-de-informacion",
+      "leccionCodigo": "3.2",
+      "leccionTitulo": "Verificar información y fuentes"
+    }
+  },
+  {
+    "id": "detector-animales",
+    "modulo": {
+      "slug": "animales-en-duda",
+      "titulo": "Fauna bajo sospecha",
+      "descripcion": "Caso forense animal: delfines, avestruces, murciélagos, jirafas y vacas bajo la lupa.",
+      "icono": "🦇"
+    },
+    "titulo": "Fauna bajo sospecha",
+    "introduccion": "Una IA generó este texto sobre animales. Contiene 5 afirmaciones: algunas son verdaderas, otras inventadas y una merece una segunda mirada. Clasifica cada una como Correcta, Incorrecta o Necesita verificación. Después pulsa cada afirmación para ver el peritaje.",
+    "textoIA": "Los delfines son mamíferos, no peces. Los avestruces esconden la cabeza en la arena cuando tienen miedo. Los murciélagos son ciegos. Las jirafas tienen siete vértebras en el cuello, igual que los humanos. Poner música clásica a las vacas aumenta la producción de leche.",
+    "afirmaciones": [
+      {
+        "id": "delfines",
+        "texto": "Los delfines son mamíferos, no peces.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: respiran aire con pulmones, tienen sangre caliente, paren crías vivas y las amamantan. Parecen peces por su forma, pero biológicamente son mamíferos."
+      },
+      {
+        "id": "avestruces",
+        "texto": "Los avestruces esconden la cabeza en la arena cuando tienen miedo.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: es un mito. Cuando hay peligro, corren o se tumban pegados al suelo. La imagen nace de que bajan la cabeza para comer o para voltear los huevos del nido."
+      },
+      {
+        "id": "murcielagos",
+        "texto": "Los murciélagos son ciegos.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: todos los murciélagos ven. Muchos usan además la ecolocalización para orientarse de noche, y algunos, como los murciélagos frugívoros, tienen muy buena vista."
+      },
+      {
+        "id": "jirafas",
+        "texto": "Las jirafas tienen siete vértebras en el cuello, igual que los humanos.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: casi todos los mamíferos tienen siete vértebras cervicales. Las de la jirafa son enormes y alargadas, pero el número es el mismo que el nuestro."
+      },
+      {
+        "id": "vacas-musica",
+        "texto": "Poner música clásica a las vacas aumenta la producción de leche.",
+        "veredicto": "pendiente",
+        "explicacion": "Necesita verificación: algunos estudios pequeños reportaron mejoras leves, pero los resultados son inconsistentes y de calidad variable. Sin la fuente original a mano, lo prudente es no darla por cierta ni por falsa."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-2-verificacion-de-informacion",
+      "leccionCodigo": "3.2",
+      "leccionTitulo": "Verificar información y fuentes"
+    }
+  },
+  {
+    "id": "detector-cuerpo-humano",
+    "modulo": {
+      "slug": "cuerpo-humano",
+      "titulo": "Anatomía bajo sospecha",
+      "descripcion": "Caso forense del cuerpo: huesos, pelo, lengua, pulso y sueño bajo la lupa.",
+      "icono": "🫀"
+    },
+    "titulo": "Anatomía bajo sospecha",
+    "introduccion": "Una IA generó este texto sobre el cuerpo humano con 5 afirmaciones. Clasifícalas como Correcta, Incorrecta o Necesita verificación y luego revela el peritaje. Ojo: en salud, los matices importan.",
+    "textoIA": "Un adulto suele tener 206 huesos. Cortarse el pelo hace que crezca más rápido. La lengua tiene zonas separadas para cada sabor. En reposo, el pulso de un adulto sano suele estar entre 60 y 100 latidos por minuto. Dormir 8 horas es lo ideal para cualquier adulto.",
+    "afirmaciones": [
+      {
+        "id": "huesos",
+        "texto": "Un adulto suele tener 206 huesos.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: los bebés nacen con unos 300 huesos o piezas óseas que se van fusionando; el adulto promedio llega a 206."
+      },
+      {
+        "id": "pelo",
+        "texto": "Cortarse el pelo hace que crezca más rápido.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: el pelo crece desde el folículo, bajo la piel. Cortar la punta no cambia la velocidad; solo elimina puntas abiertas y hace que se vea más sano."
+      },
+      {
+        "id": "lengua",
+        "texto": "La lengua tiene zonas separadas para cada sabor.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: el famoso «mapa de la lengua» es un mito. Todos los sabores básicos se detectan en toda la lengua, con pequeñas diferencias de sensibilidad."
+      },
+      {
+        "id": "pulso",
+        "texto": "En reposo, el pulso de un adulto sano suele estar entre 60 y 100 latidos por minuto.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: es el rango habitual de referencia. Las personas muy entrenadas pueden tener menos de 60 sin que sea un problema."
+      },
+      {
+        "id": "sueno",
+        "texto": "Dormir 8 horas es lo ideal para cualquier adulto.",
+        "veredicto": "pendiente",
+        "explicacion": "Necesita verificación: las guías suelen recomendar entre 7 y 9 horas, pero la necesidad varía de una persona a otra. «Cualquier adulto» es una generalización que conviene contrastar con una fuente de salud."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-2-verificacion-de-informacion",
+      "leccionCodigo": "3.2",
+      "leccionTitulo": "Verificar información y fuentes"
+    }
+  },
+  {
+    "id": "detector-historia-mitos",
+    "modulo": {
+      "slug": "historia-con-trampas",
+      "titulo": "Historia con trampas",
+      "descripcion": "Caso forense histórico: vikingos, Colón, pirámides, Napoleón y el Muro de Berlín.",
+      "icono": "🏛️"
+    },
+    "titulo": "Historia con trampas",
+    "introduccion": "Una IA escribió este resumen histórico con 5 afirmaciones. Algunas son verdaderas, otras son mitos muy repetidos y una divide a los expertos. Clasifícalas y luego revela el peritaje.",
+    "textoIA": "Los vikingos llevaban cascos con cuernos. Cristóbal Colón llegó por primera vez a tierras americanas en 1492. Las pirámides de Egipto las construyeron esclavos. Napoleón era extremadamente bajo de estatura. El Muro de Berlín cayó en 1989.",
+    "afirmaciones": [
+      {
+        "id": "vikingos",
+        "texto": "Los vikingos llevaban cascos con cuernos.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: no hay evidencia arqueológica de cascos con cuernos. La imagen se popularizó en el siglo XIX con el vestuario de óperas y la ilustración romántica."
+      },
+      {
+        "id": "colon",
+        "texto": "Cristóbal Colón llegó por primera vez a tierras americanas en 1492.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: llegó a una isla del Caribe el 12 de octubre de 1492. Los pueblos originarios ya habitaban el continente desde hacía miles de años."
+      },
+      {
+        "id": "piramides",
+        "texto": "Las pirámides de Egipto las construyeron esclavos.",
+        "veredicto": "pendiente",
+        "explicacion": "Necesita verificación: los hallazgos arqueológicos cerca de Guiza sugieren trabajadores organizados, alimentados y alojados, no esclavos. Aun así, el tema tiene matices y debate, y conviene contrastar la fuente."
+      },
+      {
+        "id": "napoleon",
+        "texto": "Napoleón era extremadamente bajo de estatura.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: medía alrededor de 1,68-1,70 m, una estatura normal para un hombre francés de su época. El mito nace de la confusión entre pulgadas francesas e inglesas y de caricaturas británicas."
+      },
+      {
+        "id": "muro",
+        "texto": "El Muro de Berlín cayó en 1989.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: se abrieron los pasos fronterizos el 9 de noviembre de 1989. La reunificación alemana llegó en 1990."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-2-verificacion-de-informacion",
+      "leccionCodigo": "3.2",
+      "leccionTitulo": "Verificar información y fuentes"
+    }
+  },
+  {
+    "id": "detector-cosmos",
+    "modulo": {
+      "slug": "cosmos-en-duda",
+      "titulo": "Cosmos bajo la lupa",
+      "descripcion": "Caso forense espacial: el Sol, el sonido, la Luna, Mercurio y las estrellas.",
+      "icono": "🪐"
+    },
+    "titulo": "Cosmos bajo la lupa",
+    "introduccion": "Una IA generó este texto sobre astronomía con 5 afirmaciones. Clasifícalas como Correcta, Incorrecta o Necesita verificación y luego revela el peritaje de cada una.",
+    "textoIA": "El Sol es una estrella. En el espacio exterior no se oye el sonido porque no hay aire que lo transmita. El lado oscuro de la Luna nunca recibe luz del Sol. Mercurio es el planeta más caliente porque es el más cercano al Sol. Hay más estrellas en el universo que granos de arena en todas las playas de la Tierra.",
+    "afirmaciones": [
+      {
+        "id": "sol",
+        "texto": "El Sol es una estrella.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: es una estrella de tipo enana amarilla. Parece distinta de las demás solo porque es la más cercana a nosotros."
+      },
+      {
+        "id": "sonido",
+        "texto": "En el espacio exterior no se oye el sonido porque no hay aire que lo transmita.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: el sonido necesita un medio material (aire, agua, sólidos) para propagarse, y el espacio es casi un vacío."
+      },
+      {
+        "id": "luna",
+        "texto": "El lado oscuro de la Luna nunca recibe luz del Sol.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: la cara oculta recibe luz solar igual que la visible; solo que no la vemos desde la Tierra. «Oculta» no significa «oscura»."
+      },
+      {
+        "id": "mercurio",
+        "texto": "Mercurio es el planeta más caliente porque es el más cercano al Sol.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: el más caliente es Venus (unos 465 °C en superficie) por su densa atmósfera de dióxido de carbono, que atrapa el calor. Mercurio casi no tiene atmósfera."
+      },
+      {
+        "id": "estrellas-arena",
+        "texto": "Hay más estrellas en el universo que granos de arena en todas las playas de la Tierra.",
+        "veredicto": "pendiente",
+        "explicacion": "Necesita verificación: es una comparación famosa basada en estimaciones muy aproximadas (estrellas del universo observable y granos de arena en las playas). Muchas fuentes divulgativas la respaldan, pero son cálculos con mucha incertidumbre; sin la fuente de las cifras, lo prudente es dejarla pendiente."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-2-verificacion-de-informacion",
+      "leccionCodigo": "3.2",
+      "leccionTitulo": "Verificar información y fuentes"
+    }
+  },
+  {
+    "id": "detector-seguridad-digital",
+    "modulo": {
+      "slug": "seguridad-digital",
+      "titulo": "Alerta digital",
+      "descripcion": "Caso forense tecnológico: IA, anonimato, contraseñas, phishing y baterías.",
+      "icono": "🔐"
+    },
+    "titulo": "Alerta digital",
+    "introduccion": "Una IA generó este texto sobre tecnología y seguridad con 5 afirmaciones. Clasifícalas y luego revela el peritaje. Aquí un error puede costarte datos o dinero.",
+    "textoIA": "Los modelos de IA generativa pueden inventar datos que suenan convincentes. Borrar el historial del navegador te vuelve anónimo en internet. Una contraseña larga hecha de varias palabras suele ser más segura que una corta con símbolos raros. Si un mensaje trae el logo de tu banco, es seguro hacer clic en su enlace. Dejar el celular cargando toda la noche arruina la batería.",
+    "afirmaciones": [
+      {
+        "id": "alucinaciones-ia",
+        "texto": "Los modelos de IA generativa pueden inventar datos que suenan convincentes.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: es lo que se llama alucinación. Los modelos generan texto plausible, no verificado, por eso hay que contrastar datos, cifras y fuentes."
+      },
+      {
+        "id": "historial",
+        "texto": "Borrar el historial del navegador te vuelve anónimo en internet.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: borrar el historial solo elimina registros en tu dispositivo. Los sitios, tu proveedor de internet y las cuentas que usas siguen pudiendo identificarte."
+      },
+      {
+        "id": "contrasena",
+        "texto": "Una contraseña larga hecha de varias palabras suele ser más segura que una corta con símbolos raros.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: la longitud pesa más que los símbolos. Una frase larga con palabras sin relación es difícil de adivinar y más fácil de recordar."
+      },
+      {
+        "id": "logo-banco",
+        "texto": "Si un mensaje trae el logo de tu banco, es seguro hacer clic en su enlace.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: copiar un logo es trivial. El phishing imita bancos con mucha fidelidad; lo seguro es entrar escribiendo la dirección oficial o usando la app, no el enlace del mensaje."
+      },
+      {
+        "id": "bateria",
+        "texto": "Dejar el celular cargando toda la noche arruina la batería.",
+        "veredicto": "pendiente",
+        "explicacion": "Necesita verificación: los celulares modernos cortan la carga al llegar al 100 % y muchos tienen modos de carga optimizada. Mantener la batería llena y caliente puede acelerar algo su desgaste, pero el efecto depende del modelo. Consulta al fabricante."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-2-verificacion-de-informacion",
+      "leccionCodigo": "3.2",
+      "leccionTitulo": "Verificar información y fuentes"
+    }
+  },
+  {
+    "id": "detector-salud-cotidiana",
+    "modulo": {
+      "slug": "salud-cotidiana",
+      "titulo": "Mitos de salud",
+      "descripcion": "Caso forense de salud: azúcar, manos, digestión, vacunas y chocolate.",
+      "icono": "🩺"
+    },
+    "titulo": "Mitos de salud",
+    "introduccion": "Una IA generó este texto con 5 afirmaciones sobre salud cotidiana. Clasifícalas como Correcta, Incorrecta o Necesita verificación y luego revela el peritaje. En salud, ante la duda, se verifica.",
+    "textoIA": "El azúcar vuelve hiperactivos a los niños. Lavarse las manos con jabón ayuda a reducir la propagación de enfermedades. Bañarse justo después de comer provoca un «corte de digestión» mortal. Las vacunas aprobadas pasan por ensayos clínicos antes de usarse en la población. El chocolate negro es bueno para el corazón.",
+    "afirmaciones": [
+      {
+        "id": "azucar",
+        "texto": "El azúcar vuelve hiperactivos a los niños.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: los estudios controlados no encuentran ese efecto. Muchas veces influye la expectativa de los adultos y el contexto (fiestas, emoción), no el azúcar en sí."
+      },
+      {
+        "id": "manos",
+        "texto": "Lavarse las manos con jabón ayuda a reducir la propagación de enfermedades.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: es una de las medidas de prevención más respaldadas por la salud pública, porque elimina microbios que pasan de las manos a la boca, la nariz y los ojos."
+      },
+      {
+        "id": "corte-digestion",
+        "texto": "Bañarse justo después de comer provoca un «corte de digestión» mortal.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: no hay evidencia de que la digestión provoque cortes mortales. Los accidentes se relacionan más con el choque térmico, el alcohol, el agotamiento o nadar sin supervisión."
+      },
+      {
+        "id": "vacunas-ensayos",
+        "texto": "Las vacunas aprobadas pasan por ensayos clínicos antes de usarse en la población.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: antes de aprobarse se evalúan en varias fases de ensayos clínicos y después se siguen vigilando sus efectos. Puedes consultar los detalles en la autoridad sanitaria de tu país."
+      },
+      {
+        "id": "chocolate-negro",
+        "texto": "El chocolate negro es bueno para el corazón.",
+        "veredicto": "pendiente",
+        "explicacion": "Necesita verificación: algunos estudios asocian el cacao rico en flavonoides con efectos modestos en la presión arterial, pero muchos son observacionales y el chocolate aporta azúcar y grasa. Sin la fuente, es mejor no darlo por hecho."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-2-verificacion-de-informacion",
+      "leccionCodigo": "3.2",
+      "leccionTitulo": "Verificar información y fuentes"
+    }
+  },
+  {
+    "id": "detector-geografia",
+    "modulo": {
+      "slug": "geografia-en-duda",
+      "titulo": "Atlas en duda",
+      "descripcion": "Caso forense geográfico: Brasil, Sídney, el Sahara, el Everest y el Nilo.",
+      "icono": "🗺️"
+    },
+    "titulo": "Atlas en duda",
+    "introduccion": "Una IA generó este texto de geografía con 5 afirmaciones. Algunas son errores clásicos y una depende de cómo se mida. Clasifícalas y luego revela el peritaje.",
+    "textoIA": "Brasil es el país más grande de Sudamérica. La capital de Australia es Sídney. El Sahara es el desierto más grande del mundo. El Everest es la montaña más alta del mundo medida desde el nivel del mar. El río Nilo es el más largo del mundo.",
+    "afirmaciones": [
+      {
+        "id": "brasil",
+        "texto": "Brasil es el país más grande de Sudamérica.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: ocupa casi la mitad del territorio sudamericano, con unos 8,5 millones de km²."
+      },
+      {
+        "id": "australia",
+        "texto": "La capital de Australia es Sídney.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: la capital es Canberra. Sídney es la ciudad más poblada, y de ahí la confusión frecuente."
+      },
+      {
+        "id": "sahara",
+        "texto": "El Sahara es el desierto más grande del mundo.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: es el mayor desierto cálido, pero la Antártida, un desierto polar por su escasísima precipitación, es más grande."
+      },
+      {
+        "id": "everest",
+        "texto": "El Everest es la montaña más alta del mundo medida desde el nivel del mar.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: ronda los 8.849 m sobre el nivel del mar. Medida desde su base, la más alta es el Mauna Kea; medida desde el centro de la Tierra, el Chimborazo. El criterio importa."
+      },
+      {
+        "id": "nilo",
+        "texto": "El río Nilo es el más largo del mundo.",
+        "veredicto": "pendiente",
+        "explicacion": "Necesita verificación: tradicionalmente se le atribuye al Nilo, pero algunas mediciones colocan al Amazonas como más largo. Depende de dónde se fije el nacimiento y la desembocadura. Sin la fuente de la medición, queda pendiente."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-2-verificacion-de-informacion",
+      "leccionCodigo": "3.2",
+      "leccionTitulo": "Verificar información y fuentes"
+    }
+  },
+  {
+    "id": "detector-ciencia-leyendas",
+    "modulo": {
+      "slug": "ciencia-o-leyenda",
+      "titulo": "¿Ciencia o leyenda?",
+      "descripcion": "Caso forense científico: ceros, plomo, luz, vidrio y música para estudiar.",
+      "icono": "🧪"
+    },
+    "titulo": "¿Ciencia o leyenda?",
+    "introduccion": "Una IA generó este texto con 5 afirmaciones de ciencia. Clasifícalas como Correcta, Incorrecta o Necesita verificación y luego revela el peritaje. Cuidado con las que suenan «obvias».",
+    "textoIA": "El cero es un número par. Un kilo de plomo pesa más que un kilo de plumas. La luz viaja más rápido que el sonido. El vidrio es un líquido que fluye lentamente, por eso los vitrales antiguos son más gruesos abajo. Escuchar música mientras estudias mejora el rendimiento.",
+    "afirmaciones": [
+      {
+        "id": "cero-par",
+        "texto": "El cero es un número par.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: un número es par si es divisible entre 2 sin residuo, y 0 entre 2 es 0. Además, está entre dos impares (-1 y 1)."
+      },
+      {
+        "id": "plomo-plumas",
+        "texto": "Un kilo de plomo pesa más que un kilo de plumas.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: un kilo es un kilo. El plomo ocupa menos volumen porque es mucho más denso, pero la masa es la misma."
+      },
+      {
+        "id": "luz-sonido",
+        "texto": "La luz viaja más rápido que el sonido.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: la luz viaja a unos 300.000 km/s y el sonido en el aire a unos 343 m/s. Por eso vemos el rayo antes de oír el trueno."
+      },
+      {
+        "id": "vidrio-liquido",
+        "texto": "El vidrio es un líquido que fluye lentamente, por eso los vitrales antiguos son más gruesos abajo.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: el vidrio es un sólido amorfo y no fluye a escala humana. Los vitrales antiguos quedaron desiguales por el método de fabricación, y los vidrieros solían colocar el lado grueso abajo."
+      },
+      {
+        "id": "musica-estudio",
+        "texto": "Escuchar música mientras estudias mejora el rendimiento.",
+        "veredicto": "pendiente",
+        "explicacion": "Necesita verificación: depende de la tarea y del tipo de música. Con letra puede perjudicar la lectura o la escritura, y en tareas repetitivas puede ayudar. La evidencia es mixta, así que no es ni verdadera ni falsa sin matices."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-2-verificacion-de-informacion",
+      "leccionCodigo": "3.2",
+      "leccionTitulo": "Verificar información y fuentes"
+    }
+  },
+  {
+    "id": "detector-cultura-lengua",
+    "modulo": {
+      "slug": "cultura-y-lengua",
+      "titulo": "Cultura bajo sospecha",
+      "descripcion": "Caso forense cultural: la Mona Lisa, una cita falsa, toros, el español y Cervantes.",
+      "icono": "📚"
+    },
+    "titulo": "Cultura bajo sospecha",
+    "introduccion": "Una IA generó este texto con 5 afirmaciones de cultura general. Incluye una cita famosa y una coincidencia histórica que merece revisar. Clasifícalas y luego revela el peritaje.",
+    "textoIA": "La Mona Lisa fue pintada por Leonardo da Vinci. Albert Einstein dijo que «la locura es hacer lo mismo esperando resultados distintos». Los toros se enfurecen al ver el color rojo. El español es una lengua romance derivada del latín. Cervantes y Shakespeare murieron el mismo día, el 23 de abril de 1616.",
+    "afirmaciones": [
+      {
+        "id": "mona-lisa",
+        "texto": "La Mona Lisa fue pintada por Leonardo da Vinci.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: la pintó Leonardo da Vinci a principios del siglo XVI y hoy se conserva en el Museo del Louvre, en París."
+      },
+      {
+        "id": "cita-einstein",
+        "texto": "Albert Einstein dijo que «la locura es hacer lo mismo esperando resultados distintos».",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: no hay evidencia documentada de que Einstein lo dijera; la frase se rastrea a textos de los años 80. Las citas famosas atribuidas a personajes célebres deben verificarse en fuentes primarias."
+      },
+      {
+        "id": "toros-rojo",
+        "texto": "Los toros se enfurecen al ver el color rojo.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: los toros no distinguen bien el rojo y reaccionan al movimiento del capote, no a su color."
+      },
+      {
+        "id": "espanol-latin",
+        "texto": "El español es una lengua romance derivada del latín.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: el español, como el portugués, el francés, el italiano y el catalán, evolucionó del latín hablado."
+      },
+      {
+        "id": "cervantes-shakespeare",
+        "texto": "Cervantes y Shakespeare murieron el mismo día, el 23 de abril de 1616.",
+        "veredicto": "pendiente",
+        "explicacion": "Necesita verificación: ambos murieron en esa fecha según sus calendarios, pero España usaba el calendario gregoriano e Inglaterra el juliano, con diez días de diferencia. Contar «el mismo día» depende de qué calendario se use."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-2-verificacion-de-informacion",
+      "leccionCodigo": "3.2",
+      "leccionTitulo": "Verificar información y fuentes"
+    }
+  },
+  {
+    "id": "detector-planeta",
+    "modulo": {
+      "slug": "planeta-en-datos",
+      "titulo": "Planeta en datos",
+      "descripcion": "Caso forense ambiental: fotosíntesis, vidrio, Amazonas, hielo y océanos.",
+      "icono": "🌍"
+    },
+    "titulo": "Planeta en datos",
+    "introduccion": "Una IA generó este texto con 5 afirmaciones sobre el medio ambiente. Algunas cifras suenan muy repetidas, pero no siempre son exactas. Clasifícalas y luego revela el peritaje.",
+    "textoIA": "Las plantas producen oxígeno mediante la fotosíntesis. El vidrio puede reciclarse indefinidamente sin perder calidad. El Amazonas produce el 20 % del oxígeno del mundo. El derretimiento del hielo marino flotante es la principal causa de que suba el nivel del mar. Más de la mitad del oxígeno del planeta lo producen los océanos.",
+    "afirmaciones": [
+      {
+        "id": "fotosintesis",
+        "texto": "Las plantas producen oxígeno mediante la fotosíntesis.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: usan luz solar, agua y dióxido de carbono para producir glucosa y liberan oxígeno. También lo hacen las algas y algunas bacterias."
+      },
+      {
+        "id": "vidrio-reciclaje",
+        "texto": "El vidrio puede reciclarse indefinidamente sin perder calidad.",
+        "veredicto": "correcta",
+        "explicacion": "Verdadera: puede fundirse y reformarse una y otra vez sin perder calidad, siempre que se separe bien (el vidrio de ventanas o la cerámica no se mezclan con los envases)."
+      },
+      {
+        "id": "amazonas-oxigeno",
+        "texto": "El Amazonas produce el 20 % del oxígeno del mundo.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: es un dato muy difundido pero engañoso. La selva consume casi tanto oxígeno como produce, así que su aporte neto es muy pequeño. Su valor está en la biodiversidad y en regular el clima."
+      },
+      {
+        "id": "hielo-marino",
+        "texto": "El derretimiento del hielo marino flotante es la principal causa de que suba el nivel del mar.",
+        "veredicto": "incorrecta",
+        "explicacion": "Falsa: el hielo flotante ya desplaza su propio peso en agua, así que al derretirse apenas cambia el nivel. La subida viene sobre todo de la expansión térmica del agua y del derretimiento del hielo sobre tierra (glaciares y mantos de hielo)."
+      },
+      {
+        "id": "oceanos-oxigeno",
+        "texto": "Más de la mitad del oxígeno del planeta lo producen los océanos.",
+        "veredicto": "pendiente",
+        "explicacion": "Necesita verificación: suele decirse que el fitoplancton produce alrededor de la mitad, pero las cifras varían según cómo se calcule (producción total frente a neta). Sin la fuente científica a mano, lo prudente es dejarla pendiente."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-3",
+      "bloqueTitulo": "B3 · Cuestionar la IA",
+      "leccionId": "3-2-verificacion-de-informacion",
+      "leccionCodigo": "3.2",
+      "leccionTitulo": "Verificar información y fuentes"
+    }
+  }
+]

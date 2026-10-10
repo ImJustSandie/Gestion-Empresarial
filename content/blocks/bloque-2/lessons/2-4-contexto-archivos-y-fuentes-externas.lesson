@@ -1,0 +1,39 @@
+---
+title: Contexto, archivos y fuentes externas
+description: Aportar documentos y contexto específico, introducción a RAG y qué información conviene proporcionar.
+---
+
+# Contexto, archivos y fuentes externas {#titulo}
+
+La IA responde desde patrones aprendidos y la información de la conversación o sus herramientas. Si la tarea depende de un documento específico, **no asumas que lo conoce**: proporciona el texto o adjunta el archivo si la plataforma lo permite. {#intro}
+
+Puedes aportar fragmentos, tablas, imágenes o instrucciones. Luego explica qué hacer: `Usa únicamente el texto adjunto para resumir las tres causas principales y señala si algo no aparece en el documento`. Comprueba que interpretó bien el archivo y que el resultado se apoya en él. {#como-aportar}
+
+Algunas apps buscan en fuentes externas para responder. Una técnica relacionada es **RAG (generación aumentada por recuperación)**: recupera información relevante y la incorpora al contexto para responder. No es reentrenar el modelo. Tampoco garantiza fuentes completas o correctas. {#rag}
+
+## Qué información conviene proporcionar {#que-dar}
+
+- El material necesario, evitando documentos irrelevantes. {#q-material}
+- El propósito y las partes a priorizar. {#q-proposito}
+- La fuente o alcance permitido, cuando importe limitar la respuesta. {#q-fuente}
+- El formato final y cómo tratar lo no disponible. {#q-formato}
+
+> Antes de adjuntar, revisa si hay datos personales, información confidencial o material sin autorización para compartir. {#nota-privacidad}
+
+--- {#corte-quiz}
+
+## Pregunta de comprobación {#quiz}
+
+:::quiz {#quiz-2-4}
+Si necesitas resumir un capítulo específico de tus apuntes, ¿qué estrategia es mejor?
+- Suponer que el modelo ya conoce exactamente tu capítulo.
+- [x] Proporcionar el documento o fragmento y explicar qué resumen necesitas.
+- Pedir que invente lo que falte para completar el resumen.
+- Repetir la pregunta sin aportar más información.
+> El material aporta contexto específico y permite comparar con la fuente original.
+:::
+
+## Referentes para profundizar {#referentes}
+
+- Documentación técnica de proveedores
+- Anthropic — Building Effective Agents {#referentes-lista}

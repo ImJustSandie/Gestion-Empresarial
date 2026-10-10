@@ -1,0 +1,40 @@
+---
+title: Verificar información y fuentes
+description: Cómo contrastar afirmaciones con evidencia, fuentes primarias y secundarias, y pasos básicos.
+---
+
+# Verificar información y fuentes {#titulo}
+
+**Verificar** es contrastar una afirmación con evidencia independiente. La primera respuesta sirve como punto de partida, no reemplaza consultar fuentes. Separa cada respuesta en afirmaciones comprobables: fecha, porcentaje, definición, cita o explicación causal. {#intro}
+
+## Fuentes primarias y secundarias {#fuentes}
+
+Una **fuente primaria** presenta evidencia directa: documento oficial, artículo original, norma, dataset o comunicado institucional. Una **secundaria** interpreta o resume primarias, como una revisión académica. Ambas sirven; su pertinencia depende de la pregunta. {#fuentes-def}
+
+## Pasos básicos para comprobar una afirmación {#pasos}
+
+- Extrae la afirmación exacta. No verifiques una idea general si necesitas una cifra o cita. {#paso-1}
+- Busca la fuente original. Si menciona un estudio, localiza el artículo o la institución. {#paso-2}
+- Comprueba autoría, fecha, contexto y evidencia. Revisa que la fuente diga lo afirmado. {#paso-3}
+- Contrasta con otra fuente independiente. Dos páginas que copian el mismo error no confirman. {#paso-4}
+- Registra el resultado: confirmado, contradicho o pendiente, con la evidencia que lo sostiene. {#paso-5}
+
+> Importante: una URL puede existir y no respaldar la afirmación. Abre la fuente y comprueba el contenido, no solo el enlace. {#nota-url}
+
+--- {#corte-actividad}
+
+## Actividad: detector de alucinaciones {#actividad}
+
+Pide una explicación breve de un tema académico e identifica tres afirmaciones comprobables. Clasifica cada una como `respaldada`, `contradicha` o `pendiente de verificación`. Anota la evidencia. Si no hay suficiente, no inventes conclusión. {#actividad-t}
+
+--- {#corte-quiz}
+
+## Pregunta de comprobación {#quiz}
+
+:::quiz {#quiz-3-2}
+¿Qué aporta más evidencia para confirmar una cita de un artículo científico?
+- Que aparezca repetida en varios chatbots.
+- Que tenga tono académico.
+- [x] Consultar el artículo original y comprobar el fragmento y su contexto.
+> La fuente original prueba existencia y contexto.
+:::

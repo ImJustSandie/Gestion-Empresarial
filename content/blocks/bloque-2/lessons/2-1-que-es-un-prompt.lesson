@@ -1,0 +1,52 @@
+---
+title: ¿Qué es un prompt?
+description: El prompt como instrucción o entrada, sus piezas y la diferencia entre pregunta vaga e instrucción específica.
+---
+
+# ¿Qué es un prompt? {#titulo}
+
+Un **prompt** es la entrada que das a una IA para orientar su respuesta. Puede ser una pregunta breve, una instrucción detallada, un documento con una solicitud o una combinación de texto, imágenes y otros formatos. {#intro}
+
+No es una palabra mágica: es comunicar **qué tarea debe hacer y con qué información cuenta**. Si escribes `Háblame de los ecosistemas`, la IA no sabe si quieres definición para primaria, explicación científica, ejemplos de Colombia o texto para exposición. Responderá algo correcto en general, pero poco adaptado. {#ejemplo-vago}
+
+## Las piezas de una instrucción {#piezas}
+
+- **Objetivo:** qué necesitas (explicar, comparar, resumir, corregir, proponer ideas). {#p-objetivo}
+- **Contexto:** información para entender la situación y el uso del resultado. {#p-contexto}
+- **Instrucciones:** acciones concretas y enfoque a seguir. {#p-instrucciones}
+- **Restricciones:** extensión, temas excluidos, nivel o recursos permitidos. {#p-restricciones}
+- **Formato de salida:** lista, tabla, esquema o párrafos. {#p-formato}
+- **Audiencia y criterios de calidad:** quién lo leerá y qué lo hace útil. {#p-audiencia}
+
+> No todo prompt necesita cada elemento. Para consultas sencillas basta una pregunta directa; en tareas complejas, añadir piezas evita interpretaciones innecesarias. {#nota-piezas}
+
+--- {#corte-quiz}
+
+## Pregunta de comprobación {#quiz}
+
+:::quiz {#quiz-2-1}
+¿Cuál instrucción produce una respuesta más adaptada?
+- Explícame la energía.
+- Escribe algo interesante sobre ciencias.
+- [x] Explica la diferencia entre energía cinética y potencial en dos párrafos, con un ejemplo cotidiano para un estudiante de noveno grado.
+- Dame toda la información que conozcas sobre física.
+> Define tema, enfoque, extensión y público.
+:::
+
+--- {#corte-ejercicio}
+
+## Ejercicio práctico de observación {#ejercicio}
+
+En tu herramienta habitual: {#ejercicio-intro}
+
+- Escribe: `Explícame la fotosíntesis`. {#paso-1}
+- En el mismo chat escribe: `Explícame la fotosíntesis para un estudiante de séptimo grado, con una analogía cotidiana y en máximo dos párrafos`. {#paso-2}
+- Compara nivel de detalle, lenguaje y estructura. {#paso-3}
+
+> ¿Qué observar? La segunda no tiene más datos científicos, pero sí criterios más claros de presentación. {#ejercicio-cierre}
+
+## Referentes para profundizar {#referentes}
+
+- Microsoft — Prompt engineering techniques
+- Anthropic — Prompting best practices
+- Documentación oficial del proveedor utilizado {#referentes-lista}

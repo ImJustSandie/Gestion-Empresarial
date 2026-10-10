@@ -39,7 +39,7 @@ La aplicación se divide en tres módulos principales, cada uno con su propia se
 
 ## Reglas generales de desarrollo
 
-1. **Sin backend:** No se debe crear ningún servidor, endpoint ni consumir APIs externas.
+1. **Sin backend en producción:** La app desplegada (GitHub Pages / Vercel estático) no tiene servidor ni consume APIs externas. Excepción: `server/content-server.mjs` es un backend **solo para desarrollo local** (`npm run content:server`) que escribe archivos de contenido en `content/blocks/`; nunca se despliega y el build estático no depende de él.
 2. **Sin base de datos:** Toda la persistencia se realiza exclusivamente mediante `localStorage`.
 3. **Modularidad:** Cada módulo debe mantener su propia lógica y componentes dentro de su carpeta correspondiente.
 4. **Reutilización:** Los componentes compartidos deben ubicarse en `src/components/`.
@@ -60,3 +60,10 @@ La aplicación se divide en tres módulos principales, cada uno con su propia se
 - Ejemplo: `gestion-empresarial:activities`, `gestion-empresarial:teachers`.
 - Manejar errores de lectura/escritura y valores por defecto cuando no existan datos.
 - Recordar que `localStorage` solo almacena cadenas: serializar con `JSON.stringify` y deserializar con `JSON.parse`.
+
+## Contenido (bloques + lessons)
+
+- Todo el contenido educativo vive en `content/blocks/<bloque>/`: `block.json` (`title`, `description`, `icon?`, `color?`), `order.json` (orden de lessons, opcional) y `lessons/*.lesson`.
+- El orden de bloques vive en `content/blocks/order.json`.
+- El build de Astro empaqueta ese contenido como HTML estático: lo desplegado muestra el estado del repo al momento del build.
+- La página oculta `/editor` gestiona bloques y lessons: con el servidor local escribe directo a `content/blocks/`; sin servidor trabaja con `localStorage` + exportar/descargar el `.lesson`.

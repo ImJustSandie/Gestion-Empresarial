@@ -1,0 +1,62 @@
+---
+import AppHeader from "../../components/AppHeader.tsx";
+import LessonRenderer from "../../components/LessonRenderer.tsx";
+import { getAllLessons, getLessonById, getLessonsByBlock } from "../../utils/lessons.ts";
+import "../../styles/global.css";
+
+export function getStaticPaths() {
+  return getAllLessons().map((l) => ({ params: { id: l.meta.id } }));
+}
+
+const { id } = Astro.params;
+const lesson = getLessonById(id ?? "");
+const blockLessons = lesson?.meta.blockId ? getLessonsByBlock(lesson.meta.blockId) : [];
+const idx = blockLessons.findIndex((l) => l.meta.id === id);
+const prev = idx > 0 ? blockLessons[idx - 1] : null;
+const next = idx >= 0 && idx < blockLessons.length - 1 ? blockLessons[idx + 1] : null;
+const backHref = lesson?.meta.blockId ? `/alfabetizacion?bloque=${lesson.meta.blockId}` : "/alfabetizacion";
+---
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{lesson ? lesson.meta.title : "No encontrada"} - Lecciones</title>
+  </head>
+  <body class="bg-gray-50 text-gray-900 min-h-screen">
+    <AppHeader client:load currentPath="/alfabetizacion" />
+    <div class="px-3 md:px-6 py-6 max-w-5xl mx-auto">
+      <a href={backHref} class="text-xs bg-white border px-3 py-1.5 rounded-full font-semibold hover:border-gray-400">← Volver al bloque</a>
+      {!lesson && (
+        <div class="bg-white border rounded-2xl p-8 mt-4 text-center">
+          <p class="font-bold">Lección no encontrada: {id}</p>
+        </div>
+      )}
+      {lesson && (
+        <article class="bg-white border rounded-3xl p-6 sm:p-10 mt-4">
+          <p class="font-mono text-xs text-indigo-600 font-bold">{lesson.meta.code} · {lesson.meta.block}</p>
+          <h1 class="text-3xl sm:text-4xl font-extrabold mt-2">{lesson.meta.title}</h1>
+          {lesson.meta.description && <p class="text-sm text-gray-500 mt-2">{lesson.meta.description}</p>}
+          <hr class="my-6 border-gray-100" />
+          <LessonRenderer lesson={lesson} client:load />
+        </article>
+      )}
+      {lesson && (prev || next) && (
+        <div class="mt-4 grid sm:grid-cols-2 gap-3">
+          {prev ? (
+            <a href={`/lecciones/${prev.meta.id}`} class="text-left bg-white border rounded-2xl p-4 hover:border-gray-400">
+              <p class="text-xs text-gray-500">← Anterior · {prev.meta.code}</p>
+              <p class="font-bold">{prev.meta.title}</p>
+            </a>
+          ) : <span />}
+          {next ? (
+            <a href={`/lecciones/${next.meta.id}`} class="text-right bg-gray-900 text-white rounded-2xl p-4 hover:bg-gray-700">
+              <p class="text-xs text-white/60">Siguiente · {next.meta.code} →</p>
+              <p class="font-bold">{next.meta.title}</p>
+            </a>
+          ) : <span />}
+        </div>
+      )}
+    </div>
+  </body>
+</html>

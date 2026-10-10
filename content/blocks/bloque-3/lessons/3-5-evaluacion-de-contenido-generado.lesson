@@ -1,0 +1,51 @@
+---
+title: Evaluar el contenido generado
+description: Criterios para revisar texto, código e imágenes según su propósito.
+---
+
+# Evaluar el contenido generado {#titulo}
+
+La calidad depende del propósito. Un texto puede estar bien escrito pero con errores. Una imagen llamativa puede tener manos o textos deformados. Un código plausible puede fallar o ser inseguro. Evalúa con **criterios específicos**, no solo impresión general. {#intro}
+
+## Criterios para revisar texto {#texto}
+
+- **Exactitud:** ¿las afirmaciones están respaldadas? {#t-exactitud}
+- **Relevancia:** ¿responde a la pregunta y al objetivo? {#t-relevancia}
+- **Coherencia:** ¿las ideas se conectan sin contradicciones? {#t-coherencia}
+- **Cumplimiento:** ¿respeta instrucciones, extensión y formato? {#t-cumplimiento}
+- **Fuentes:** ¿son pertinentes, comprobables y adecuadas? {#t-fuentes}
+
+## Criterios para revisar código {#codigo}
+
+- **Correctitud:** ¿resuelve el problema en el entorno previsto? {#c-correctitud}
+- **Seguridad:** ¿maneja datos y permisos adecuadamente? {#c-seguridad}
+- **Mantenibilidad:** ¿se entiende y puede modificarse sin confusión? {#c-mant}
+- **Pruebas y dependencias:** ¿se probó y se conocen requisitos? {#c-tests}
+- **Comprensión:** ¿puedes explicar qué hace antes de integrarlo? {#c-comprension}
+
+## Criterios para revisar imágenes {#imagenes}
+
+- **Detalles y consistencia:** ¿objetos, anatomía e iluminación plausibles? {#i-detalle}
+- **Texto:** ¿palabras legibles y correctas? {#i-texto}
+- **Adecuación:** ¿representa lo solicitado y sirve para su uso? {#i-adecuacion}
+- **Derechos de uso:** ¿revisaste condiciones aplicables? {#i-derechos}
+
+> Regla práctica: no hay lista única válida para todo. Define qué sería un error importante antes de decidir si es utilizable. {#regla}
+
+--- {#corte-actividad}
+
+## Actividad: ¿cuál respuesta elegirías? {#actividad}
+
+Pide dos explicaciones de un concepto escolar: una breve y otra extensa. Evalúalas con exactitud, relevancia, coherencia y cumplimiento. Verifica una afirmación de cada una y elige cuál usarías, explicando ventajas y límites. No asumas que la larga es mejor. {#actividad-t}
+
+--- {#corte-quiz}
+
+## Pregunta de comprobación {#quiz}
+
+:::quiz {#quiz-3-5}
+¿Qué criterio es clave antes de usar código generado por IA?
+- Que tenga muchos comentarios, sin importar si funciona.
+- [x] Que se entienda, se pruebe y se revisen riesgos y dependencias.
+- Que el modelo asegure que está libre de errores.
+> Debe revisarse y probarse en su entorno. La afirmación del modelo no sustituye comprobaciones.
+:::

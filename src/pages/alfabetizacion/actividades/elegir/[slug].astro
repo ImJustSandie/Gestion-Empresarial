@@ -1,0 +1,51 @@
+---
+import AppHeader from "../../../../components/AppHeader.tsx";
+import ElegirRespuesta from "../../../../components/ElegirRespuesta.tsx";
+import { ACTIVIDADES_ELEGIR, MODULOS_ACTIVIDADES, TIPOS_ACTIVIDADES } from "../../../../utils/alfabetizacionActividades.ts";
+import "../../../../styles/global.css";
+
+export function getStaticPaths() {
+  return ACTIVIDADES_ELEGIR.map((act) => ({ params: { slug: act.modulo.slug } }));
+}
+
+const { slug } = Astro.params;
+const idx = ACTIVIDADES_ELEGIR.findIndex((a) => a.modulo.slug === slug);
+if (idx === -1) return Astro.redirect("/alfabetizacion/actividades");
+const act = ACTIVIDADES_ELEGIR[idx];
+const numero = MODULOS_ACTIVIDADES.find((m) => m.tipo === "elegir" && m.slug === slug)?.numero ?? idx + 1;
+const prev = idx > 0 ? ACTIVIDADES_ELEGIR[idx - 1] : null;
+const next = idx < ACTIVIDADES_ELEGIR.length - 1 ? ACTIVIDADES_ELEGIR[idx + 1] : null;
+---
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{`Actividad ${numero} · ${act.titulo} - Alfabetización IA`}</title>
+  </head>
+  <body class="bg-gray-50 text-gray-900 min-h-screen">
+    <AppHeader client:load currentPath="/alfabetizacion" />
+    <div class="container mx-auto px-4 py-6 sm:py-10 max-w-4xl">
+      <div class="flex flex-wrap items-center gap-2">
+        <a href="/alfabetizacion/actividades/elegir" class="text-xs bg-white border px-3 py-1.5 rounded-full font-semibold hover:border-gray-400">← {TIPOS_ACTIVIDADES.find((t) => t.tipo === "elegir")?.titulo}</a>
+        <a href={`/alfabetizacion?bloque=${act.conexion.bloqueId}`} class="text-xs bg-white border px-3 py-1.5 rounded-full font-semibold hover:border-gray-400">{act.conexion.bloqueTitulo}</a>
+      </div>
+
+      <div class="mt-6">
+        <ElegirRespuesta act={act} numero={numero} client:load />
+      </div>
+
+      <div class="mt-6 bg-white border rounded-2xl p-5">
+        <p class="text-xs font-bold uppercase tracking-widest text-gray-500">Conecta con el contenido</p>
+        <p class="text-sm text-gray-600 mt-1">
+          {`Esta actividad practica la lección ${act.conexion.leccionCodigo} · ${act.conexion.leccionTitulo}: exactitud, relevancia y fuentes.`}
+        </p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <a href={`/lecciones/${act.conexion.leccionId}`} class="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-bold hover:bg-indigo-700 transition">{`📖 Repasar lección ${act.conexion.leccionCodigo}`}</a>
+          {prev && <a href={`/alfabetizacion/actividades/elegir/${prev.modulo.slug}`} class="px-4 py-2 rounded-xl border text-sm font-semibold hover:bg-gray-50">← Anterior</a>}
+          {next && <a href={`/alfabetizacion/actividades/elegir/${next.modulo.slug}`} class="px-4 py-2 rounded-xl border text-sm font-semibold hover:bg-gray-50">Siguiente →</a>}
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

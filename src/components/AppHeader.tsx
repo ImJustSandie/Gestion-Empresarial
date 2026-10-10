@@ -41,12 +41,14 @@ export default function AppHeader({ currentPath = "" }: Props) {
 
   const baseNavEstudiante = [
     { href: "/ensenanza", label: "Enseñanza", icon: "📚" },
+    { href: "/alfabetizacion", label: "Alfabetización IA", icon: "🧠" },
     { href: "/actividades", label: "Cursos / Actividades", icon: "📝" },
     { href: "/dashboard", label: "Dashboard", icon: "📊" },
   ];
   const baseNavProfesor = [
     { href: "/actividades", label: "Cursos / Actividades", icon: "📝" },
     { href: "/ensenanza", label: "Enseñanza", icon: "📚" },
+    { href: "/alfabetizacion", label: "Alfabetización IA", icon: "🧠" },
     { href: "/dashboard", label: "Dashboard", icon: "📊" },
   ];
   const baseNav = session.role === "profesor" ? baseNavProfesor : baseNavEstudiante;

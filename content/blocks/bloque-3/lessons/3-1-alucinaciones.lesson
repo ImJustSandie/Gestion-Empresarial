@@ -1,0 +1,47 @@
+---
+title: Alucinaciones, cuando la IA inventa información
+description: Qué es una alucinación, por qué suena convincente y cómo tratar datos específicos.
+---
+
+# Alucinaciones: cuando la IA inventa información {#titulo}
+
+Una **alucinación** ocurre cuando la IA genera contenido falso o no respaldado, pero lo presenta como válido. Puede inventar una cita, atribuir una frase equivocada, crear un estudio inexistente, confundir una fecha o razonar con un error lógico. {#intro}
+
+Esto se relaciona con cómo genera: construye desde patrones y contexto, sin consultar automáticamente una fuente confiable por afirmación. Si le falta información, genera una continuación plausible en vez de reconocer el vacío. {#causa}
+
+## ¿Por qué puede sonar convincente? {#convincente}
+
+La fluidez da impresión de autoridad. Estructura, vocabulario técnico y detalles específicos no prueban corrección. **La seguridad del tono no es evidencia.** {#tono}
+
+El riesgo aumenta cuando la pregunta es ambigua, pide datos muy específicos, hechos recientes, contiene una premisa falsa o hay poco contexto. Pedir que revise su respuesta ayuda, pero no garantiza detección. {#riesgo}
+
+**Ejemplo cotidiano:** un chatbot recomienda un libro con autor, editorial y año. Parece real, pero al buscar en catálogos no aparece. {#ejemplo}
+
+## Uso correcto e incorrecto {#uso}
+
+- **Correcto:** tratar datos específicos como afirmaciones a comprobar, sobre todo si afectan tareas o decisiones. {#uso-ok}
+- **Incorrecto:** copiar una cita o estadística solo porque viene con seguridad y formato académico. {#uso-mal}
+
+--- {#corte-quiz}
+
+## Pregunta de comprobación {#quiz}
+
+:::quiz {#quiz-3-1}
+¿Cuál situación es señal clara de que falta verificar?
+- La respuesta está organizada en viñetas.
+- [x] La respuesta incluye una referencia muy específica que no se ha comprobado.
+- La respuesta usa lenguaje sencillo.
+> Formato y estilo no prueban corrección. Los datos concretos deben comprobarse.
+:::
+
+--- {#corte-reto}
+
+## Mini reto: caza de afirmaciones {#reto}
+
+Pide tres datos curiosos sobre un tema que conozcas. Elige una afirmación específica y comprueba si una fuente confiable la respalda. Registra qué revisaste, qué fuente consultaste y si hubo evidencia suficiente. Si no la encuentras rápido, clasifícala como `necesita más verificación`. {#reto-t}
+
+## Referentes para profundizar {#referentes}
+
+- IBM — What are AI hallucinations?
+- Google — Introduction to Large Language Models
+- NIST — AI Risk Management Framework / Generative AI Profile {#referentes-lista}

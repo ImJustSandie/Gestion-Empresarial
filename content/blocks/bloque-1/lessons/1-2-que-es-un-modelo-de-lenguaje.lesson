@@ -1,0 +1,66 @@
+---
+title: ¿Qué es un modelo de lenguaje o LLM?
+description: LLM, predicción de tokens, contexto, parámetros, Foundation Models y por qué no es una base de datos.
+---
+
+# ¿Qué es un modelo de lenguaje o LLM? {#titulo}
+
+Un **modelo de lenguaje** es un sistema de IA diseñado para procesar, entender y generar texto humano. Cuando se entrena con volúmenes masivos de datos y miles de millones de conexiones internas, se llama **Large Language Model (LLM)**. {#intro}
+
+A diferencia de un programa tradicional con reglas gramaticales escritas a mano, un LLM aprende estructura, ritmo, matices y relaciones analizando cómo se conectan las palabras en millones de libros, artículos y páginas web. {#diferencia}
+
+## ¿Cómo construye palabras? Tokens y predicción {#tokens-prediccion}
+
+Un LLM no lee palabras completas como un humano: divide el texto en **tokens**. Un token puede ser una palabra entera (`sol`), una subpalabra (`sub-`, `-mente`) o un carácter o signo de puntuación. {#que-es-token}
+
+Su tarea fundamental es simple: **predecir el siguiente token**. Si recibe `El café por la mañana está muy...`, calculará que `caliente` o `delicioso` son mucho más probables que `transparente` o `cuadrado`. {#prediccion}
+
+## Probabilidad, contexto y parámetros {#triada}
+
+La sensación de que el modelo razona surge de tres factores: {#triada-intro}
+
+- **El contexto:** la ventana de información que puede recordar en un momento dado. Si le dijiste que eres estudiante de diseño, ese contexto modifica las probabilidades de su respuesta. {#factor-contexto}
+- **Los parámetros:** conexiones internas ajustadas en el entrenamiento. Como perillas diminutas que regulan el flujo de información. Con decenas o cientos de miles de millones, captan ironías, estilos y conceptos abstractos. {#factor-parametros}
+- **La probabilidad y generación:** no elige de forma rígida al 100%. Usa selección probabilística para ser variado y creativo. Por eso el mismo poema pedido dos veces sale distinto pero coherente. {#factor-probabilidad}
+
+## Foundation Models {#foundation}
+
+Los LLM modernos son **Foundation Models** (Modelos Fundacionales): se entrenan con conocimiento general enorme y diverso como base o cimiento. {#foundation-def}
+
+Un mismo modelo fundacional puede adaptarse a tareas distintas: poesía, traducción, asistente médico, tutor de matemáticas o autocompletar código. {#foundation-uso}
+
+## ¿Por qué produce texto coherente sin ser una base de datos? {#no-db}
+
+Un error común es pensar que guarda respuestas. **Un LLM no es una base de datos tradicional**: no almacena archivos ni páginas en un disco interno. {#no-db-def}
+
+Guarda **relaciones estadísticas abstraídas** en sus parámetros. Cuando preguntas quién fue el primer presidente de un país, **reconstruye la respuesta en tiempo real** palabra por palabra, eligiendo las secuencias más probables. Por eso puede crear metáforas originales o cuentos inéditos desde cero. {#reconstruccion}
+
+--- {#corte-quiz}
+
+## Pregunta de comprobación {#quiz}
+
+:::quiz {#quiz-1-2}
+¿Por qué un LLM puede escribir un ensayo inédito sin consultar archivos guardados?
+- Porque guarda una copia encriptada de Wikipedia en su RAM y la busca en tiempo real.
+- Porque usa reglas gramaticales fijas programadas para cada tema.
+- [x] Porque genera token por token por predicción probabilística usando patrones aprendidos en sus parámetros.
+- Porque se reentrena cada vez que el usuario envía una pregunta.
+> No copia: sintetiza texto nuevo por probabilidad.
+:::
+
+--- {#corte-ejercicio}
+
+## Ejercicio práctico de observación {#ejercicio}
+
+Abre un chat nuevo en tu IA preferida y prueba la variabilidad: {#ejercicio-intro}
+
+- **Prueba de predicción:** `Escribe el inicio de un cuento fantástico sobre un relojero en máximo tres oraciones.` Lee las palabras elegidas. {#paso-1}
+- **Repite la prueba:** abre una conversación nueva y envía exactamente la misma instrucción. {#paso-2}
+
+> ¿Qué observar? La idea y la coherencia se mantienen, pero palabras, estructuras y nombres cambian. No copia un archivo: calcula caminos probabilísticos distintos en cada inferencia. {#ejercicio-cierre}
+
+## Referentes para profundizar {#referentes}
+
+- Google — Introduction to Large Language Models
+- Google — What's a Large Language Model?
+- Microsoft — conceptos de prompt engineering {#referentes-lista}

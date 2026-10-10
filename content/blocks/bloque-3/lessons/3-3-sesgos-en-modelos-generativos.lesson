@@ -1,0 +1,45 @@
+---
+title: Sesgos en modelos generativos
+description: Qué es un sesgo, de dónde viene y cómo investigarlo con comparaciones y contexto.
+---
+
+# Sesgos en modelos generativos {#titulo}
+
+Un **sesgo** es una tendencia sistemática que favorece unas perspectivas o grupos frente a otros. Puede reflejar desequilibrios en datos de entrenamiento, estereotipos, diferencias de representación o decisiones de diseño y evaluación. {#intro}
+
+Los resultados varían según idioma, región, redacción o contexto cultural. Una respuesta puede presentar una perspectiva particular como universal. Que suene neutral no significa que sea objetiva ni que represente todas las experiencias. {#variacion}
+
+## Cómo detectar posibles sesgos {#detectar}
+
+- Observa qué grupos aparecen y cuáles quedan ausentes o estereotipados. {#d-grupos}
+- Revisa si atribuye capacidades o profesiones por género, origen, edad u otra característica. {#d-atribucion}
+- Compara respuestas a preguntas equivalentes que cambian solo un detalle relevante. {#d-comparar}
+- Busca evidencia y perspectivas adicionales, sobre todo si afecta a grupos diversos. {#d-evidencia}
+
+> Encontrar una diferencia no demuestra discriminación por sí solo: examina contexto, evidencia e impacto. Busca señales que merecen análisis, no conclusiones apresuradas. {#nota-prudencia}
+
+**Ejemplo académico:** si propone perfiles de ciencias y asigna liderazgo siempre a un grupo y apoyo a otro, revisa si reproduce un estereotipo. {#ejemplo}
+
+--- {#corte-actividad}
+
+## Actividad: comparar representaciones {#actividad}
+
+Pide que describa a una persona en ingeniería y luego en cuidado infantil. Repite cambiando solo el género indicado. Compara roles, adjetivos y detalles. Anota diferencias, pero no concluyas sesgo con un solo ejemplo: busca patrones y discute explicaciones alternativas. {#actividad-t}
+
+--- {#corte-quiz}
+
+## Pregunta de comprobación {#quiz}
+
+:::quiz {#quiz-3-3}
+¿Cuál es una forma razonable de investigar un posible sesgo?
+- Aceptar la primera respuesta porque parece neutral.
+- [x] Comparar casos equivalentes, buscar patrones y examinar el contexto.
+- Suponer que toda diferencia demuestra discriminación.
+> Requiere comparaciones cuidadosas y contexto.
+:::
+
+## Referentes para profundizar {#referentes}
+
+- UNESCO — AI Competency Framework for Students
+- Google — ML Fairness
+- Stanford HAI — AI Index, Responsible AI {#referentes-lista}

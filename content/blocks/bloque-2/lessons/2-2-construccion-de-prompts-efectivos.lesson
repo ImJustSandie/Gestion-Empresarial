@@ -1,0 +1,47 @@
+---
+title: Cómo construir prompts efectivos
+description: Claridad, especificidad, restricciones, formato y criterios de calidad para obtener resultados útiles.
+---
+
+# Cómo construir prompts efectivos {#titulo}
+
+Un prompt efectivo comunica la tarea de forma **clara y específica**. No hay fórmula perfecta porque el resultado también depende del modelo, pero hay prácticas que facilitan la interacción. {#intro}
+
+## Claridad, especificidad y restricciones {#claridad}
+
+Usa **verbos concretos** y describe el resultado esperado. `Ayúdame con mi presentación` deja todo abierto; `propón una estructura de seis diapositivas para cinco minutos sobre renovables, con una idea principal por diapositiva` define la tarea. {#verbos}
+
+Las **restricciones** ajustan a condiciones reales: extensión, tono, nivel, formato o elementos a evitar. Que sean compatibles: pedir explicación exhaustiva en una sola oración produce algo superficial o contradictorio. {#restricciones}
+
+## Pedir un formato y criterios de calidad {#formato}
+
+Si el resultado servirá para una tarea, explica **cómo lo evaluarás**. Para comparar opciones pide criterios; para un plan de estudio indica tiempo y temas; para una síntesis aclara si debe conservar definiciones o cifras. {#criterios}
+
+También puedes pedir que señale qué información le falta, diferencie datos dados de suposiciones o pregunte antes de responder. Esto no elimina errores, pero hace visibles ambigüedades. {#ambiguedad}
+
+## Ejemplo: de petición vaga a instrucción concreta {#ejemplo}
+
+**Petición inicial:** `Hazme una rutina de estudio.` {#vaga}
+
+**Petición mejorada:** `Organiza un plan de lunes a viernes para examen de biología en dos semanas. Tengo 45 minutos al día y debo repasar células, genética y ecosistemas. Preséntalo en tabla con tema, duración y actividad práctica. Deja el fin de semana libre.` {#mejorada}
+
+> La segunda aporta objetivo, contexto, restricciones y formato. Aun así debes revisar si el plan es realista y cubre el examen. {#nota-revision}
+
+--- {#corte-quiz}
+
+## Pregunta de comprobación {#quiz}
+
+:::quiz {#quiz-2-2}
+¿Qué hacer si un prompt se contradice, como `resume detalladamente todo el documento en una sola frase`?
+- Añadir más adjetivos para que entienda la intención.
+- [x] Aclarar qué requisito tiene prioridad o reformular las restricciones.
+- Repetir exactamente la misma instrucción muchas veces.
+- Asumir que el modelo resolverá la contradicción como esperamos.
+> Las condiciones incompatibles obligan a priorizar.
+:::
+
+## Referentes para profundizar {#referentes}
+
+- Anthropic — Prompting best practices
+- Microsoft — Prompt engineering techniques
+- Google — LLM fine-tuning, distillation and prompt engineering {#referentes-lista}

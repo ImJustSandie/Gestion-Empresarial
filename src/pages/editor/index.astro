@@ -1,0 +1,30 @@
+---
+import AppHeader from "../../components/AppHeader.tsx";
+import LessonStudio from "../../components/LessonStudio.tsx";
+import { getAllLessons } from "../../utils/lessons.ts";
+import "../../styles/global.css";
+
+// Página oculta (no aparece en la navegación): editor de bloques + lessons.
+// Con el servidor local (`npm run content:server`) guardar escribe directo en
+// content/blocks/. Sin servidor, modo navegador (localStorage + exportar .lesson).
+const lessons = getAllLessons();
+const items = lessons.map((l) => ({ id: l.meta.id, title: l.meta.title, code: l.meta.code }));
+---
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Editor .lesson (oculto) - Gestión Empresarial</title>
+    <meta name="robots" content="noindex, nofollow" />
+  </head>
+  <body class="bg-gray-50 text-gray-900 min-h-screen">
+    <AppHeader client:load currentPath="/editor" />
+    <div class="px-3 md:px-4 py-4">
+      <h1 class="sr-only">Editor de bloques y lessons</h1>
+      <div class="mt-1">
+        <LessonStudio client:load lessons={items} />
+      </div>
+    </div>
+  </body>
+</html>

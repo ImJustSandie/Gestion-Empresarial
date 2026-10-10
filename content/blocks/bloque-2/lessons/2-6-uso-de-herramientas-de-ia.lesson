@@ -1,0 +1,42 @@
+---
+title: Elegir la herramienta adecuada
+description: Diferencia entre modelo, aplicación y herramienta, y cómo seleccionar según la tarea.
+---
+
+# Elegir la herramienta adecuada {#titulo}
+
+No todas las apps de IA sirven para lo mismo. Un chatbot generalista explica y organiza; un generador de imágenes crea visuales; una transcripción pasa audio a texto; un asistente de código propone o explica código. Algunas plataformas reúnen varias capacidades. {#intro}
+
+Conviene distinguir: {#distincion-intro}
+
+- **Modelo:** el sistema que procesa o genera contenido. {#d-modelo}
+- **Aplicación:** la interfaz con la que interactúas. {#d-app}
+- **Herramienta:** capacidad adicional como buscar en web, leer archivos o ejecutar código. {#d-tool}
+
+Una misma aplicación puede ofrecer varios modelos y herramientas, que varían por versión o plan. {#variacion}
+
+Para elegir: define la tarea y el resultado, revisa si acepta el formato de entrada, si puede hacer la operación y qué límites tiene. Luego evalúa y verifica datos importantes. No necesitas la más compleja: la mejor es la que se ajusta a tarea y restricciones. {#como-elegir}
+
+--- {#corte-quiz}
+
+## Pregunta de comprobación {#quiz}
+
+:::quiz {#quiz-2-6}
+Debes crear una ilustración original para una presentación. ¿Qué criterio debe orientar tu elección?
+- Usar siempre la misma herramienta, sin importar la tarea.
+- [x] Elegir una herramienta capaz de generar imágenes y comprobar estilo y formato que necesitas.
+- Elegir un asistente de programación porque todas hacen lo mismo.
+- Escoger la primera app que aparezca sin revisar capacidades.
+> La herramienta se elige según el resultado y las capacidades reales.
+:::
+
+## Resumen del bloque {#resumen}
+
+Un buen uso empieza con instrucción comprensible y objetivo definido. Añadir contexto, ejemplos, restricciones y formato mejora la utilidad. Si no cumple, itera con cambios concretos. Si depende de información particular, aporta fuentes y revisa su interpretación. Elige la herramienta según la tarea y evalúa siempre el resultado. {#resumen-t}
+
+## Referentes para profundizar {#referentes}
+
+- Anthropic — Prompt Engineering
+- Microsoft — Prompt engineering techniques
+- Google — LLM: fine-tuning, distillation and prompt engineering
+- Documentación oficial de la herramienta utilizada {#referentes-lista}

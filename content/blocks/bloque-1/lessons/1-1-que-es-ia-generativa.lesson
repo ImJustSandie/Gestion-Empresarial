@@ -1,0 +1,71 @@
+---
+title: ¿Qué es la Inteligencia Artificial Generativa?
+description: Definición, diferencia con IA tradicional, aplicaciones, límites y falsas expectativas.
+---
+
+# ¿Qué es la Inteligencia Artificial Generativa? {#titulo}
+
+La **Inteligencia Artificial Generativa (Gen AI)** es una rama de la inteligencia artificial enfocada en la **creación de contenido**: texto, imágenes, audio, video, código o incluso datos sintéticos. {#intro}
+
+Lo logra a partir de **patrones, estructuras y relaciones** aprendidas en un entrenamiento con grandes volúmenes de datos. No copia archivos guardados: genera contenido nuevo. {#definicion}
+
+## ¿Por qué importa la Gen AI? {#por-que-importa}
+
+Hasta hace poco, muchos sistemas de IA se usaban para **analizar y clasificar** mediante predicciones. Por ejemplo, ¿cómo tu correo detecta el **spam**? Con modelos que aprenden patrones y predicen si un mensaje nuevo es correo no deseado. {#tradicional}
+
+La IA generativa cambia el paradigma: pasamos de usar máquinas para tareas específicas a **colaborar con ellas** en creación y aprendizaje. Una persona sin conocimientos previos puede diseñar servicios o adquirir habilidades con apoyo de la IA. {#paradigma}
+
+> Comprender qué es y cómo funciona permite tener expectativas realistas y evitar ideas equivocadas, como creer que piensa como un humano o que sus respuestas siempre son correctas. {#nota-expectativas}
+
+## ¿Cómo funciona? {#como-funciona}
+
+Imagina a un **músico de jazz** que escuchó jazz toda su vida. No memorizó cada nota: comprendió reglas armónicas, escalas y ritmos. Cuando improvisa, crea algo nuevo basado en lo aprendido. {#ejemplo-jazz}
+
+Algo similar pasa con un **niño aprendiendo qué es un perro**: tras ver muchos perros de razas, colores y tamaños, identifica rasgos comunes (cuatro patas, orejas, hocico) y reconoce uno nuevo sin haber memorizado esa foto exacta. {#ejemplo-nino}
+
+El entrenamiento de una IA es parecido, pero a otra escala. Mientras una persona aprende con decenas de ejemplos, una IA puede necesitar **miles o incluso millones**, según la tarea. Clasificar canciones por género no es lo mismo que generar una canción original. {#escala}
+
+## ¿En qué áreas se aplica? {#areas}
+
+Hoy la IA generativa es **multimodal** y no se limita al chat: {#areas-intro}
+
+- **Texto:** borradores, síntesis de documentos, traducción adaptativa, ideas y guiones. {#area-texto}
+- **Imágenes y video:** ilustraciones, concept art, edición asistida y animación desde descripciones. {#area-imagen}
+- **Código:** funciones en varios lenguajes, explicación de errores y automatización de pruebas. {#area-codigo}
+- **Audio:** efectos de sonido, composición musical y síntesis de voz hiperrealista. {#area-audio}
+
+## Límites iniciales y falsas expectativas {#limites}
+
+La IA generativa **no tiene conciencia, intención ni comprensión del mundo real**. No sabe qué es la verdad: calcula qué secuencia es estadísticamente más probable. {#no-conciencia}
+
+Por eso puede redactar un texto fluido e impecable en gramática pero con hechos falsos: fenómeno conocido como **alucinación**. Úsala como asistente de apoyo, nunca como sustituto del criterio humano. {#alucinacion}
+
+--- {#corte-quiz}
+
+## Pregunta de comprobación {#quiz}
+
+:::quiz {#quiz-1-1}
+¿Por qué un modelo generativo puede responder con texto fluido pero con datos totalmente falsos?
+- Porque busca en tiempo real en bases de datos con artículos desactualizados.
+- [x] Porque genera por predicción probabilística según patrones aprendidos, priorizando coherencia sobre veracidad.
+- Porque solo clasifica en categorías fijas y no procesa texto continuo.
+- Porque memorizó copias exactas con errores y no puede corregirlas.
+> Genera la secuencia más probable según lo aprendido, no consulta una verdad verificada.
+:::
+
+--- {#corte-ejercicio}
+
+## Ejercicio práctico de observación {#ejercicio}
+
+Ve a tu IA de confianza (ChatGPT, Claude o Gemini) y compara: {#ejercicio-intro}
+
+- **Consulta ingenua:** `Háblame sobre la fotosíntesis.` Observa un texto genérico, largo y escolar, sin saber a quién va dirigido. {#ejercicio-ingenua}
+- **Consulta estructurada:** `Actúa como un profesor universitario. Explícame solo la fase oscura (ciclo de Calvin), con una analogía sencilla y en máximo dos párrafos para un estudiante de primer semestre.` {#ejercicio-estructurada}
+
+> ¿Qué observar? Compara estructura y contenido. La segunda respuesta se centra en tu necesidad gracias al contexto. Este tema se aborda en los próximos módulos. {#ejercicio-cierre}
+
+## Referentes para profundizar {#referentes}
+
+- UNESCO — AI Competency Framework for Students
+- Stanford HAI — AI Index Report
+- IBM — materiales introductorios sobre IA generativa {#referentes-lista}

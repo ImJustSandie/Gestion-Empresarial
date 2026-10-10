@@ -1,0 +1,42 @@
+---
+title: Límites de la IA generativa
+description: Información desactualizada, contexto, multimodalidad, costos y cuándo no basta con la IA.
+---
+
+# Límites de la IA generativa {#titulo}
+
+La IA ayuda a explorar ideas, explicar conceptos y producir borradores, pero tiene límites. Puede usar información desactualizada, malinterpretar instrucciones ambiguas, perder detalles con contexto extenso o manejar imperfectamente imágenes y audio. Distintos modelos dan distintos resultados. {#intro}
+
+También hay límites prácticos: costos, demoras, acceso o contexto. Que exista una función no garantiza que sirva para cualquier tarea. En trabajos complejos divide el trabajo, revisa cada resultado y reserva decisiones importantes a evaluación humana. {#practicos}
+
+## Cómo decidir cuándo no basta con la IA {#cuando-no}
+
+- Cuando un error puede causar perjuicio importante, exige verificación proporcional al riesgo. {#n-riesgo}
+- Cuando necesitas datos recientes, consulta fuentes actualizadas. {#n-actual}
+- Cuando faltan detalles, aporta contexto o pide aclaración. {#n-contexto}
+- Cuando requiere conocimiento especializado, úsala como apoyo y contrasta con fuentes o expertos. {#n-experto}
+- Cuando no puedes explicar o comprobar el resultado, no lo uses como producto final automático. {#n-explicar}
+
+--- {#corte-reto}
+
+## Mini reto: mapa de límites {#reto}
+
+Elige una tarea con IA (exposición, resumen o ideas de proyecto). Escribe tres cosas en que ayudaría, dos errores que podría cometer y una comprobación antes de entregar o publicar. {#reto-t}
+
+## Resumen del bloque {#resumen}
+
+- Las respuestas pueden incluir información falsa aunque suenen convincentes. {#r-1}
+- Verificar es comprobar con fuentes pertinentes, preferible originales. {#r-2}
+- Los sesgos aparecen en representación, lenguaje y perspectivas; se investigan con comparaciones y contexto. {#r-3}
+- La seguridad del tono no es certeza y pedir revisión no elimina el riesgo. {#r-4}
+- La evaluación se adapta al tipo: texto, código, imagen u otro. {#r-5}
+- La IA tiene límites de información, contexto, modalidad y operación. Ajusta la comprobación a la importancia. {#r-6}
+
+## Referentes para profundizar {#referentes}
+
+- IBM — What are AI hallucinations?
+- Google — Introduction to Large Language Models
+- NIST — AI Risk Management Framework y Generative AI Profile
+- UNESCO — AI Competency Framework for Students
+- Google — ML Fairness
+- Stanford HAI — AI Index y recursos sobre Responsible AI {#referentes-lista}

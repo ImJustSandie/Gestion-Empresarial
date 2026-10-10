@@ -44,7 +44,8 @@ export const ADMIN_CREDENTIALS = {
   name: "Administración",
 } as const;
 
-// Clave solo para sesión (sessionStorage, no localStorage). Usuarios van en JSON/IndexedDB.
+// Clave de sesión en localStorage (persiste entre pestañas y reinicios).
+// Usuarios van en JSON/IndexedDB.
 const SESSION_KEY = "gestion-empresarial:session";
 const IDB_DB_NAME = "gestion-empresarial";
 const IDB_STORE = "kv";
@@ -393,20 +394,26 @@ export async function loginUser(data: {
   return { success: true, message: "Sesión iniciada.", session };
 }
 
-// ---------- Sesión (sessionStorage, no localStorage) ----------
+// ---------- Sesión (localStorage: sobrevive a cerrar el navegador) ----------
 export function saveSession(session: Session): void {
   if (!isBrowser()) return;
   try {
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    localStorage.setItem(SESSION_KEY, JSON.stringify(session));
   } catch {}
 }
 
 export function getSession(): Session | null {
   if (!isBrowser()) return null;
   try {
-    const raw = sessionStorage.getItem(SESSION_KEY);
-    if (!raw) return null;
-    return JSON.parse(raw) as Session;
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (raw) return JSON.parse(raw) as Session;
+    // Migración por única vez: sesión guardada con la versión anterior (sessionStorage)
+    const legacy = sessionStorage.getItem(SESSION_KEY);
+    if (!legacy) return null;
+    const session = JSON.parse(legacy) as Session;
+    localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    sessionStorage.removeItem(SESSION_KEY);
+    return session;
   } catch {
     return null;
   }
@@ -415,6 +422,7 @@ export function getSession(): Session | null {
 export function clearSession(): void {
   if (!isBrowser()) return;
   try {
+    localStorage.removeItem(SESSION_KEY);
     sessionStorage.removeItem(SESSION_KEY);
   } catch {}
 }

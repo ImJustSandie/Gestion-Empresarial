@@ -1,0 +1,38 @@
+---
+title: Iterar, conversar, revisar y corregir
+description: La primera respuesta es un borrador. Cómo iterar con cambios concretos y dividir tareas complejas.
+---
+
+# Iterar: conversar, revisar y corregir {#titulo}
+
+La interacción no termina en la primera respuesta. Es más efectivo trabajar por etapas: obtener un primer resultado, detectar qué falla y pedir un cambio concreto. La primera respuesta es un **borrador**, no la versión definitiva. {#intro}
+
+En vez de decir solo `hazlo mejor`, señala qué debe cambiar: `Reduce la introducción a tres oraciones, conserva los ejemplos y usa lenguaje menos técnico`. También puedes pedir alternativas, explicaciones de una parte, qué mantener o dividir tareas extensas en pasos. {#como-iterar}
+
+Es útil pedir aclaraciones cuando hay ambigüedad. Para trabajos complejos separa planificación, producción y revisión. Pero más turnos no garantizan mejor respuesta: cada iteración debe tener propósito y el final debe comprobarse. {#aclarar}
+
+## Ejemplo de iteración {#ejemplo}
+
+**Primera instrucción:** `Propón ideas para una campaña escolar de reciclaje.` {#it-1}
+
+**Primera revisión:** `Prioriza ideas realizables en una semana, con materiales económicos y participación de varios cursos.` {#it-2}
+
+**Segunda revisión:** `Selecciona las dos más viables y presenta materiales, pasos y forma sencilla de medir su resultado.` {#it-3}
+
+> Cada petición reduce interpretación y convierte una idea general en propuesta accionable. {#nota-it}
+
+--- {#corte-ejercicio}
+
+## Ejercicio práctico de observación {#ejercicio}
+
+- Pide una propuesta breve para actividad escolar sobre ahorro de agua. {#paso-1}
+- Primera iteración con restricción concreta: presupuesto bajo o 30 minutos máximo. {#paso-2}
+- Segunda iteración para instrucciones paso a paso y criterio de evaluación. {#paso-3}
+- Compara el final con la primera respuesta y decide si las mejoras responden a tus restricciones. {#paso-4}
+
+> ¿Qué observar? Cada revisión debe corregir una necesidad identificable. Si modifica lo que querías conservar, indícalo expresamente. {#ejercicio-cierre}
+
+## Referentes para profundizar {#referentes}
+
+- Anthropic — Prompting best practices
+- Anthropic — Building Effective Agents {#referentes-lista}

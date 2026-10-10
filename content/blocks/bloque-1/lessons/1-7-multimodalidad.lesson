@@ -1,0 +1,69 @@
+---
+title: Multimodalidad
+description: Modelos multimodales, entrada y salida multimodal, interpretación vs. generación y limitaciones.
+---
+
+# Multimodalidad {#titulo}
+
+Antes, la IA procesaba un solo tipo de información: lenguaje solo texto, visión solo fotos. Hoy los **modelos multimodales** usan múltiples formatos a la vez, como nuestros sentidos. {#intro}
+
+## ¿Qué es un modelo multimodal? {#que-es}
+
+Un **modelo multimodal** procesa, combina y genera información de diferentes medios: {#def}
+
+- **Texto:** instrucciones, artículos, preguntas y diálogos. {#modo-texto}
+- **Visión:** fotos, diagramas, esquemas, infografías y capturas. {#modo-vision}
+- **Audio:** voz, música, sonidos ambientales y podcasts. {#modo-audio}
+- **Vídeo:** secuencias en movimiento con audio. {#modo-video}
+- **Código:** estructuras en diversos lenguajes. {#modo-codigo}
+
+## Entrada y salida multimodal {#entrada-salida}
+
+La interacción ocurre en dos direcciones: {#io-intro}
+
+- **Entrada multimodal (Input):** le das varios medios en una consulta. Ej.: foto de un circuito + voz diciendo `Explícame qué hace este componente que señalo`. {#input}
+- **Salida multimodal (Output):** responde en varios formatos: texto, ilustración o voz sintética, según lo pidas. {#output}
+
+## Interpretación vs. generación {#interpretar-generar}
+
+No es lo mismo ver que crear: {#ig-intro}
+
+- **Interpretación (percepción):** leer o entender un medio. Ej.: subes la foto de un problema de geometría en una servilleta y transcribe formas y texto. {#interpretacion}
+- **Generación (creación):** producir un medio desde cero. Ej.: dibujar un dragón o componer audio relajante. {#generacion}
+
+## Limitaciones de la percepción multimodal {#limitaciones}
+
+Aunque parezca que ve o escucha como nosotros, convierte todo en números y patrones: {#lim-intro}
+
+- **Pérdida de detalles finos:** en imágenes densas o texto pequeño (mapas, tablas) puede confundir caracteres. {#lim-detalle}
+- **Falta de sentido espacial real:** le cuesta distancias, profundidad o física (manos con seis dedos, sombras incorrectas). {#lim-espacial}
+- **Contexto en video y audio largo:** una hora de video consume muchísimos tokens, por lo que pierde contexto o ignora eventos rápidos. {#lim-contexto}
+
+--- {#corte-quiz}
+
+## Pregunta de comprobación {#quiz}
+
+:::quiz {#quiz-1-7}
+Subes la foto de una página de biología y pides explicar el diagrama de la célula. ¿Qué proceso ocurre?
+- Convierte la foto en una canción usando una base de datos de audio.
+- [x] Realiza interpretación multimodal, combinando percepción visual con comprensión del prompt para explicar el contenido.
+- Entra en entrenamiento automático para memorizar la foto en RAM.
+- Genera una imagen sintética nueva sin revisar la foto subida.
+> Interpreta la imagen y la combina con tu instrucción.
+:::
+
+--- {#corte-ejercicio}
+
+## Ejercicio práctico de observación {#ejercicio}
+
+Pon a prueba la visión de tu IA (ChatGPT, Claude o Gemini): {#ejercicio-intro}
+
+- **Toma una foto:** a tus apuntes a mano o a la etiqueta de ingredientes de un producto cercano. {#paso-1}
+- **Sube la imagen con:** `Analiza esta imagen. Transcribe el texto y hazme un resumen de 3 puntos clave.` {#paso-2}
+
+> ¿Qué observar? Evalúa precisión al interpretar: ¿leyó bien la mano? ¿confundió números pequeños? Verás el alcance y los límites actuales de la visión integrada. {#ejercicio-cierre}
+
+## Referentes para profundizar {#referentes}
+
+- Documentación oficial de modelos multimodales
+- Stanford HAI — AI Index Report {#referentes-lista}

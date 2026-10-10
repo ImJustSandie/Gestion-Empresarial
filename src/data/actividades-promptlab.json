@@ -1,0 +1,902 @@
+[
+  {
+    "id": "prompt-lab-plan-estudio",
+    "modulo": {
+      "slug": "plan-de-estudio",
+      "titulo": "Prompt lab",
+      "descripcion": "Selecciona, descarta y ordena fragmentos hasta generar tu propio prompt de plan de estudio.",
+      "icono": "⚗️"
+    },
+    "titulo": "Prompt lab",
+    "introduccion": "En este laboratorio generas el prompt tú: del banco de fragmentos selecciona los que sirven, descarta los que sobran y ordénalos. Al final obtienes tu prompt armado por ti, no una respuesta simulada.",
+    "mision": "Necesitas un plan de estudio de biología (células, genética y ecosistemas) para un examen dentro de dos semanas. Tienes 45 minutos al día, de lunes a viernes.",
+    "promptVago": "Hazme una rutina de estudio.",
+    "piezas": [
+      {
+        "id": "formato",
+        "etiqueta": "Formato de salida",
+        "texto": "Presenta el plan en una tabla con tema, duración y actividad práctica.",
+        "requerida": true,
+        "orden": 3,
+        "porQue": "Pedir el formato evita una respuesta imposible de usar. Suele ir al final, como instrucción de entrega."
+      },
+      {
+        "id": "decoracion",
+        "etiqueta": "Decoración",
+        "texto": "Usa muchos emojis y mayúsculas en todo el plan.",
+        "requerida": false,
+        "porQue": "Distractor: la decoración no mejora el plan. El estilo no sustituye objetivo, contexto ni formato: descártala."
+      },
+      {
+        "id": "contexto",
+        "etiqueta": "Contexto",
+        "texto": "Tienes 45 minutos al día, de lunes a viernes, y debes repasar células, genética y ecosistemas.",
+        "requerida": true,
+        "orden": 1,
+        "porQue": "El contexto aporta los datos reales de tu situación; sin él, la respuesta es genérica. Va después del objetivo."
+      },
+      {
+        "id": "contradiccion",
+        "etiqueta": "Petición contradictoria",
+        "texto": "Resume todo el plan detalladamente en una sola frase.",
+        "requerida": false,
+        "porQue": "Distractor: exige dos cosas incompatibles (tabla detallada frente a una sola frase) y rompería tu formato: descártala."
+      },
+      {
+        "id": "objetivo",
+        "etiqueta": "Objetivo",
+        "texto": "Prepara el examen de biología dentro de dos semanas.",
+        "requerida": true,
+        "orden": 0,
+        "porQue": "Sin objetivo, la IA no sabe qué debe conseguir (¿explicar, resumir, planificar?). Va primero: define la tarea."
+      },
+      {
+        "id": "irrelevante",
+        "etiqueta": "Dato irrelevante",
+        "texto": "Mi color favorito es el azul y tengo un perro llamado Max.",
+        "requerida": false,
+        "porQue": "Distractor: añade ruido y expone datos personales innecesarios. Nunca compartas de más con una IA: descártalo."
+      },
+      {
+        "id": "restriccion",
+        "etiqueta": "Restricción",
+        "texto": "Deja el fin de semana libre.",
+        "requerida": true,
+        "orden": 2,
+        "porQue": "Las restricciones ajustan la respuesta a tus condiciones reales."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-2",
+      "bloqueTitulo": "B2 · Interactuar con IA",
+      "leccionId": "2-2-construccion-de-prompts-efectivos",
+      "leccionCodigo": "2.2",
+      "leccionTitulo": "Construcción de prompts efectivos"
+    }
+  },
+  {
+    "id": "prompt-lab-campana-reciclaje",
+    "modulo": {
+      "slug": "campana-reciclaje",
+      "titulo": "Misión reciclaje",
+      "descripcion": "Segundo experimento: genera el prompt para una campaña escolar de reciclaje viable en una semana.",
+      "icono": "♻️"
+    },
+    "titulo": "Misión reciclaje",
+    "introduccion": "Segundo experimento del laboratorio: otra misión, otro banco de fragmentos revuelto. Genera el prompt tú, sin respuestas simuladas.",
+    "mision": "Necesitas ideas para una campaña escolar de reciclaje en la que participen varios cursos, realizable en poco tiempo y sin gastar mucho.",
+    "promptVago": "Dame ideas para reciclar.",
+    "piezas": [
+      {
+        "id": "cantidad",
+        "etiqueta": "Exceso de cantidad",
+        "texto": "Dame una lista de 100 ideas, cuantas más mejor.",
+        "requerida": false,
+        "porQue": "Distractor: cantidad no es calidad. Una lista enorme e inviable no sirve; mejor pocas ideas accionables."
+      },
+      {
+        "id": "formato",
+        "etiqueta": "Formato de salida",
+        "texto": "Presenta cada idea con materiales, pasos y cómo medir si funcionó.",
+        "requerida": true,
+        "orden": 3,
+        "porQue": "Sin formato de entrega, las ideas quedan en frases sueltas imposibles de ejecutar y evaluar."
+      },
+      {
+        "id": "contexto",
+        "etiqueta": "Contexto",
+        "texto": "Es para una escuela y deben participar varios cursos.",
+        "requerida": true,
+        "orden": 0,
+        "porQue": "El contexto define para quién y dónde: una campaña escolar multi-curso no es lo mismo que reciclar en casa."
+      },
+      {
+        "id": "chiste",
+        "etiqueta": "Tono impuesto",
+        "texto": "Que todas las ideas sean chistosas, lo importante es que den risa.",
+        "requerida": false,
+        "porQue": "Distractor: imponer un tono cómico distrae del objetivo (reciclar de verdad) y limita las ideas útiles."
+      },
+      {
+        "id": "tiempo",
+        "etiqueta": "Restricción de tiempo",
+        "texto": "Todo debe poder hacerse en una semana.",
+        "requerida": true,
+        "orden": 1,
+        "porQue": "La restricción de tiempo vuelve la misión realista: sin ella, la IA propone proyectos de meses."
+      },
+      {
+        "id": "costoso",
+        "etiqueta": "Petición costosa",
+        "texto": "Propón ideas que requieran comprar equipos profesionales.",
+        "requerida": false,
+        "porQue": "Distractor: contradice la realidad escolar (sin presupuesto) y la idea de reciclar. Descártala."
+      },
+      {
+        "id": "recursos",
+        "etiqueta": "Restricción de recursos",
+        "texto": "Usa solo materiales económicos o reciclados.",
+        "requerida": true,
+        "orden": 2,
+        "porQue": "La restricción de recursos garantiza ideas viables en una escuela."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-2",
+      "bloqueTitulo": "B2 · Interactuar con IA",
+      "leccionId": "2-5-iteracion-y-conversacion",
+      "leccionCodigo": "2.5",
+      "leccionTitulo": "Iterar: conversar, revisar y corregir"
+    }
+  },
+  {
+    "id": "prompt-lab-exposicion-sistema-solar",
+    "modulo": {
+      "slug": "exposicion-sistema-solar",
+      "titulo": "Misión exposición",
+      "descripcion": "Genera el prompt para un guion de exposición oral claro y a la medida de tu audiencia.",
+      "icono": "🪐"
+    },
+    "titulo": "Misión exposición",
+    "introduccion": "Nuevo experimento del laboratorio: tienes que exponer en clase. Selecciona los fragmentos útiles, descarta los que sobran y ordénalos para armar tu prompt. Al final obtienes tu prompt, no una respuesta simulada.",
+    "mision": "Debes exponer sobre el sistema solar ante compañeros de 12 años. Tienes 5 minutos y quieres que la clase te entienda y participe.",
+    "promptVago": "Ayúdame con mi exposición.",
+    "piezas": [
+      {
+        "id": "tono-epico",
+        "etiqueta": "Tono impuesto",
+        "texto": "Escribe todo en verso, como un poema épico medieval.",
+        "requerida": false,
+        "porQue": "Distractor: imponer un estilo así dificulta que la clase entienda el contenido y se aleja del objetivo. Descártalo."
+      },
+      {
+        "id": "restriccion",
+        "etiqueta": "Restricción",
+        "texto": "Usa lenguaje sencillo y explica cualquier término técnico con un ejemplo cotidiano.",
+        "requerida": true,
+        "orden": 2,
+        "porQue": "La restricción de lenguaje adapta la respuesta a tu audiencia real. Sin ella, la IA puede usar términos que tus compañeros no conocen."
+      },
+      {
+        "id": "irrelevante",
+        "etiqueta": "Dato irrelevante",
+        "texto": "Mi profesor se llama Pérez y vivo en el barrio Los Pinos.",
+        "requerida": false,
+        "porQue": "Distractor: no ayuda a la tarea y expone datos personales innecesarios. Nunca compartas de más con una IA: descártalo."
+      },
+      {
+        "id": "objetivo",
+        "etiqueta": "Objetivo",
+        "texto": "Prepara el guion de una exposición oral sobre el sistema solar.",
+        "requerida": true,
+        "orden": 0,
+        "porQue": "Sin objetivo, la IA no sabe qué producir (¿un resumen, un guion, un cuestionario?). Va primero: define la tarea."
+      },
+      {
+        "id": "formato",
+        "etiqueta": "Formato de salida",
+        "texto": "Organiza el guion en inicio, desarrollo y cierre, e incluye una pregunta para el público.",
+        "requerida": true,
+        "orden": 3,
+        "porQue": "Pedir el formato evita un bloque de texto difícil de usar. Suele ir al final, como instrucción de entrega."
+      },
+      {
+        "id": "contradiccion",
+        "etiqueta": "Petición contradictoria",
+        "texto": "Que el guion dure 40 minutos.",
+        "requerida": false,
+        "porQue": "Distractor: contradice tu tiempo real de 5 minutos. Un dato que choca con el contexto estropea el resultado: descártalo."
+      },
+      {
+        "id": "contexto",
+        "etiqueta": "Contexto",
+        "texto": "Mis oyentes tienen 12 años y dispongo de 5 minutos.",
+        "requerida": true,
+        "orden": 1,
+        "porQue": "El contexto aporta los datos reales de tu situación (audiencia y tiempo); sin él, la respuesta es genérica. Va después del objetivo."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-2",
+      "bloqueTitulo": "B2 · Interactuar con IA",
+      "leccionId": "2-2-construccion-de-prompts-efectivos",
+      "leccionCodigo": "2.2",
+      "leccionTitulo": "Construcción de prompts efectivos"
+    }
+  },
+  {
+    "id": "prompt-lab-menu-semanal",
+    "modulo": {
+      "slug": "menu-semanal",
+      "titulo": "Misión menú saludable",
+      "descripcion": "Genera el prompt para un menú semanal económico que respete una alergia alimentaria.",
+      "icono": "🥗"
+    },
+    "titulo": "Misión menú saludable",
+    "introduccion": "Otro experimento del laboratorio: otra misión, otro banco de fragmentos revuelto. Aquí una restricción no es un detalle: es de salud. Genera el prompt tú, sin respuestas simuladas.",
+    "mision": "Tu familia de cuatro personas necesita un menú de almuerzos para la semana. El presupuesto es ajustado y una persona es alérgica a los frutos secos.",
+    "promptVago": "Dame un menú.",
+    "piezas": [
+      {
+        "id": "formato",
+        "etiqueta": "Formato de salida",
+        "texto": "Preséntalo en una tabla por día con ingredientes y una lista de compras al final.",
+        "requerida": true,
+        "orden": 3,
+        "porQue": "Sin formato de entrega, el menú queda como una lista suelta y sin cómo comprar. Va al final, como instrucción de entrega."
+      },
+      {
+        "id": "lujo",
+        "etiqueta": "Petición costosa",
+        "texto": "Incluye solo platos de restaurantes de lujo.",
+        "requerida": false,
+        "porQue": "Distractor: choca con tu presupuesto ajustado. Una petición que ignora la realidad del contexto produce algo inútil: descártala."
+      },
+      {
+        "id": "restriccion",
+        "etiqueta": "Restricción de salud",
+        "texto": "Evita por completo los frutos secos por una alergia.",
+        "requerida": true,
+        "orden": 2,
+        "porQue": "Esta restricción protege la salud de una persona. Si no la das, la IA puede incluir ingredientes peligrosos. Aun así, verifica siempre las etiquetas."
+      },
+      {
+        "id": "direccion",
+        "etiqueta": "Dato personal sensible",
+        "texto": "Mi dirección es Calle 5 n.º 12-30 y la casa queda vacía de 8 a 5.",
+        "requerida": false,
+        "porQue": "Distractor peligroso: no aporta nada al menú y expone datos privados y de seguridad. Nunca compartas dirección ni horarios con una IA: descártalo."
+      },
+      {
+        "id": "objetivo",
+        "etiqueta": "Objetivo",
+        "texto": "Diseña un menú de almuerzos saludables para cinco días.",
+        "requerida": true,
+        "orden": 0,
+        "porQue": "Sin objetivo, la IA no sabe qué producir (¿recetas, un menú, una dieta?). Va primero: define la tarea."
+      },
+      {
+        "id": "cantidad",
+        "etiqueta": "Exceso de cantidad",
+        "texto": "Dame 100 recetas distintas, cuantas más mejor.",
+        "requerida": false,
+        "porQue": "Distractor: cantidad no es calidad. Necesitas un menú de cinco días, no un recetario inmanejable: descártalo."
+      },
+      {
+        "id": "contexto",
+        "etiqueta": "Contexto",
+        "texto": "Somos una familia de cuatro personas con presupuesto ajustado.",
+        "requerida": true,
+        "orden": 1,
+        "porQue": "El contexto define para quién y con qué recursos: no es lo mismo cocinar para una persona que para cuatro ni con presupuesto holgado."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-2",
+      "bloqueTitulo": "B2 · Interactuar con IA",
+      "leccionId": "2-2-construccion-de-prompts-efectivos",
+      "leccionCodigo": "2.2",
+      "leccionTitulo": "Construcción de prompts efectivos"
+    }
+  },
+  {
+    "id": "prompt-lab-correo-prorroga",
+    "modulo": {
+      "slug": "correo-prorroga",
+      "titulo": "Misión correo al profe",
+      "descripcion": "Genera el prompt para un correo formal pidiendo una prórroga, sin engaños ni datos de más.",
+      "icono": "✉️"
+    },
+    "titulo": "Misión correo al profe",
+    "introduccion": "Experimento del laboratorio: escribir bien también es cuidar lo que compartes y lo que pides. Selecciona, descarta y ordena para armar tu prompt.",
+    "mision": "Estuviste enfermo tres días y no pudiste terminar el proyecto de ciencias. Necesitas pedirle a tu profesora una prórroga por correo.",
+    "promptVago": "Escribe un correo.",
+    "piezas": [
+      {
+        "id": "certificado",
+        "etiqueta": "Petición deshonesta",
+        "texto": "Inventa un certificado médico que demuestre que estuve enfermo.",
+        "requerida": false,
+        "porQue": "Distractor: pedir falsificar documentos es deshonesto y puede traerte problemas serios. Una IA no debe usarse para engañar: descártalo."
+      },
+      {
+        "id": "contexto",
+        "etiqueta": "Contexto",
+        "texto": "Estuve enfermo tres días y la entrega era el viernes.",
+        "requerida": true,
+        "orden": 1,
+        "porQue": "El contexto da los hechos reales que justifican la petición. Sin ellos, el correo sería genérico y poco convincente."
+      },
+      {
+        "id": "formato",
+        "etiqueta": "Formato de salida",
+        "texto": "Incluye asunto, saludo, cuerpo y despedida.",
+        "requerida": true,
+        "orden": 3,
+        "porQue": "Un correo necesita estructura. Pedir el formato evita un texto suelto que no puedes enviar tal cual."
+      },
+      {
+        "id": "tono-exigente",
+        "etiqueta": "Tono impuesto",
+        "texto": "Escribe con tono exigente para que ella sienta presión.",
+        "requerida": false,
+        "porQue": "Distractor: un tono exigente va contra tu objetivo (que acepten tu petición). El tono debe servir a lo que quieres conseguir: descártalo."
+      },
+      {
+        "id": "objetivo",
+        "etiqueta": "Objetivo",
+        "texto": "Redacta un correo a mi profesora pidiendo una prórroga para entregar el proyecto de ciencias.",
+        "requerida": true,
+        "orden": 0,
+        "porQue": "Define qué debe producir la IA y para quién. Va primero: es la tarea."
+      },
+      {
+        "id": "contrasena",
+        "etiqueta": "Dato sensible",
+        "texto": "Incluye mi contraseña del aula virtual para que revise mi entrega.",
+        "requerida": false,
+        "porQue": "Distractor peligroso: nunca compartas contraseñas con una IA ni en un correo. No aporta nada al texto y compromete tu cuenta: descártalo."
+      },
+      {
+        "id": "restriccion",
+        "etiqueta": "Restricción",
+        "texto": "Usa un tono respetuoso y máximo 120 palabras.",
+        "requerida": true,
+        "orden": 2,
+        "porQue": "La restricción de tono y extensión ajusta el resultado a quien lo va a leer: un correo breve y cortés se lee mejor."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-2",
+      "bloqueTitulo": "B2 · Interactuar con IA",
+      "leccionId": "2-2-construccion-de-prompts-efectivos",
+      "leccionCodigo": "2.2",
+      "leccionTitulo": "Construcción de prompts efectivos"
+    }
+  },
+  {
+    "id": "prompt-lab-plan-python",
+    "modulo": {
+      "slug": "aprender-python",
+      "titulo": "Misión primer código",
+      "descripcion": "Genera el prompt para un plan de cuatro semanas con el que aprender Python desde cero.",
+      "icono": "🐍"
+    },
+    "titulo": "Misión primer código",
+    "introduccion": "Experimento del laboratorio: aprender algo nuevo depende de pedirle a la IA el nivel y el ritmo adecuados. Selecciona, descarta y ordena los fragmentos.",
+    "mision": "Quieres aprender las bases de Python desde cero. Tienes 30 minutos al día durante cuatro semanas y no puedes pagar cursos.",
+    "promptVago": "Enséñame a programar.",
+    "piezas": [
+      {
+        "id": "restriccion",
+        "etiqueta": "Restricción de recursos",
+        "texto": "Recomienda solo recursos gratuitos.",
+        "requerida": true,
+        "orden": 2,
+        "porQue": "La restricción garantiza que el plan sea viable con tus recursos reales; sin ella, la IA podría recomendar cursos de pago."
+      },
+      {
+        "id": "nivel-experto",
+        "etiqueta": "Nivel equivocado",
+        "texto": "Explícamelo como si yo fuera un ingeniero de software con diez años de experiencia.",
+        "requerida": false,
+        "porQue": "Distractor: te pone en un nivel que no es el tuyo y la respuesta saldría incomprensible. Indicar tu nivel real es clave: descártalo."
+      },
+      {
+        "id": "formato",
+        "etiqueta": "Formato de salida",
+        "texto": "Presenta el plan por semanas, con meta, un ejercicio práctico y cómo comprobar mi avance.",
+        "requerida": true,
+        "orden": 3,
+        "porQue": "El formato convierte el plan en algo que puedes seguir y evaluar. Va al final, como instrucción de entrega."
+      },
+      {
+        "id": "objetivo",
+        "etiqueta": "Objetivo",
+        "texto": "Crea un plan de cuatro semanas para aprender las bases de Python.",
+        "requerida": true,
+        "orden": 0,
+        "porQue": "Define qué quieres conseguir y en cuánto tiempo. Va primero: es la tarea."
+      },
+      {
+        "id": "diez-minutos",
+        "etiqueta": "Petición contradictoria",
+        "texto": "Cúbrelo todo en 10 minutos.",
+        "requerida": false,
+        "porQue": "Distractor: contradice un plan de cuatro semanas y es irreal para aprender a programar. Descártalo."
+      },
+      {
+        "id": "contexto",
+        "etiqueta": "Contexto",
+        "texto": "Soy principiante sin experiencia y estudio 30 minutos al día.",
+        "requerida": true,
+        "orden": 1,
+        "porQue": "El contexto indica tu nivel y tu tiempo disponible. Sin él, el plan podría ser demasiado difícil o demasiado largo."
+      },
+      {
+        "id": "mayusculas",
+        "etiqueta": "Decoración",
+        "texto": "Escribe todo el plan en mayúsculas y con muchos emojis.",
+        "requerida": false,
+        "porQue": "Distractor: la decoración no mejora el plan y dificulta la lectura. El estilo no sustituye objetivo, contexto ni formato: descártala."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-2",
+      "bloqueTitulo": "B2 · Interactuar con IA",
+      "leccionId": "2-2-construccion-de-prompts-efectivos",
+      "leccionCodigo": "2.2",
+      "leccionTitulo": "Construcción de prompts efectivos"
+    }
+  },
+  {
+    "id": "prompt-lab-argumentos-debate",
+    "modulo": {
+      "slug": "argumentos-debate",
+      "titulo": "Misión debate",
+      "descripcion": "Genera el prompt para preparar argumentos sólidos y verificables para un debate escolar.",
+      "icono": "🗣️"
+    },
+    "titulo": "Misión debate",
+    "introduccion": "Experimento del laboratorio: una IA puede ayudarte a preparar un debate, pero tú decides qué usar y qué comprobar. Selecciona, descarta y ordena.",
+    "mision": "En clase habrá un debate sobre si se debe permitir el celular en el aula. Te tocó defender la postura a favor y tienes 10 minutos para exponer.",
+    "promptVago": "Dame argumentos.",
+    "piezas": [
+      {
+        "id": "formato",
+        "etiqueta": "Formato de salida",
+        "texto": "Entrega tres argumentos, cada uno con su evidencia y una posible réplica del equipo contrario.",
+        "requerida": true,
+        "orden": 3,
+        "porQue": "El formato te da material listo para usar y te prepara para responder al otro equipo. Va al final, como instrucción de entrega."
+      },
+      {
+        "id": "insultos",
+        "etiqueta": "Tono impuesto",
+        "texto": "Incluye insultos para desacreditar al equipo contrario.",
+        "requerida": false,
+        "porQue": "Distractor: los insultos no son argumentos y te restan credibilidad. Un buen debate se gana con razones: descártalo."
+      },
+      {
+        "id": "objetivo",
+        "etiqueta": "Objetivo",
+        "texto": "Prepara argumentos a favor de permitir el celular en el aula para un debate escolar.",
+        "requerida": true,
+        "orden": 0,
+        "porQue": "Define qué postura defender y para qué. Va primero: es la tarea."
+      },
+      {
+        "id": "inventar-datos",
+        "etiqueta": "Petición deshonesta",
+        "texto": "Inventa estadísticas que suenen creíbles, nadie las va a revisar.",
+        "requerida": false,
+        "porQue": "Distractor: pedir datos inventados es deshonesto y se desmorona si alguien los revisa. Una IA no debe fabricar evidencia: descártalo."
+      },
+      {
+        "id": "restriccion",
+        "etiqueta": "Restricción de veracidad",
+        "texto": "Apóyate en datos o ejemplos verificables y dime qué debería comprobar antes de usarlos.",
+        "requerida": true,
+        "orden": 2,
+        "porQue": "Esta restricción aplica el principio de verificar: la IA puede equivocarse o inventar, y tú eres quien comprueba antes de presentar."
+      },
+      {
+        "id": "contexto",
+        "etiqueta": "Contexto",
+        "texto": "Tengo 10 minutos y me tocó defender la postura a favor.",
+        "requerida": true,
+        "orden": 1,
+        "porQue": "El contexto aporta la postura asignada y el tiempo disponible; con ellos, los argumentos se ajustan a tu situación real."
+      },
+      {
+        "id": "amiga",
+        "etiqueta": "Dato irrelevante",
+        "texto": "Mi mejor amiga está en el equipo contrario y se llama Laura.",
+        "requerida": false,
+        "porQue": "Distractor: no aporta a los argumentos y expone datos de otra persona sin necesidad. Evita compartir información personal de terceros: descártalo."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-2",
+      "bloqueTitulo": "B2 · Interactuar con IA",
+      "leccionId": "2-2-construccion-de-prompts-efectivos",
+      "leccionCodigo": "2.2",
+      "leccionTitulo": "Construcción de prompts efectivos"
+    }
+  },
+  {
+    "id": "prompt-lab-excursion-museo",
+    "modulo": {
+      "slug": "excursion-museo",
+      "titulo": "Misión excursión",
+      "descripcion": "Genera el prompt para planificar una excursión escolar segura, económica y bien organizada.",
+      "icono": "🚌"
+    },
+    "titulo": "Misión excursión",
+    "introduccion": "Experimento del laboratorio: planificar bien es dar a la IA los límites reales de tu situación. Selecciona los fragmentos útiles, descarta los que sobran y ordénalos.",
+    "mision": "Debes organizar una salida de un día a un museo con 30 estudiantes de 13 años: salen a las 8:00, regresan a las 15:00 y hay poco presupuesto.",
+    "promptVago": "Organiza una excursión.",
+    "piezas": [
+      {
+        "id": "avion",
+        "etiqueta": "Petición costosa",
+        "texto": "Propón viajar en avión privado para llegar más rápido.",
+        "requerida": false,
+        "porQue": "Distractor: ignora el presupuesto bajo y la realidad de una salida escolar. Una petición inviable produce un plan inútil: descártala."
+      },
+      {
+        "id": "contexto",
+        "etiqueta": "Contexto",
+        "texto": "Somos 30 estudiantes de 13 años; salimos a las 8:00 y regresamos a las 15:00.",
+        "requerida": true,
+        "orden": 1,
+        "porQue": "El contexto da el tamaño del grupo, la edad y el horario; sin ellos, el itinerario no sería realista."
+      },
+      {
+        "id": "secreto",
+        "etiqueta": "Petición insegura",
+        "texto": "Que los padres no se enteren de la salida, será una sorpresa.",
+        "requerida": false,
+        "porQue": "Distractor: una salida con menores requiere autorización y conocimiento de las familias. No se debe pedir a una IA que planifique algo inseguro: descártala."
+      },
+      {
+        "id": "formato",
+        "etiqueta": "Formato de salida",
+        "texto": "Preséntalo como cronograma por horas, con un responsable por actividad y un plan B por si llueve.",
+        "requerida": true,
+        "orden": 3,
+        "porQue": "El formato convierte las ideas en algo ejecutable: horarios, responsables y contingencias. Va al final, como instrucción de entrega."
+      },
+      {
+        "id": "objetivo",
+        "etiqueta": "Objetivo",
+        "texto": "Arma el itinerario de una excursión escolar de un día a un museo.",
+        "requerida": true,
+        "orden": 0,
+        "porQue": "Define la tarea y el tipo de actividad. Va primero: sin objetivo, la IA no sabe qué planificar."
+      },
+      {
+        "id": "verso",
+        "etiqueta": "Decoración",
+        "texto": "Escribe cada hora del cronograma como un verso de poema.",
+        "requerida": false,
+        "porQue": "Distractor: la forma poética estorba a un cronograma que debe ser claro y rápido de consultar. El estilo no sustituye lo esencial: descártala."
+      },
+      {
+        "id": "restriccion",
+        "etiqueta": "Restricción de recursos",
+        "texto": "Usa transporte público y mantén un presupuesto bajo.",
+        "requerida": true,
+        "orden": 2,
+        "porQue": "La restricción de recursos vuelve el plan viable: sin ella, la IA podría proponer opciones fuera de tu alcance."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-2",
+      "bloqueTitulo": "B2 · Interactuar con IA",
+      "leccionId": "2-2-construccion-de-prompts-efectivos",
+      "leccionCodigo": "2.2",
+      "leccionTitulo": "Construcción de prompts efectivos"
+    }
+  },
+  {
+    "id": "prompt-lab-practica-ecuaciones",
+    "modulo": {
+      "slug": "practica-ecuaciones",
+      "titulo": "Misión ecuaciones",
+      "descripcion": "Genera el prompt para practicar ecuaciones entendiendo cada paso, no solo copiando respuestas.",
+      "icono": "➗"
+    },
+    "titulo": "Misión ecuaciones",
+    "introduccion": "Experimento del laboratorio: usar la IA para aprender no es pedirle que haga la tarea, sino que te guíe. Selecciona, descarta y ordena los fragmentos.",
+    "mision": "Tienes examen de matemáticas el viernes, dentro de cuatro días. Te equivocas al despejar ecuaciones de primer grado y quieres practicar entendiendo, no copiando.",
+    "promptVago": "Ayúdame con matemáticas.",
+    "piezas": [
+      {
+        "id": "solo-respuestas",
+        "etiqueta": "Petición contradictoria",
+        "texto": "Dame solo las respuestas finales, no quiero entender nada.",
+        "requerida": false,
+        "porQue": "Distractor: contradice tu objetivo de aprender y chocaría con pedir pasos explicados. Con solo respuestas no mejoras para el examen: descártalo."
+      },
+      {
+        "id": "formato",
+        "etiqueta": "Formato de salida",
+        "texto": "Dame cinco ejercicios de dificultad creciente, con las soluciones explicadas al final.",
+        "requerida": true,
+        "orden": 3,
+        "porQue": "El formato organiza la práctica: pocos ejercicios, graduados, y con la solución al final para que intentes antes de mirar."
+      },
+      {
+        "id": "contexto",
+        "etiqueta": "Contexto",
+        "texto": "Me equivoco sobre todo al despejar la incógnita y tengo cuatro días.",
+        "requerida": true,
+        "orden": 1,
+        "porQue": "El contexto señala tu dificultad concreta y el tiempo que tienes; así la IA enfoca la práctica donde más la necesitas."
+      },
+      {
+        "id": "doscientos",
+        "etiqueta": "Exceso de cantidad",
+        "texto": "Dame 200 ejercicios para hacer esta noche.",
+        "requerida": false,
+        "porQue": "Distractor: cantidad no es calidad, y 200 ejercicios en una noche es irreal. Mejor pocos ejercicios bien elegidos: descártalo."
+      },
+      {
+        "id": "objetivo",
+        "etiqueta": "Objetivo",
+        "texto": "Ayúdame a practicar ecuaciones de primer grado para mi examen del viernes.",
+        "requerida": true,
+        "orden": 0,
+        "porQue": "Define la tarea y el propósito. Va primero: sin objetivo, la IA no sabe si explicar, resolver o evaluar."
+      },
+      {
+        "id": "luna",
+        "etiqueta": "Dato irrelevante",
+        "texto": "Pon a mi perra Luna y a mi barrio en todos los enunciados.",
+        "requerida": false,
+        "porQue": "Distractor: añade ruido y datos personales innecesarios sin mejorar la práctica. No compartas de más con una IA: descártalo."
+      },
+      {
+        "id": "restriccion",
+        "etiqueta": "Restricción de método",
+        "texto": "Explica cada paso en lugar de darme solo el resultado.",
+        "requerida": true,
+        "orden": 2,
+        "porQue": "Esta restricción asegura que aprendas el proceso. Usar la IA para entender, y no para copiar, también es una forma de uso responsable."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-2",
+      "bloqueTitulo": "B2 · Interactuar con IA",
+      "leccionId": "2-5-iteracion-y-conversacion",
+      "leccionCodigo": "2.5",
+      "leccionTitulo": "Iterar: conversar, revisar y corregir"
+    }
+  },
+  {
+    "id": "prompt-lab-feria-ciencias",
+    "modulo": {
+      "slug": "feria-de-ciencias",
+      "titulo": "Misión feria de ciencias",
+      "descripcion": "Genera el prompt para obtener ideas de proyecto seguras, originales y con materiales caseros.",
+      "icono": "🔬"
+    },
+    "titulo": "Misión feria de ciencias",
+    "introduccion": "Experimento del laboratorio: una buena idea de proyecto depende de pedir bien. Selecciona los fragmentos útiles, descarta los que sobran y ordénalos.",
+    "mision": "Tienes tres semanas para preparar un proyecto de feria de ciencias sobre energía, en pareja, con materiales que haya en casa.",
+    "promptVago": "Dame una idea de proyecto.",
+    "piezas": [
+      {
+        "id": "restriccion",
+        "etiqueta": "Restricción de seguridad",
+        "texto": "Que sean seguras, sin químicos peligrosos, y con materiales caseros.",
+        "requerida": true,
+        "orden": 2,
+        "porQue": "Las restricciones de seguridad y materiales hacen viable el proyecto. Sin ellas, la IA podría sugerir experimentos peligrosos o imposibles de conseguir."
+      },
+      {
+        "id": "reactor",
+        "etiqueta": "Petición peligrosa y costosa",
+        "texto": "Que el proyecto use un reactor nuclear.",
+        "requerida": false,
+        "porQue": "Distractor: es inviable, peligroso e irreal para un proyecto escolar. Una petición absurda produce un resultado inútil: descártala."
+      },
+      {
+        "id": "contexto",
+        "etiqueta": "Contexto",
+        "texto": "Somos dos estudiantes de 14 años y tenemos tres semanas.",
+        "requerida": true,
+        "orden": 1,
+        "porQue": "El contexto da el equipo, la edad y el tiempo; con eso las ideas se ajustan a lo que realmente pueden hacer."
+      },
+      {
+        "id": "copiar",
+        "etiqueta": "Petición deshonesta",
+        "texto": "Copia tal cual un proyecto ganador que encontraste en internet.",
+        "requerida": false,
+        "porQue": "Distractor: copiar un proyecto ajeno es plagio y no cumple el sentido de la feria. Usa la IA para inspirarte, no para copiar: descártala."
+      },
+      {
+        "id": "formato",
+        "etiqueta": "Formato de salida",
+        "texto": "Para cada idea, incluye la pregunta de investigación, los materiales y los pasos.",
+        "requerida": true,
+        "orden": 3,
+        "porQue": "El formato convierte cada idea en un plan que puedes ejecutar. Va al final, como instrucción de entrega."
+      },
+      {
+        "id": "una-palabra",
+        "etiqueta": "Petición contradictoria",
+        "texto": "Respóndeme solo con una palabra.",
+        "requerida": false,
+        "porQue": "Distractor: es incompatible con pedir preguntas, materiales y pasos. Una instrucción que choca con el formato rompe el resultado: descártala."
+      },
+      {
+        "id": "objetivo",
+        "etiqueta": "Objetivo",
+        "texto": "Propón ideas de proyecto para una feria de ciencias sobre energía.",
+        "requerida": true,
+        "orden": 0,
+        "porQue": "Define qué debe producir la IA y sobre qué tema. Va primero: es la tarea."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-2",
+      "bloqueTitulo": "B2 · Interactuar con IA",
+      "leccionId": "2-2-construccion-de-prompts-efectivos",
+      "leccionCodigo": "2.2",
+      "leccionTitulo": "Construcción de prompts efectivos"
+    }
+  },
+  {
+    "id": "prompt-lab-revisar-ensayo",
+    "modulo": {
+      "slug": "revisar-ensayo",
+      "titulo": "Misión revisión de ensayo",
+      "descripcion": "Genera el prompt para recibir retroalimentación sobre tu texto sin que la IA lo escriba por ti.",
+      "icono": "📝"
+    },
+    "titulo": "Misión revisión de ensayo",
+    "introduccion": "Experimento del laboratorio: la IA puede ser tu revisora, no tu autora. Selecciona, descarta y ordena los fragmentos para pedir ayuda sin perder tu voz.",
+    "mision": "Escribiste un ensayo argumentativo de 300 palabras sobre redes sociales para la clase de lengua y quieres recibir comentarios para mejorarlo, sin que te lo reescriban.",
+    "promptVago": "Arregla mi ensayo.",
+    "piezas": [
+      {
+        "id": "perfecto",
+        "etiqueta": "Petición de adulación",
+        "texto": "Dime que está perfecto, solo quiero sentirme bien.",
+        "requerida": false,
+        "porQue": "Distractor: pedir solo elogios no te ayuda a mejorar. La retroalimentación útil incluye lo que falla: descártalo."
+      },
+      {
+        "id": "objetivo",
+        "etiqueta": "Objetivo",
+        "texto": "Dame retroalimentación para mejorar mi ensayo argumentativo sobre redes sociales.",
+        "requerida": true,
+        "orden": 0,
+        "porQue": "Define que quieres retroalimentación (no una reescritura) y sobre qué texto. Va primero: es la tarea."
+      },
+      {
+        "id": "reescribir",
+        "etiqueta": "Petición deshonesta",
+        "texto": "Reescríbelo completo para que nadie note que usé IA.",
+        "requerida": false,
+        "porQue": "Distractor: ocultar el uso de IA y entregar un texto ajeno como propio va contra la integridad académica y contra tu objetivo de mejorar. Descártalo."
+      },
+      {
+        "id": "contexto",
+        "etiqueta": "Contexto",
+        "texto": "Es un texto de 300 palabras para la clase de lengua; pego el ensayo debajo.",
+        "requerida": true,
+        "orden": 1,
+        "porQue": "El contexto indica el tipo de texto, su extensión y para qué es, y aporta el material a revisar. Sin el texto, la IA no tiene qué comentar."
+      },
+      {
+        "id": "nobel",
+        "etiqueta": "Petición vaga",
+        "texto": "Hazlo sonar como si lo hubiera escrito un Premio Nobel.",
+        "requerida": false,
+        "porQue": "Distractor: es un criterio vago e imposible de medir, y choca con conservar tu estilo. Pide criterios concretos: descártalo."
+      },
+      {
+        "id": "restriccion",
+        "etiqueta": "Restricción de autoría",
+        "texto": "No lo reescribas: señala los problemas y sugiere cómo corregirlos, respetando mi estilo.",
+        "requerida": true,
+        "orden": 2,
+        "porQue": "Esta restricción mantiene la autoría en ti. Usas la IA como revisora y tú decides qué cambiar."
+      },
+      {
+        "id": "formato",
+        "etiqueta": "Formato de salida",
+        "texto": "Responde con tres fortalezas y tres mejoras, citando fragmentos de mi texto.",
+        "requerida": true,
+        "orden": 3,
+        "porQue": "El formato da una retroalimentación equilibrada y concreta, anclada en tu texto. Después puedes iterar: pedir más detalle sobre una mejora."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-2",
+      "bloqueTitulo": "B2 · Interactuar con IA",
+      "leccionId": "2-5-iteracion-y-conversacion",
+      "leccionCodigo": "2.5",
+      "leccionTitulo": "Iterar: conversar, revisar y corregir"
+    }
+  },
+  {
+    "id": "prompt-lab-menos-pantallas",
+    "modulo": {
+      "slug": "menos-pantallas",
+      "titulo": "Misión menos pantalla",
+      "descripcion": "Genera el prompt para un plan gradual de reducción del tiempo de pantalla, sin compartir datos privados.",
+      "icono": "📵"
+    },
+    "titulo": "Misión menos pantalla",
+    "introduccion": "Experimento del laboratorio: un plan realista se construye con cambios graduales y sin exponer tu privacidad. Selecciona, descarta y ordena los fragmentos.",
+    "mision": "Usas el celular unas 6 horas al día, sobre todo en redes sociales, y quieres bajar a 3 horas en un mes, sin cambios bruscos y sin pagar por aplicaciones.",
+    "promptVago": "Quiero usar menos el celular.",
+    "piezas": [
+      {
+        "id": "formato",
+        "etiqueta": "Formato de salida",
+        "texto": "Preséntalo en una tabla semanal con meta, estrategia y forma de medir el avance.",
+        "requerida": true,
+        "orden": 3,
+        "porQue": "El formato convierte el plan en algo que puedes seguir semana a semana y medir. Va al final, como instrucción de entrega."
+      },
+      {
+        "id": "prohibir",
+        "etiqueta": "Petición contradictoria",
+        "texto": "Prohíbeme usar el celular por completo desde mañana.",
+        "requerida": false,
+        "porQue": "Distractor: contradice los cambios graduales y la meta de 3 horas (no de cero). Los cambios bruscos suelen fracasar: descártala."
+      },
+      {
+        "id": "contexto",
+        "etiqueta": "Contexto",
+        "texto": "Paso la mayor parte del tiempo en redes sociales y uso el celular unas 6 horas al día.",
+        "requerida": true,
+        "orden": 1,
+        "porQue": "El contexto aporta tu punto de partida real; con él, la IA propone estrategias para lo que más tiempo te consume."
+      },
+      {
+        "id": "claves",
+        "etiqueta": "Dato sensible",
+        "texto": "Incluye mis contraseñas y mi historial para que los revises.",
+        "requerida": false,
+        "porQue": "Distractor peligroso: nunca compartas contraseñas ni historiales privados con una IA. No los necesita para ayudarte: descártalo."
+      },
+      {
+        "id": "objetivo",
+        "etiqueta": "Objetivo",
+        "texto": "Diseña un plan para reducir mi tiempo de pantalla de 6 a 3 horas diarias en un mes.",
+        "requerida": true,
+        "orden": 0,
+        "porQue": "Define la meta con cifras y plazo concretos. Va primero: es la tarea."
+      },
+      {
+        "id": "cualquier-tema",
+        "etiqueta": "Petición vaga",
+        "texto": "Dame consejos sobre cualquier tema de tecnología.",
+        "requerida": false,
+        "porQue": "Distractor: amplía la petición hasta volverla vaga y te aleja de tu objetivo concreto. Pedir menos, pero preciso, da mejores respuestas: descártala."
+      },
+      {
+        "id": "restriccion",
+        "etiqueta": "Restricción",
+        "texto": "Haz cambios graduales y usa solo herramientas gratuitas.",
+        "requerida": true,
+        "orden": 2,
+        "porQue": "Las restricciones hacen el plan realista y dentro de tus posibilidades: cambios progresivos y sin costo."
+      }
+    ],
+    "conexion": {
+      "bloqueId": "bloque-2",
+      "bloqueTitulo": "B2 · Interactuar con IA",
+      "leccionId": "2-5-iteracion-y-conversacion",
+      "leccionCodigo": "2.5",
+      "leccionTitulo": "Iterar: conversar, revisar y corregir"
+    }
+  }
+]

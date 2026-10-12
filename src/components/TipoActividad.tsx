@@ -26,16 +26,39 @@ export default function TipoActividad({ tipo }: { tipo: TipoActividad }) {
   return (
     <div>
       {/* Hero del tipo */}
-      <section class={`rounded-3xl overflow-hidden p-6 sm:p-10 relative ${meta.hero}`}>
-        <span class="absolute right-4 top-4 text-[90px] sm:text-[140px] opacity-20 select-none leading-none">{meta.icono}</span>
-        <a href="/alfabetizacion/actividades" class="text-xs bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-full font-semibold relative">← Todas las actividades</a>
-        <p class="mt-4 text-xs font-extrabold tracking-widest bg-white/20 inline-block px-2 py-1 rounded-lg relative">{casos.length} CASOS</p>
-        <h1 class="text-3xl sm:text-5xl font-extrabold mt-2 leading-tight relative max-w-3xl">{meta.titulo}</h1>
-        <p class="mt-2 text-white/85 max-w-2xl text-sm sm:text-base relative">{meta.descripcion}</p>
-        <div class="mt-4 relative">
-          <button onClick={aleatorio} class="px-6 py-3 rounded-2xl bg-white text-gray-900 text-sm font-extrabold hover:bg-emerald-300 transition">
-            🎲 Caso aleatorio
-          </button>
+      <section class={`rounded-3xl overflow-hidden p-6 sm:p-10 relative shadow-lg ${meta.hero}`}>
+        {/* Capas decorativas */}
+        <span class="pointer-events-none absolute -top-16 -right-10 w-72 h-72 rounded-full bg-white/20 blur-3xl" aria-hidden="true" />
+        <span class="pointer-events-none absolute -bottom-24 left-1/4 w-64 h-64 rounded-full bg-black/10 blur-3xl" aria-hidden="true" />
+        <span class="pointer-events-none absolute -right-6 -bottom-10 text-[180px] sm:text-[240px] leading-none opacity-10 select-none" aria-hidden="true">
+          {meta.icono}
+        </span>
+
+        <div class="relative flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
+          <div class="flex-1 min-w-0">
+            <a href="/alfabetizacion/actividades" class="text-xs bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-full font-semibold inline-block">← Todas las actividades</a>
+            <p class="mt-4 text-xs font-extrabold tracking-widest bg-white/20 inline-block px-2 py-1 rounded-lg">{casos.length} CASOS</p>
+            <h1 class="text-3xl sm:text-5xl font-extrabold mt-2 leading-tight max-w-3xl">{meta.titulo}</h1>
+            <p class="mt-2 text-white/85 max-w-2xl text-sm sm:text-base leading-relaxed">{meta.descripcion}</p>
+            <div class="mt-5">
+              <button onClick={aleatorio} class="px-6 py-3 rounded-2xl bg-white text-slate-900 text-sm font-extrabold hover:bg-slate-100 transition shadow-sm">
+                🎲 Caso aleatorio
+              </button>
+            </div>
+          </div>
+
+          {/* Emoji protagonista */}
+          <div class="hidden md:flex shrink-0 w-32 h-32 lg:w-40 lg:h-40 rounded-3xl bg-white/15 border border-white/25 backdrop-blur-md shadow-2xl items-center justify-center text-6xl lg:text-7xl rotate-3 transition-transform hover:rotate-0 hover:scale-105">
+            {meta.icono}
+          </div>
+
+          {/* Insignia compacta en móvil */}
+          <span
+            class="md:hidden absolute right-4 top-4 w-12 h-12 rounded-2xl bg-white/20 border border-white/25 backdrop-blur-md shadow-lg flex items-center justify-center text-2xl select-none"
+            aria-hidden="true"
+          >
+            {meta.icono}
+          </span>
         </div>
       </section>
 
@@ -47,14 +70,14 @@ export default function TipoActividad({ tipo }: { tipo: TipoActividad }) {
             <a
               key={c.id}
               href={`${meta.href}/${c.modulo.slug}`}
-              class="bg-white border-2 rounded-2xl p-4 sm:p-5 flex items-start gap-3 hover:border-gray-400 hover:shadow transition text-left"
+              class={`bg-white border-2 border-slate-200 rounded-2xl p-4 sm:p-5 flex items-start gap-3 ${meta.theme.borderHover} hover:shadow transition text-left`}
             >
-              <span class="w-10 h-10 rounded-2xl flex items-center justify-center font-extrabold text-sm shrink-0 bg-gray-900 text-white">
+              <span class={`w-10 h-10 rounded-2xl flex items-center justify-center font-extrabold text-sm shrink-0 text-white ${meta.theme.barBg}`}>
                 {i + 1}
               </span>
               <span class="flex-1 min-w-0">
-                <span class="block text-[11px] font-bold uppercase tracking-widest text-gray-400">Caso {i + 1}</span>
-                <span class="block font-bold leading-tight text-base sm:text-lg mt-0.5">{extractoCaso(tipo, c.id)}</span>
+                <span class="block text-[11px] font-bold uppercase tracking-widest text-slate-400">Caso {i + 1}</span>
+                <span class="block font-bold leading-tight text-base sm:text-lg mt-0.5 text-slate-900">{extractoCaso(tipo, c.id)}</span>
               </span>
               <span class={`shrink-0 text-xs font-bold px-2.5 py-1 rounded-full ${st.estilos}`}>{st.etiqueta}</span>
             </a>

@@ -326,22 +326,46 @@ export default function AlfabetizacionView() {
               return (
                 <article
                   key={b.id}
-                  class={`${gi === 1 ? "w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc((100%-2rem)/3)]" : ""} bg-white border border-slate-200/90 rounded-2xl overflow-hidden flex flex-col justify-between shadow-xs hover:shadow-md transition-all group`}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => openBloque(b.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      openBloque(b.id);
+                    }
+                  }}
+                  class={`${gi === 1 ? "w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc((100%-2rem)/3)]" : ""} bg-white border border-slate-200/90 rounded-2xl overflow-hidden flex flex-col justify-between shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all group cursor-pointer`}
                 >
                   <div>
                     {/* Cabecera con color característico del Nivel */}
                     <div
-                      class={`${theme.headerBg} text-white p-4 sm:p-5 relative overflow-hidden min-h-[140px] flex flex-col justify-between`}
+                      class={`${theme.headerBg} relative overflow-hidden min-h-[132px] p-4 sm:p-5 text-white flex flex-col justify-between`}
                     >
-                      <span class="absolute -right-2 -bottom-2 text-5xl opacity-40 select-none group-hover:scale-110 transition-transform">
+                      {/* Halo de luz */}
+                      <span
+                        class="pointer-events-none absolute -top-12 -right-10 w-40 h-40 rounded-full bg-white/25 blur-2xl"
+                        aria-hidden="true"
+                      />
+                      {/* Patrón de puntos */}
+                      <span
+                        class="pointer-events-none absolute inset-0 opacity-[0.18] [background-image:radial-gradient(circle,white_1px,transparent_1px)] [background-size:14px_14px]"
+                        aria-hidden="true"
+                      />
+                      {/* Emoji marca de agua */}
+                      <span
+                        class="pointer-events-none absolute -right-3 -bottom-6 text-[80px] leading-none opacity-25 select-none transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6"
+                        aria-hidden="true"
+                      >
                         {theme.icon}
                       </span>
 
-                      <span class="inline-block text-[10px] font-extrabold tracking-widest bg-white/20 px-2 py-0.5 rounded-full uppercase w-fit backdrop-blur-xs">
+                      <span class="relative inline-flex items-center gap-1.5 text-[10px] font-extrabold tracking-widest bg-white/20 ring-1 ring-white/30 px-2.5 py-1 rounded-full uppercase w-fit backdrop-blur-md">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white/80" />
                         NIVEL {b.numero}
                       </span>
 
-                      <h3 class="text-base font-extrabold mt-2 leading-snug relative pr-6">
+                      <h3 class="relative text-base font-extrabold mt-2 leading-snug pr-10 drop-shadow-sm">
                         {b.titulo}
                       </h3>
                     </div>
@@ -385,7 +409,10 @@ export default function AlfabetizacionView() {
                     </div>
 
                     <button
-                      onClick={() => openBloque(b.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openBloque(b.id);
+                      }}
                       class={`w-full py-2.5 px-3 rounded-xl ${theme.btnBg} text-white text-xs font-bold transition shadow-xs cursor-pointer flex items-center justify-center gap-1`}
                     >
                       {nDone > 0 ? "Continuar →" : "Comenzar →"}

@@ -116,14 +116,31 @@ export function moduloDe(tipo: TipoActividad, slug: string): ModuloConTipo | und
 
 // --- Tipos como bloques: cada tipo tiene su portada con sus casos ---
 
+export interface TipoTheme {
+  /** Cabecera de tarjeta / hero de la portada del tipo. */
+  headerBg: string;
+  /** Botón principal del tipo. */
+  btnBg: string;
+  /** Barra de progreso del tipo. */
+  barBg: string;
+  /** Acento textual (viñetas, numeración). */
+  dotColor: string;
+  /** Pill de conteo/estado sobre fondo claro. */
+  badge: string;
+  /** Borde en hover de las tarjetas de caso. */
+  borderHover: string;
+}
+
 export interface TipoMeta {
   tipo: TipoActividad;
   titulo: string;
   descripcion: string;
   icono: string;
   href: string;
+  /** Compatibilidad con la portada de tipo (hero a color). */
   hero: string;
   borde: string;
+  theme: TipoTheme;
 }
 
 export const TIPOS_ACTIVIDADES: TipoMeta[] = [
@@ -133,8 +150,16 @@ export const TIPOS_ACTIVIDADES: TipoMeta[] = [
     descripcion: "Tres respuestas de IA, una sola es la mejor. Elige un caso o deja que el sistema te dé uno al azar.",
     icono: "⚖️",
     href: "/alfabetizacion/actividades/elegir",
-    hero: "bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800 text-white",
-    borde: "border-gray-200 hover:border-indigo-400",
+    hero: "bg-gradient-to-br from-[#5932EA] via-[#4E2AD0] to-[#7C5CE9] text-white",
+    borde: "border-slate-200 hover:border-[#7C5CE9]",
+    theme: {
+      headerBg: "bg-gradient-to-br from-[#5932EA] to-[#7C5CE9]",
+      btnBg: "bg-[#5932EA] hover:bg-[#4E2AD0]",
+      barBg: "bg-[#5932EA]",
+      dotColor: "text-[#5932EA]",
+      badge: "bg-[#EDE9FE] text-[#6D28D9] border-[#DDD6FE]",
+      borderHover: "hover:border-[#7C5CE9]",
+    },
   },
   {
     tipo: "detector",
@@ -142,8 +167,16 @@ export const TIPOS_ACTIVIDADES: TipoMeta[] = [
     descripcion: "Clasifica afirmaciones como un forense digital. Elige un caso o deja que el sistema te dé uno al azar.",
     icono: "🔍",
     href: "/alfabetizacion/actividades/detector",
-    hero: "bg-slate-950 text-white",
-    borde: "border-slate-700 hover:border-emerald-500",
+    hero: "bg-gradient-to-br from-slate-900 to-slate-950 text-white",
+    borde: "border-slate-200 hover:border-emerald-500",
+    theme: {
+      headerBg: "bg-gradient-to-br from-slate-900 to-slate-950",
+      btnBg: "bg-slate-900 hover:bg-slate-800",
+      barBg: "bg-emerald-500",
+      dotColor: "text-emerald-600",
+      badge: "bg-emerald-50 text-emerald-700 border-emerald-200",
+      borderHover: "hover:border-emerald-500",
+    },
   },
   {
     tipo: "promptlab",
@@ -152,7 +185,15 @@ export const TIPOS_ACTIVIDADES: TipoMeta[] = [
     icono: "⚗️",
     href: "/alfabetizacion/actividades/prompt-lab",
     hero: "bg-gradient-to-br from-teal-600 via-emerald-700 to-green-800 text-white",
-    borde: "border-gray-200 hover:border-teal-500",
+    borde: "border-slate-200 hover:border-teal-500",
+    theme: {
+      headerBg: "bg-gradient-to-br from-teal-600 to-emerald-700",
+      btnBg: "bg-teal-600 hover:bg-teal-700",
+      barBg: "bg-teal-600",
+      dotColor: "text-teal-600",
+      badge: "bg-teal-50 text-teal-700 border-teal-200",
+      borderHover: "hover:border-teal-500",
+    },
   },
 ];
 
@@ -233,7 +274,7 @@ export function estadoCaso(
   id: string,
   guardadas: ActividadesGuardadas,
 ): EstadoCaso {
-  const sinEmpezar: EstadoCaso = { etiqueta: "Sin empezar", estilos: "bg-gray-100 text-gray-500", completada: false };
+  const sinEmpezar: EstadoCaso = { etiqueta: "Sin empezar", estilos: "bg-slate-100 text-slate-500", completada: false };
   if (tipo === "elegir") {
     const r = guardadas.elegir[id];
     if (!r) return sinEmpezar;
@@ -259,4 +300,39 @@ export function estadoCaso(
   return lab.exito
     ? { etiqueta: "✓ Completada", estilos: "bg-emerald-100 text-emerald-800", completada: true }
     : { etiqueta: "En progreso", estilos: "bg-amber-100 text-amber-800", completada: false };
+}
+
+// --- Resumen agregado del laboratorio (para la tarjeta de progreso) ---
+
+export interface ResumenTipo {
+  meta: TipoMeta;
+  total: number;
+  completadas: number;
+  pct: number;
+}
+
+export interface ResumenLaboratorio {
+  tipos: ResumenTipo[];
+  total: number;
+  completadas: number;
+  pct: number;
+  tiposCompletos: number;
+}
+
+export function resumenLaboratorio(guardadas: ActividadesGuardadas): ResumenLaboratorio {
+  const tipos = TIPOS_ACTIVIDADES.map((meta) => {
+    const casos = listaPorTipo(meta.tipo);
+    const completadas = casos.filter((c) => estadoCaso(meta.tipo, c.id, guardadas).completada).length;
+    const total = casos.length;
+    return { meta, total, completadas, pct: total === 0 ? 0 : Math.round((completadas / total) * 100) };
+  });
+  const total = tipos.reduce((acc, t) => acc + t.total, 0);
+  const completadas = tipos.reduce((acc, t) => acc + t.completadas, 0);
+  return {
+    tipos,
+    total,
+    completadas,
+    pct: total === 0 ? 0 : Math.round((completadas / total) * 100),
+    tiposCompletos: tipos.filter((t) => t.total > 0 && t.completadas === t.total).length,
+  };
 }

@@ -345,13 +345,13 @@ export default function AdminPanel() {
             {/* Logo del módulo */}
             <div class="mt-4">
               <p class="text-xs font-semibold text-slate-700 mb-1.5">Logo del módulo</p>
-              <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+              <div class="grid grid-cols-[repeat(15,minmax(0,1fr))] gap-1.5">
                 {COURSE_LOGOS.map((file) => (
                   <button
                     type="button"
                     key={file}
                     onClick={() => setNewIcon(newIcon === file ? "" : file)}
-                    class={`aspect-square rounded-xl border-2 bg-white overflow-hidden flex items-center justify-center p-0.5 transition cursor-pointer ${newIcon === file ? "border-[#5932EA] ring-2 ring-[#5932EA]/30" : "border-gray-200 hover:border-gray-400"}`}
+                    class={`aspect-square rounded-lg border-2 bg-violet-300 overflow-hidden flex items-center justify-center p-0.5 transition cursor-pointer ${newIcon === file ? "border-[#5932EA] ring-2 ring-[#5932EA]/30" : "border-violet-400 hover:border-violet-600"}`}
                     title={`Logo ${file}`}
                   >
                     <img

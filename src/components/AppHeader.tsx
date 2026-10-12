@@ -89,17 +89,47 @@ export default function AppHeader({ currentPath = "" }: Props) {
           </nav>
         </div>
 
-        {/* Lado derecho: Botón Cerrar Sesión + Avatar + Perfil */}
-        <div class="flex items-center gap-4 sm:gap-5">
+        {/* Lado derecho: Acciones + Cerrar Sesión + Avatar + Perfil */}
+        <div class="flex items-center gap-3 sm:gap-4">
+          {/* Botón de búsqueda */}
           <button
-            onClick={handleLogout}
-            class="px-5 py-2.5 rounded-2xl bg-[#7C5CE9] hover:bg-[#6C4CE0] text-white text-sm font-semibold shadow-sm hover:shadow transition-all cursor-pointer whitespace-nowrap"
+            class="hidden sm:flex p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition cursor-pointer"
+            title="Buscar"
           >
-            Cerrar Sesion
+            <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 1114 0z" />
+            </svg>
           </button>
 
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-[#5932EA] text-white flex items-center justify-center font-bold text-base shadow-sm flex-shrink-0">
+          {/* Botón de notificaciones con punto rojo */}
+          <div class="relative hidden sm:block">
+            <button
+              class="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition cursor-pointer relative"
+              title="Notificaciones"
+            >
+              <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
+              <span class="w-2 h-2 rounded-full bg-red-500 ring-2 ring-white absolute top-1.5 right-1.5"></span>
+            </button>
+          </div>
+
+          {/* Avatar circular */}
+          <div class="hidden md:flex w-8 h-8 rounded-full bg-[#5932EA] text-white items-center justify-center font-bold text-xs shadow-xs flex-shrink-0">
+            {session.name ? session.name.charAt(0).toUpperCase() : "U"}
+          </div>
+
+          {/* Botón Cerrar Sesión */}
+          <button
+            onClick={handleLogout}
+            class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl bg-[#5932EA] hover:bg-[#4E2AD0] text-white text-xs sm:text-sm font-semibold shadow-xs hover:shadow transition-all cursor-pointer whitespace-nowrap"
+          >
+            Cerrar sesión
+          </button>
+
+          {/* Información de usuario */}
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-full bg-[#5932EA] text-white flex items-center justify-center font-bold text-sm shadow-xs flex-shrink-0">
               {session.name ? session.name.charAt(0).toUpperCase() : "U"}
             </div>
             <div class="hidden sm:flex flex-col items-start leading-tight">

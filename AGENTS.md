@@ -114,7 +114,9 @@ Variables: `CONTENT_PORT` cambia el puerto del content-server (defecto `8787`).
 - `/` — login/registro + estado de sesión (`Auth.tsx`). Redirige por rol:
   `admin → /admin`, `profesor → /actividades`, `estudiante → /ensenanza`,
   `sin_asignar → se queda en /` con aviso.
-- `/ensenanza` — `EnsenanzaView.tsx` (contenido de enseñanza).
+- `/ensenanza` — `EnsenanzaView.tsx`: explorador de **cursos del usuario** (búsqueda,
+  grid paginado 6 por página, tarjeta con color + logo del curso y nº de
+  actividades), estado "sin asignar" y estado vacío. Es la landing del `estudiante`.
 - `/alfabetizacion` — `AlfabetizacionView.tsx` (5 bloques desde `content/blocks/`).
   Query `?bloque=<id>` para volver al bloque tras ver una lección.
 - `/lecciones/:id` — visor de lección (`LessonRenderer.tsx` + navegación
@@ -127,7 +129,9 @@ Variables: `CONTENT_PORT` cambia el puerto del content-server (defecto `8787`).
   (`ElegirRespuesta.tsx`, `DetectorAlucinaciones.tsx`, `PromptLab.tsx`).
 - `/dashboard` — **placeholder**: tarjeta "en construcción". Aquí irán métricas
   agregadas de enseñanza + actividades (leer de `localStorage`/IndexedDB).
-- `/admin` — `AdminPanel.tsx` (gestión de usuarios, roles, cursos). Solo admin.
+- `/admin` — `AdminPanel.tsx` con 2 pestañas: **Usuarios** (roles, códigos,
+  crear/eliminar) y **Cursos** (crear con color + logo, gestionar asignación de
+  profesores/estudiantes por lista o por código único, exportar JSON). Solo admin.
 - `/editor` — **oculta** (`<meta robots noindex>`, no está en el nav):
   `LessonStudio.tsx` = editor de bloques + lessons + imágenes.
 
@@ -157,9 +161,10 @@ footer.
 | `AppHeader.tsx` | Auth-guard + nav por rol; prop `currentPath`; marca Sintaxia; botón "Cerrar Sesion" | Cambiar nav aquí afecta a todas las páginas |
 | `AppFooter.tsx` | Footer global de marca (Explora / Ayuda / Síguenos + copyright) | Sin props y sin auth-guard; solo maquetación |
 | `Auth.tsx` | Login/registro/sesión, export `users.json` | Usa `src/utils/auth.ts` |
-| `AdminPanel.tsx` | CRUD usuarios, roles, asignación a cursos | Solo rol `admin` |
-| `EnsenanzaView.tsx` | Módulo enseñanza | Persistencia en `localStorage` |
-| `ActividadesView.tsx` | Cursos + actividades (crear/asignar/listar/borrar) | Usa `src/utils/courses.ts` |
+| `AdminPanel.tsx` | Panel admin en 2 pestañas: **Usuarios** (listar/buscar/filtrar, cambiar rol, eliminar, stats por rol, exportar `users.json`) y **Cursos** (crear con color `COURSE_COLORS` + logo `COURSE_LOGOS`, gestionar asignación de profesores/estudiantes por lista **o por código único `600XXXX`** vía `findUserByCodigo`, exportar `courses.json`) | Solo rol `admin`; usa `utils/auth.ts` + `utils/courses.ts` |
+| `EnsenanzaView.tsx` | Explorador de cursos del usuario logueado: búsqueda, grid paginado (6/pág.), tarjeta por curso (código, color+logo, nº profes/estudiantes y actividades), estados "sin asignar"/vacío | Lee `getCoursesForUser` + `getActivities` de `utils/courses.ts`; redirige a `/` si no hay sesión |
+| `ActividadesView.tsx` | Cursos + actividades (crear/asignar/listar/borrar) | Usa `src/utils/courses.ts` + `SelectMenu.tsx` para los desplegables de curso/tipo |
+| `SelectMenu.tsx` | Dropdown reutilizable estilo marca (reemplaza `<select>` nativo): trigger + panel `rounded-2xl`, estados seleccionado/activo, cierre al clic fuera/Escape y navegación por teclado (`ArrowUp/Down`, `Enter`/`Space`, `Tab`). Props: `options` (`{value,label,meta?}`), `value`, `onChange`, `ariaLabel`, `icon`, `wrapperClass`, `textClass`, `placeholder` | Genérico; no meter lógica de negocio |
 | `AlfabetizacionView.tsx` | Portada de bloques, progreso por bloque | Lee `BLOQUES_ALFABETIZACION` de `alfabetizacionContent.ts` |
 | `ActividadesIndice.tsx` | Índice de los 3 tipos de actividades | Lee `TIPOS_ACTIVIDADES` |
 | `TipoActividad.tsx` | Portada de un tipo (lista de casos + estado) | Lee `listaPorTipo()` + `estadoCaso()` |
@@ -183,8 +188,8 @@ footer.
 | `lessonImages.ts` | Resuelve `images/<file>` → URL Vite desde `content/blocks/<b>/images/<lesson>/`. Absolutas/http/data: pasan intactas |
 | `richtext.ts` | Sintaxis inline + validación (`toSafeColor`, `fontStackFor`, `clampSize`, paletas). Antídoto contra inyección de estilos |
 | `contentApi.ts` | Cliente del content-server (`http://127.0.0.1:8787`). `backendAvailable()` con caché 10 s. `api.blocks/createBlock/updateBlock/deleteBlock/saveBlocksOrder/lessonSource/saveLessonSource/createLesson/deleteLesson/saveLessonsOrder/moveLesson/listImages/uploadImage` |
-| `auth.ts` | Usuarios + sesión. Roles `admin/profesor/estudiante/sin_asignar` (+ legacy `user`). Códigos: profesor `100XXXX`, estudiante `600XXXX`. Admin seed `administracion@sintaxia.com / 12345678`. Persistencia: IndexedDB `users-json` + `fetch("/data/users.json")` + import inicial; sesión en `localStorage` |
-| `courses.ts` | Cursos (`code` auto de 6 dígitos) + actividades (`tarea/actividad/evaluacion`), asignación de usuarios. Campos opcionales de apariencia: `color` (clave de `COURSE_COLORS`, 15 colores) e `icon` (logo `logo-01.png`…`logo-15.png` de `/images/logos/`, `COURSE_LOGOS`). IndexedDB `courses-json` + `activities-json` |
+| `auth.ts` | Usuarios + sesión. Roles `admin/profesor/estudiante/sin_asignar` (+ legacy `user`). Códigos: profesor `100XXXX`, estudiante `600XXXX`. Búsqueda por código con `findUserByCodigo`/`findUserByCodigoAsync`. Admin seed `administracion@sintaxia.com / 12345678`. Persistencia: IndexedDB `users-json` + `fetch("/data/users.json")` + import inicial; sesión en `localStorage` |
+| `courses.ts` | Cursos (`code` auto de 6 dígitos) + actividades (`tarea/actividad/evaluacion`), asignación de usuarios. API: `getCourses/getCoursesForUser/createCourse/deleteCourse/assignUserToCourse/unassignUserFromCourse/getActivities/createActivity/deleteActivity/exportCoursesJson/exportActivitiesJson`. Campos opcionales de apariencia: `color` (clave de `COURSE_COLORS`, `COURSE_COLOR_IDS` = 15 colores) e `icon` (logo `logo-01.png`…`logo-15.png` de `/images/logos/`, `COURSE_LOGOS`). IndexedDB `courses-json` + `activities-json` |
 | `alfabetizacionContent.ts` | Adapta `content/blocks/` → `{ Bloque, Subtema }` para la vista. Convenciones: `## Temáticas|Temas + lista`, `## Referentes + lista`, `## Alcance + párrafos`, `> Actividad: ...`; sin sección Temáticas, los `##/###` son temáticas |
 | `alfabetizacionActividades.ts` | Tipos + carga de los 3 JSON de actividades, índice `MODULOS_ACTIVIDADES`, `TIPOS_ACTIVIDADES`, `actividadPorSlug`, persistencia `gestion-empresarial:actividades-v2`, `estadoCaso()` |
 

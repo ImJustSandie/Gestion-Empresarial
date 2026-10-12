@@ -5,6 +5,8 @@ description: Definición, diferencia con IA tradicional, aplicaciones, límites 
 
 # ¿Qué es la Inteligencia Artificial Generativa? {#titulo}
 
+![Nuevo párrafo](images/radar_tendencias.jpg) {#nueva-mv36s8lh-1}
+
 La **Inteligencia Artificial Generativa (Gen AI)** es una rama de la inteligencia artificial enfocada en la **creación de contenido**: texto, imágenes, audio, video, código o incluso datos sintéticos. {#intro}
 
 Lo logra a partir de **patrones, estructuras y relaciones** aprendidas en un entrenamiento con grandes volúmenes de datos. No copia archivos guardados: genera contenido nuevo. {#definicion}
@@ -30,9 +32,9 @@ El entrenamiento de una IA es parecido, pero a otra escala. Mientras una persona
 Hoy la IA generativa es **multimodal** y no se limita al chat: {#areas-intro}
 
 - **Texto:** borradores, síntesis de documentos, traducción adaptativa, ideas y guiones. {#area-texto}
-- **Imágenes y video:** ilustraciones, concept art, edición asistida y animación desde descripciones. {#area-imagen}
-- **Código:** funciones en varios lenguajes, explicación de errores y automatización de pruebas. {#area-codigo}
-- **Audio:** efectos de sonido, composición musical y síntesis de voz hiperrealista. {#area-audio}
+- **Imágenes y video:** ilustraciones, concept art, edición asistida y animación desde descripciones.
+- **Código:** funciones en varios lenguajes, explicación de errores y automatización de pruebas.
+- **Audio:** efectos de sonido, composición musical y síntesis de voz hiperrealista.
 
 ## Límites iniciales y falsas expectativas {#limites}
 
@@ -60,12 +62,12 @@ Por eso puede redactar un texto fluido e impecable en gramática pero con hechos
 Ve a tu IA de confianza (ChatGPT, Claude o Gemini) y compara: {#ejercicio-intro}
 
 - **Consulta ingenua:** `Háblame sobre la fotosíntesis.` Observa un texto genérico, largo y escolar, sin saber a quién va dirigido. {#ejercicio-ingenua}
-- **Consulta estructurada:** `Actúa como un profesor universitario. Explícame solo la fase oscura (ciclo de Calvin), con una analogía sencilla y en máximo dos párrafos para un estudiante de primer semestre.` {#ejercicio-estructurada}
+- **Consulta estructurada:** `Actúa como un profesor universitario. Explícame solo la fase oscura (ciclo de Calvin), con una analogía sencilla y en máximo dos párrafos para un estudiante de primer semestre.`
 
 > ¿Qué observar? Compara estructura y contenido. La segunda respuesta se centra en tu necesidad gracias al contexto. Este tema se aborda en los próximos módulos. {#ejercicio-cierre}
 
 ## Referentes para profundizar {#referentes}
 
-- UNESCO — AI Competency Framework for Students
+- UNESCO — AI Competency Framework for Students {#referentes-lista}
 - Stanford HAI — AI Index Report
-- IBM — materiales introductorios sobre IA generativa {#referentes-lista}
+- IBM — materiales introductorios sobre IA generativa

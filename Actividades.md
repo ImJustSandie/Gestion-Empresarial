@@ -36,6 +36,7 @@ Presentas un prompt malo:
 Y una tarea:
 “Necesitas estudiar para un examen de historia. Quieres un resumen de máximo 300 palabras, dividido por conceptos y con fechas importantes.”
 
+
 El estudiante tiene que mejorar el prompt seleccionando componentes:
 - Objetivo
 - Contexto

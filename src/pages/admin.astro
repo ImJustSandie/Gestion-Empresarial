@@ -1,6 +1,7 @@
 ---
 import AdminPanel from "../components/AdminPanel.tsx";
 import AppHeader from "../components/AppHeader.tsx";
+import AppFooter from "../components/AppFooter.tsx";
 import "../styles/global.css";
 ---
 
@@ -11,10 +12,11 @@ import "../styles/global.css";
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Administración - Gestión Empresarial</title>
   </head>
-  <body class="bg-gray-50 text-gray-900 min-h-screen">
+  <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
     <AppHeader client:load currentPath="/admin" />
-    <main>
+    <main class="flex-1">
       <AdminPanel client:load />
     </main>
+    <AppFooter client:load />
   </body>
 </html>

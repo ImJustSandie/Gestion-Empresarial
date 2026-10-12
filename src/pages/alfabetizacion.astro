@@ -1,5 +1,6 @@
 ---
 import AppHeader from "../components/AppHeader.tsx";
+import AppFooter from "../components/AppFooter.tsx";
 import AlfabetizacionView from "../components/AlfabetizacionView.tsx";
 import "../styles/global.css";
 ---
@@ -11,8 +12,11 @@ import "../styles/global.css";
     <meta name="viewport" content="width=device-width" />
     <title>Alfabetización IA - Gestión Empresarial</title>
   </head>
-  <body class="bg-gray-50 text-gray-900 min-h-screen">
+  <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
     <AppHeader client:load currentPath="/alfabetizacion" />
-    <AlfabetizacionView client:load />
+    <div class="flex-1">
+      <AlfabetizacionView client:load />
+    </div>
+    <AppFooter client:load />
   </body>
 </html>

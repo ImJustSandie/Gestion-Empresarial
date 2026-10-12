@@ -1,5 +1,6 @@
 ---
 import AppHeader from "../../../../components/AppHeader.tsx";
+import AppFooter from "../../../../components/AppFooter.tsx";
 import DetectorAlucinaciones from "../../../../components/DetectorAlucinaciones.tsx";
 import { ACTIVIDADES_DETECTOR, MODULOS_ACTIVIDADES, TIPOS_ACTIVIDADES } from "../../../../utils/alfabetizacionActividades.ts";
 import "../../../../styles/global.css";
@@ -23,9 +24,9 @@ const next = idx < ACTIVIDADES_DETECTOR.length - 1 ? ACTIVIDADES_DETECTOR[idx + 
     <meta name="viewport" content="width=device-width" />
     <title>{`Actividad ${numero} · ${act.titulo} - Alfabetización IA`}</title>
   </head>
-  <body class="bg-gray-50 text-gray-900 min-h-screen">
+  <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
     <AppHeader client:load currentPath="/alfabetizacion" />
-    <div class="container mx-auto px-4 py-6 sm:py-10 max-w-4xl">
+    <main class="container mx-auto px-4 py-6 sm:py-10 max-w-4xl flex-1">
       <div class="flex flex-wrap items-center gap-2">
         <a href="/alfabetizacion/actividades/detector" class="text-xs bg-white border px-3 py-1.5 rounded-full font-semibold hover:border-gray-400">← {TIPOS_ACTIVIDADES.find((t) => t.tipo === "detector")?.titulo}</a>
         <a href={`/alfabetizacion?bloque=${act.conexion.bloqueId}`} class="text-xs bg-white border px-3 py-1.5 rounded-full font-semibold hover:border-gray-400">{act.conexion.bloqueTitulo}</a>
@@ -46,6 +47,7 @@ const next = idx < ACTIVIDADES_DETECTOR.length - 1 ? ACTIVIDADES_DETECTOR[idx + 
           {next && <a href={`/alfabetizacion/actividades/detector/${next.modulo.slug}`} class="px-4 py-2 rounded-xl border text-sm font-semibold hover:bg-gray-50">Siguiente →</a>}
         </div>
       </div>
-    </div>
+    </main>
+    <AppFooter client:load />
   </body>
 </html>

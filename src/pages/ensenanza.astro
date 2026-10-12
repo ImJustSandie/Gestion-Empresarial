@@ -1,5 +1,6 @@
 ---
 import AppHeader from "../components/AppHeader.tsx";
+import AppFooter from "../components/AppFooter.tsx";
 import EnsenanzaView from "../components/EnsenanzaView.tsx";
 import "../styles/global.css";
 ---
@@ -11,8 +12,11 @@ import "../styles/global.css";
     <meta name="viewport" content="width=device-width" />
     <title>Enseñanza - Gestión Empresarial</title>
   </head>
-  <body class="bg-gray-50 text-gray-900 min-h-screen">
+  <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
     <AppHeader client:load currentPath="/ensenanza" />
-    <EnsenanzaView client:load />
+    <div class="flex-1">
+      <EnsenanzaView client:load />
+    </div>
+    <AppFooter client:load />
   </body>
 </html>

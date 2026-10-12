@@ -1,5 +1,6 @@
 ---
 import AppHeader from "../components/AppHeader.tsx";
+import AppFooter from "../components/AppFooter.tsx";
 import "../styles/global.css";
 ---
 
@@ -12,9 +13,9 @@ import "../styles/global.css";
     <meta name="generator" content={Astro.generator} />
     <title>Dashboard - Gestión Empresarial</title>
   </head>
-  <body class="bg-gray-50 text-gray-900 min-h-screen">
+  <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
     <AppHeader client:load currentPath="/dashboard" />
-    <main class="container mx-auto px-4 py-8">
+    <main class="container mx-auto px-4 py-8 flex-1">
       <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
         <h1 class="text-3xl font-bold mb-2">Dashboard</h1>
         <p class="text-gray-600 mb-6">Estadísticas y métricas de los módulos de enseñanza y actividades.</p>
@@ -23,5 +24,6 @@ import "../styles/global.css";
         </div>
       </div>
     </main>
+    <AppFooter client:load />
   </body>
 </html>

@@ -21,6 +21,9 @@ import {
   assignUserToCourse,
   unassignUserFromCourse,
   exportCoursesJson,
+  COURSE_COLORS,
+  COURSE_COLOR_IDS,
+  COURSE_LOGOS,
   type Course,
 } from "../utils/courses";
 
@@ -40,6 +43,8 @@ export default function AdminPanel() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [newName, setNewName] = useState("");
   const [newDesc, setNewDesc] = useState("");
+  const [newColor, setNewColor] = useState("");
+  const [newIcon, setNewIcon] = useState("");
   const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
   const [assignProf, setAssignProf] = useState("");
   const [assignEst, setAssignEst] = useState("");
@@ -109,10 +114,10 @@ export default function AdminPanel() {
   const handleCreateCourse = async (e: Event) => {
     e.preventDefault();
     if (!session) return;
-    const res = await createCourse({ name: newName, description: newDesc, createdBy: session.userId });
+    const res = await createCourse({ name: newName, description: newDesc, color: newColor || undefined, icon: newIcon || undefined, createdBy: session.userId });
     setActionMsg({ type: res.success ? "success" : "error", text: res.message });
     if (res.success) {
-      setNewName(""); setNewDesc("");
+      setNewName(""); setNewDesc(""); setNewColor(""); setNewIcon("");
       await refreshCourses();
     }
     setTimeout(() => setActionMsg(null), 3000);
@@ -312,6 +317,60 @@ export default function AdminPanel() {
             </div>
             <input placeholder="Nombre del curso (ej: Gestión Empresarial 101)" value={newName} onInput={(e) => setNewName((e.target as HTMLInputElement).value)} required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-400 outline-none text-sm" />
             <textarea placeholder="Descripción (opcional)" value={newDesc} onInput={(e) => setNewDesc((e.target as HTMLTextAreaElement).value)} rows={2} class="mt-3 w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-400 outline-none text-sm" />
+
+            {/* Color del módulo */}
+            <div class="mt-4">
+              <p class="text-xs font-semibold text-slate-700 mb-1.5">Color del módulo</p>
+              <div class="flex flex-wrap gap-2">
+                {COURSE_COLOR_IDS.map((key) => (
+                  <button
+                    type="button"
+                    key={key}
+                    onClick={() => setNewColor(newColor === key ? "" : key)}
+                    class={`h-10 w-10 rounded-xl border-2 flex items-center justify-center text-white text-sm font-bold shadow-sm transition cursor-pointer ${newColor === key ? "border-gray-900 scale-110" : "border-gray-200 hover:border-gray-400"}`}
+                    style={{ background: `linear-gradient(135deg, ${COURSE_COLORS[key].from}, ${COURSE_COLORS[key].to})` }}
+                    title={COURSE_COLORS[key].label}
+                  >
+                    {newColor === key ? "✓" : ""}
+                  </button>
+                ))}
+                {newColor && (
+                  <button type="button" onClick={() => setNewColor("")} class="h-10 px-3 rounded-xl border border-gray-200 text-xs text-slate-500 hover:bg-gray-50 transition cursor-pointer">
+                    Sin color
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Logo del módulo */}
+            <div class="mt-4">
+              <p class="text-xs font-semibold text-slate-700 mb-1.5">Logo del módulo</p>
+              <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+                {COURSE_LOGOS.map((file) => (
+                  <button
+                    type="button"
+                    key={file}
+                    onClick={() => setNewIcon(newIcon === file ? "" : file)}
+                    class={`aspect-square rounded-xl border-2 bg-white overflow-hidden flex items-center justify-center p-0.5 transition cursor-pointer ${newIcon === file ? "border-[#5932EA] ring-2 ring-[#5932EA]/30" : "border-gray-200 hover:border-gray-400"}`}
+                    title={`Logo ${file}`}
+                  >
+                    <img
+                      src={`/Images/Logos/${file}`}
+                      alt={`Logo ${file}`}
+                      class="w-full h-full object-contain"
+                      loading="lazy"
+                      onError={(e) => {
+                        const target = e.currentTarget as HTMLImageElement;
+                        if (!target.src.includes("/images/logos/")) {
+                          target.src = `/images/logos/${file}`;
+                        }
+                      }}
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <button type="submit" class="mt-3 px-6 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition">+ Crear curso</button>
             {profesores.length === 0 && estudiantes.length === 0 && <p class="text-xs text-amber-600 mt-2">Aún no hay profesores/estudiantes con rol asignado para vincular.</p>}
           </form>
@@ -329,14 +388,36 @@ export default function AdminPanel() {
                 return (
                   <div key={course.id} class="bg-white border border-gray-200 rounded-xl overflow-hidden">
                     <div class="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                      <div>
-                        <div class="flex items-center gap-2">
-                          <span class="px-2.5 py-1 bg-gray-900 text-white rounded-lg text-xs font-mono font-bold">{course.code}</span>
-                          <span class="text-xs text-gray-500">{new Date(course.createdAt).toLocaleDateString("es-CO")}</span>
+                      <div class="flex items-start gap-3">
+                        <div
+                          class="w-11 h-11 rounded-xl flex items-center justify-center text-white shadow-sm shrink-0"
+                          style={course.color && COURSE_COLORS[course.color] ? { background: `linear-gradient(135deg, ${COURSE_COLORS[course.color].from}, ${COURSE_COLORS[course.color].to})` } : { background: "linear-gradient(135deg, #7C5CE9, #5E3FE6)" }}
+                        >
+                          {course.icon ? (
+                            <img
+                              src={`/Images/Logos/${course.icon}`}
+                              alt={course.name}
+                              class="w-8 h-8 object-contain drop-shadow-sm"
+                              onError={(e) => {
+                                const target = e.currentTarget as HTMLImageElement;
+                                if (!target.src.includes("/images/logos/")) {
+                                  target.src = `/images/logos/${course.icon}`;
+                                }
+                              }}
+                            />
+                          ) : (
+                            <span class="text-xs font-bold">S</span>
+                          )}
                         </div>
-                        <h4 class="font-semibold text-gray-900 mt-1">{course.name}</h4>
-                        {course.description && <p class="text-sm text-gray-600 mt-1">{course.description}</p>}
-                        <p class="text-xs text-gray-500 mt-2">{profs.length} profesor(es) • {ests.length} estudiante(s)</p>
+                        <div>
+                          <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 bg-gray-900 text-white rounded-lg text-xs font-mono font-bold">{course.code}</span>
+                            <span class="text-xs text-gray-500">{new Date(course.createdAt).toLocaleDateString("es-CO")}</span>
+                          </div>
+                          <h4 class="font-semibold text-gray-900 mt-1">{course.name}</h4>
+                          {course.description && <p class="text-sm text-gray-600 mt-1">{course.description}</p>}
+                          <p class="text-xs text-gray-500 mt-2">{profs.length} profesor(es) • {ests.length} estudiante(s)</p>
+                        </div>
                       </div>
                       <div class="flex gap-2">
                         <button onClick={() => setSelectedCourse(isOpen ? null : course.id)} class="px-4 py-2 rounded-xl border border-gray-200 text-sm font-medium hover:bg-gray-50">{isOpen ? "Cerrar" : "Gestionar"}</button>

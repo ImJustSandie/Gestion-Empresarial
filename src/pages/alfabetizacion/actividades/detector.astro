@@ -1,5 +1,6 @@
 ---
 import AppHeader from "../../../components/AppHeader.tsx";
+import AppFooter from "../../../components/AppFooter.tsx";
 import TipoActividad from "../../../components/TipoActividad.tsx";
 import "../../../styles/global.css";
 ---
@@ -10,10 +11,11 @@ import "../../../styles/global.css";
     <meta name="viewport" content="width=device-width" />
     <title>Detector de alucinaciones · Actividades - Alfabetización IA</title>
   </head>
-  <body class="bg-gray-50 text-gray-900 min-h-screen">
+  <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
     <AppHeader client:load currentPath="/alfabetizacion" />
-    <div class="container mx-auto px-4 py-6 sm:py-8 max-w-4xl">
+    <main class="container mx-auto px-4 py-6 sm:py-8 max-w-4xl flex-1">
       <TipoActividad tipo="detector" client:load />
-    </div>
+    </main>
+    <AppFooter client:load />
   </body>
 </html>

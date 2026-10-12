@@ -1,5 +1,6 @@
 ---
 import AppHeader from "../../components/AppHeader.tsx";
+import AppFooter from "../../components/AppFooter.tsx";
 import LessonRenderer from "../../components/LessonRenderer.tsx";
 import { getAllLessons, getLessonById, getLessonsByBlock } from "../../utils/lessons.ts";
 import "../../styles/global.css";
@@ -23,9 +24,9 @@ const backHref = lesson?.meta.blockId ? `/alfabetizacion?bloque=${lesson.meta.bl
     <meta name="viewport" content="width=device-width" />
     <title>{lesson ? lesson.meta.title : "No encontrada"} - Lecciones</title>
   </head>
-  <body class="bg-gray-50 text-gray-900 min-h-screen">
+  <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
     <AppHeader client:load currentPath="/alfabetizacion" />
-    <div class="px-3 md:px-6 py-6 max-w-5xl mx-auto">
+    <main class="px-3 md:px-6 py-6 max-w-5xl mx-auto flex-1 w-full">
       <a href={backHref} class="text-xs bg-white border px-3 py-1.5 rounded-full font-semibold hover:border-gray-400">← Volver al bloque</a>
       {!lesson && (
         <div class="bg-white border rounded-2xl p-8 mt-4 text-center">
@@ -57,6 +58,7 @@ const backHref = lesson?.meta.blockId ? `/alfabetizacion?bloque=${lesson.meta.bl
           ) : <span />}
         </div>
       )}
-    </div>
+    </main>
+    <AppFooter client:load />
   </body>
 </html>

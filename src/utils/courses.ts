@@ -6,6 +6,8 @@ export interface Course {
   code: string;
   name: string;
   description: string;
+  color?: string;
+  icon?: string;
   profesorIds: string[];
   estudianteIds: string[];
   createdAt: string;
@@ -22,6 +24,28 @@ export interface Activity {
   createdAt: string;
   createdBy: string;
 }
+
+export const COURSE_COLORS: Record<string, { from: string; to: string; label: string }> = {
+  morado: { from: "#7C5CE9", to: "#5E3FE6", label: "Morado" },
+  violeta: { from: "#8B5CF6", to: "#6D28D9", label: "Violeta" },
+  indigo: { from: "#6366F1", to: "#4338CA", label: "Índigo" },
+  azul: { from: "#3B82F6", to: "#1D4ED8", label: "Azul" },
+  cian: { from: "#06B6D4", to: "#0E7490", label: "Cian" },
+  teal: { from: "#14B8A6", to: "#0F766E", label: "Teal" },
+  esmeralda: { from: "#10B981", to: "#059669", label: "Esmeralda" },
+  lima: { from: "#84CC16", to: "#3F6212", label: "Lima" },
+  ambar: { from: "#F59E0B", to: "#B45309", label: "Ámbar" },
+  naranja: { from: "#F97316", to: "#C2410C", label: "Naranja" },
+  rojo: { from: "#EF4444", to: "#B91C1C", label: "Rojo" },
+  rosa: { from: "#F43F5E", to: "#BE123C", label: "Rosa" },
+  fucsia: { from: "#D946EF", to: "#A21CAF", label: "Fucsia" },
+  cafe: { from: "#A16207", to: "#78350F", label: "Café" },
+  gris: { from: "#64748B", to: "#334155", label: "Gris" },
+};
+
+export const COURSE_COLOR_IDS = Object.keys(COURSE_COLORS);
+
+export const COURSE_LOGOS = Array.from({ length: 15 }, (_, i) => `logo-${String(i + 1).padStart(2, "0")}.png`);
 
 const IDB_DB_NAME = "gestion-empresarial";
 const IDB_STORE = "kv";
@@ -148,7 +172,7 @@ function generate6DigitCode(): string {
   return code;
 }
 
-export async function createCourse(data: { name: string; description: string; createdBy: string; code?: string }): Promise<{ success: boolean; message: string; course?: Course }> {
+export async function createCourse(data: { name: string; description: string; createdBy: string; code?: string; color?: string; icon?: string }): Promise<{ success: boolean; message: string; course?: Course }> {
   await hydrate();
   const name = data.name.trim();
   if (!name) return { success: false, message: "El nombre del curso es obligatorio." };
@@ -163,6 +187,8 @@ export async function createCourse(data: { name: string; description: string; cr
     code,
     name,
     description: data.description.trim(),
+    color: data.color?.trim() || undefined,
+    icon: data.icon?.trim() || undefined,
     profesorIds: [],
     estudianteIds: [],
     createdAt: new Date().toISOString(),

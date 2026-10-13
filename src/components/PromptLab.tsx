@@ -5,7 +5,7 @@
 // (selección, descarte y orden). Sin respuestas simuladas.
 import { useState } from "preact/hooks";
 import { loadActividades, saveActividades, type ActividadPromptLab } from "../utils/alfabetizacionActividades";
-
+const FOCO = "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-teal-500/40";
 export default function PromptLab({ act, numero }: { act: ActividadPromptLab; numero: number }) {
   const porId = new Map(act.piezas.map((p) => [p.id, p]));
   // El orden esperado lo define `orden`, no la posición en el banco (desordenado).
@@ -66,40 +66,45 @@ export default function PromptLab({ act, numero }: { act: ActividadPromptLab; nu
   const promptFinal = [act.promptVago, ...orden.map((id) => porId.get(id)!.texto)].join(" ");
 
   return (
-    <article class="bg-white border-2 rounded-3xl overflow-hidden border-gray-200">
-      <div class="bg-gradient-to-br from-teal-600 via-emerald-700 to-green-800 text-white p-6 sm:p-8 relative overflow-hidden">
-        <span class="absolute -right-3 -bottom-8 text-[110px] opacity-20 select-none leading-none">⚗️</span>
-        <span class="inline-block text-[11px] font-extrabold tracking-widest bg-white/20 px-2 py-1 rounded-lg relative">ACTIVIDAD {numero} · GENERA TU PROMPT</span>
-        <h2 class="text-2xl sm:text-3xl font-extrabold mt-2 relative">{act.titulo}</h2>
-        <p class="text-sm text-white/85 mt-2 max-w-2xl relative">{act.introduccion}</p>
+    <article class="bg-white border border-slate-200/90 rounded-3xl overflow-hidden shadow-xs">
+      <div class="bg-gradient-to-br from-teal-600 via-emerald-700 to-green-800 text-white p-6 sm:p-9 relative overflow-hidden">
+        <span class="pointer-events-none absolute -top-16 -right-10 w-64 h-64 rounded-full bg-white/20 blur-3xl" aria-hidden="true" />
+        <span class="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle,white_1px,transparent_1px)] [background-size:16px_16px]" aria-hidden="true" />
+        <span class="absolute -right-3 -bottom-8 text-[120px] opacity-20 select-none leading-none" aria-hidden="true">⚗️</span>
+        <span class="relative inline-block text-xs font-extrabold tracking-widest bg-white/20 px-3 py-1.5 rounded-full">ACTIVIDAD {numero} · GENERA TU PROMPT</span>
+        <h2 class="relative text-2xl sm:text-4xl font-extrabold mt-3 leading-tight">{act.titulo}</h2>
+        <p class="relative text-base sm:text-lg text-white/90 mt-3 max-w-2xl leading-relaxed">{act.introduccion}</p>
       </div>
 
-      <div class="p-5 sm:p-6 grid gap-4">
+      <div class="p-5 sm:p-8 grid gap-8">
         {/* Misión */}
-        <div class="rounded-2xl border border-teal-200 bg-teal-50 p-4">
-          <p class="text-[11px] font-extrabold tracking-widest text-teal-700">🎯 TU MISIÓN</p>
-          <p class="text-sm mt-1">{act.mision}</p>
-          <p class="text-[11px] font-extrabold tracking-widest text-teal-700 mt-3">PUNTO DE PARTIDA (VAGO)</p>
-          <p class="font-mono text-sm mt-1 bg-white border rounded-xl px-3 py-2">“{act.promptVago}”</p>
+        <div class="rounded-2xl border-l-4 border-teal-500 bg-teal-50 p-5 sm:p-6">
+          <p class="text-xs font-extrabold tracking-widest text-teal-700">🎯 TU MISIÓN</p>
+          <p class="text-base sm:text-lg leading-7 mt-1.5 text-slate-800">{act.mision}</p>
+          <p class="text-xs font-extrabold tracking-widest text-teal-700 mt-5">PUNTO DE PARTIDA (VAGO)</p>
+          <p class="font-mono text-base mt-2 bg-white border border-teal-200 rounded-xl px-4 py-3 text-slate-800">“{act.promptVago}”</p>
         </div>
 
-        {/* Paso 1: banco de fragmentos */}
-        <div>
-          <p class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Paso 1 · Selecciona del banco (hay distractores: descártalos)</p>
+        {/* Paso 1 */}
+        <section>
+          <h3 class="flex items-start gap-3 mb-3">
+            <span class="w-8 h-8 rounded-full bg-teal-600 text-white text-sm font-extrabold flex items-center justify-center shrink-0">1</span>
+            <span class="text-base sm:text-lg font-bold text-slate-900 leading-snug pt-0.5">Selecciona del banco <span class="font-medium text-slate-500">(hay distractores: descártalos)</span></span>
+          </h3>
           {banco.length === 0 ? (
-            <p class="text-sm text-gray-400 italic">Banco vacío: todo está en tu prompt o ya lo evaluaste.</p>
+            <p class="text-base text-slate-400 italic bg-slate-50 rounded-2xl p-4">Banco vacío: todo está en tu prompt o ya lo evaluaste.</p>
           ) : (
-            <div class="grid gap-2">
+            <div class="grid gap-3">
               {banco.map((p, idx) => (
-                <div key={p.id} class="border-2 border-gray-200 rounded-2xl p-3 flex items-start gap-3 bg-white">
+                <div key={p.id} class="border-2 border-slate-200 rounded-2xl p-4 flex items-center gap-4 bg-white">
                   <div class="flex-1 min-w-0">
-                    <p class="text-[11px] font-bold text-gray-400">Fragmento {idx + 1}</p>
-                    <p class="text-sm font-mono mt-0.5">{p.texto}</p>
+                    <p class="text-sm font-bold text-slate-400">Fragmento {idx + 1}</p>
+                    <p class="text-base leading-7 text-slate-800 mt-0.5">{p.texto}</p>
                   </div>
                   <button
                     disabled={generado}
                     onClick={() => agregar(p.id)}
-                    class={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold transition ${generado ? "bg-gray-100 text-gray-300 cursor-default" : "bg-teal-600 text-white hover:bg-teal-700"}`}
+                    class={`shrink-0 px-4 py-2.5 rounded-xl text-sm font-bold transition ${FOCO} ${generado ? "bg-slate-100 text-slate-300 cursor-default" : "bg-teal-600 text-white hover:bg-teal-700 cursor-pointer"}`}
                   >
                     ＋ Añadir
                   </button>
@@ -107,28 +112,31 @@ export default function PromptLab({ act, numero }: { act: ActividadPromptLab; nu
               ))}
             </div>
           )}
-        </div>
+        </section>
 
-        {/* Paso 2: tu prompt en orden */}
-        <div>
-          <p class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Paso 2 · Ordena tu prompt ({orden.length} fragmentos)</p>
+        {/* Paso 2 */}
+        <section>
+          <h3 class="flex items-start gap-3 mb-3">
+            <span class="w-8 h-8 rounded-full bg-teal-600 text-white text-sm font-extrabold flex items-center justify-center shrink-0">2</span>
+            <span class="text-base sm:text-lg font-bold text-slate-900 leading-snug pt-0.5">Ordena tu prompt <span class="font-medium text-slate-500">({orden.length} fragmentos)</span></span>
+          </h3>
           {orden.length === 0 ? (
-            <p class="text-sm text-gray-400 italic border-2 border-dashed rounded-2xl p-4 text-center">Añade fragmentos del banco en el orden en que deben ir.</p>
+            <p class="text-base text-slate-500 border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center">Añade fragmentos del banco en el orden en que deben ir.</p>
           ) : (
-            <ol class="grid gap-2">
+            <ol class="grid gap-3">
               {orden.map((id, i) => {
                 const p = porId.get(id)!;
                 return (
-                  <li key={id} class="border-2 border-teal-600 bg-teal-50 rounded-2xl p-3 flex items-start gap-3">
-                    <span class="w-7 h-7 rounded-full bg-teal-600 text-white text-xs font-extrabold flex items-center justify-center shrink-0">{i + 1}</span>
+                  <li key={id} class="border-2 border-teal-500 bg-teal-50 rounded-2xl p-4 flex items-center gap-4">
+                    <span class="w-9 h-9 rounded-full bg-teal-600 text-white text-sm font-extrabold flex items-center justify-center shrink-0">{i + 1}</span>
                     <div class="flex-1 min-w-0">
-                      <p class="text-sm font-mono">{p.texto}</p>
+                      <p class="text-base leading-7 text-slate-800">{p.texto}</p>
                     </div>
                     {!generado && (
-                      <div class="flex flex-col gap-1 shrink-0">
-                        <button onClick={() => mover(i, -1)} disabled={i === 0} class="px-2 py-0.5 rounded border text-xs disabled:opacity-30 bg-white" title="Subir">↑</button>
-                        <button onClick={() => mover(i, 1)} disabled={i === orden.length - 1} class="px-2 py-0.5 rounded border text-xs disabled:opacity-30 bg-white" title="Bajar">↓</button>
-                        <button onClick={() => quitar(id)} class="px-2 py-0.5 rounded border text-xs text-rose-600 bg-white" title="Devolver al banco">✕</button>
+                      <div class="flex gap-1.5 shrink-0">
+                        <button onClick={() => mover(i, -1)} disabled={i === 0} class={`w-10 h-10 rounded-lg border border-slate-300 text-base disabled:opacity-30 bg-white hover:bg-slate-50 cursor-pointer ${FOCO}`} title="Subir" aria-label="Subir">↑</button>
+                        <button onClick={() => mover(i, 1)} disabled={i === orden.length - 1} class={`w-10 h-10 rounded-lg border border-slate-300 text-base disabled:opacity-30 bg-white hover:bg-slate-50 cursor-pointer ${FOCO}`} title="Bajar" aria-label="Bajar">↓</button>
+                        <button onClick={() => quitar(id)} class={`w-10 h-10 rounded-lg border border-rose-200 text-base text-rose-600 bg-white hover:bg-rose-50 cursor-pointer ${FOCO}`} title="Devolver al banco" aria-label="Devolver al banco">✕</button>
                       </div>
                     )}
                   </li>
@@ -136,57 +144,60 @@ export default function PromptLab({ act, numero }: { act: ActividadPromptLab; nu
               })}
             </ol>
           )}
-        </div>
+        </section>
 
-        <div class="flex flex-wrap gap-2">
+        <div class="flex flex-wrap gap-3">
           {!generado ? (
             <button
               onClick={generar}
               disabled={orden.length === 0}
-              class={`px-6 py-2.5 rounded-xl text-sm font-bold transition ${orden.length === 0 ? "bg-gray-200 text-gray-400 cursor-not-allowed" : "bg-teal-600 text-white hover:bg-teal-700"}`}
+              class={`px-8 py-3.5 rounded-2xl text-base font-bold transition ${FOCO} ${orden.length === 0 ? "bg-slate-200 text-slate-400 cursor-not-allowed" : "bg-teal-600 text-white hover:bg-teal-700 shadow-sm cursor-pointer"}`}
             >
               ⚗️ Generar mi prompt
             </button>
           ) : (
             <>
-              <button onClick={modificar} class="px-5 py-2.5 rounded-xl text-sm font-bold bg-gray-900 text-white hover:bg-gray-700 transition">↩ Seguir editando</button>
-              <button onClick={reiniciar} class="px-5 py-2.5 rounded-xl text-sm font-semibold border hover:bg-gray-50 transition">Vaciar laboratorio</button>
+              <button onClick={modificar} class={`px-6 py-3.5 rounded-2xl text-base font-bold bg-teal-600 text-white hover:bg-teal-700 transition cursor-pointer ${FOCO}`}>↩ Seguir editando</button>
+              <button onClick={reiniciar} class={`px-6 py-3.5 rounded-2xl text-base font-semibold border-2 border-slate-300 text-slate-700 hover:border-slate-500 transition cursor-pointer ${FOCO}`}>Vaciar laboratorio</button>
             </>
           )}
         </div>
 
-        {/* Paso 3: tu prompt generado + evaluación */}
+        {/* Paso 3 */}
         {generado && (
-          <div>
-            <p class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Paso 3 · Tu prompt generado</p>
-            <p class="text-sm leading-relaxed bg-gray-900 text-gray-100 rounded-2xl p-4 font-mono">{promptFinal}</p>
-            <div class={`mt-3 rounded-2xl p-4 border ${exito ? "bg-emerald-50 border-emerald-200" : "bg-amber-50 border-amber-200"}`}>
-              <p class={`text-sm font-extrabold ${exito ? "text-emerald-800" : "text-amber-800"}`}>
+          <section>
+            <h3 class="flex items-start gap-3 mb-3">
+              <span class="w-8 h-8 rounded-full bg-teal-600 text-white text-sm font-extrabold flex items-center justify-center shrink-0">3</span>
+              <span class="text-base sm:text-lg font-bold text-slate-900 leading-snug pt-0.5">Tu prompt generado</span>
+            </h3>
+            <p class="text-base leading-8 bg-slate-900 text-slate-100 rounded-2xl p-5 font-mono">{promptFinal}</p>
+            <div class={`mt-4 rounded-2xl p-5 sm:p-6 border-2 ${exito ? "bg-emerald-50 border-emerald-200" : "bg-amber-50 border-amber-200"}`} role="status">
+              <p class={`text-lg font-extrabold ${exito ? "text-emerald-800" : "text-amber-800"}`}>
                 {exito ? "✓ ¡Prompt de laboratorio aprobado! Lo armaste tú: completo, limpio y ordenado." : "✕ Tu prompt aún no está listo. Revisa los criterios y sigue editando."}
               </p>
-              <ul class="mt-2 space-y-1.5 text-sm">
-                <li class="flex gap-2">
-                  <span class={`font-extrabold ${faltantes.length === 0 ? "text-emerald-600" : "text-rose-600"}`}>{faltantes.length === 0 ? "✓" : "✕"}</span>
+              <ul class="mt-4 space-y-3 text-base leading-7">
+                <li class="flex gap-3">
+                  <span class={`w-7 h-7 rounded-full flex items-center justify-center text-sm font-extrabold text-white shrink-0 ${faltantes.length === 0 ? "bg-emerald-600" : "bg-rose-600"}`}>{faltantes.length === 0 ? "✓" : "✕"}</span>
                   <span>
                     <b>Selección:</b>{" "}
                     {faltantes.length === 0 ? "incluiste las 4 piezas necesarias." : `te faltan: ${faltantes.map((p) => p.etiqueta).join(", ")}.`}
                   </span>
                 </li>
-                <li class="flex gap-2">
-                  <span class={`font-extrabold ${intrusos.length === 0 ? "text-emerald-600" : "text-rose-600"}`}>{intrusos.length === 0 ? "✓" : "✕"}</span>
+                <li class="flex gap-3">
+                  <span class={`w-7 h-7 rounded-full flex items-center justify-center text-sm font-extrabold text-white shrink-0 ${intrusos.length === 0 ? "bg-emerald-600" : "bg-rose-600"}`}>{intrusos.length === 0 ? "✓" : "✕"}</span>
                   <span>
                     <b>Descarte:</b>{" "}
                     {intrusos.length === 0 ? "ningún distractor en tu prompt." : `descarta: ${intrusos.map((p) => p.etiqueta).join(", ")}.`}
                   </span>
                 </li>
                 {intrusos.map((p) => (
-                  <li key={p.id} class="flex gap-2 text-sm text-gray-600 ml-6">
+                  <li key={p.id} class="flex gap-3 text-slate-600 ml-10">
                     <span>→</span>
                     <span><b>{p.etiqueta}:</b> {p.porQue}</span>
                   </li>
                 ))}
-                <li class="flex gap-2">
-                  <span class={`font-extrabold ${ordenOk ? "text-emerald-600" : "text-rose-600"}`}>{ordenOk ? "✓" : "✕"}</span>
+                <li class="flex gap-3">
+                  <span class={`w-7 h-7 rounded-full flex items-center justify-center text-sm font-extrabold text-white shrink-0 ${ordenOk ? "bg-emerald-600" : "bg-rose-600"}`}>{ordenOk ? "✓" : "✕"}</span>
                   <span>
                     <b>Orden:</b>{" "}
                     {ordenOk ? "objetivo → contexto → restricción → formato." : "reordena: primero el objetivo, luego el contexto y al final cómo entregarlo."}
@@ -194,7 +205,7 @@ export default function PromptLab({ act, numero }: { act: ActividadPromptLab; nu
                 </li>
               </ul>
             </div>
-          </div>
+          </section>
         )}
       </div>
     </article>

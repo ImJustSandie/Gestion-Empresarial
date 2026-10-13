@@ -11,44 +11,16 @@ function loadProgress(): Record<string, boolean> {
   }
 }
 
-const BLOQUE_STYLES: Record<string, { hero: string; badge: string; border: string; accent: string }> = {
-  emerald: {
-    hero: "from-emerald-600 via-emerald-700 to-teal-800",
-    badge: "bg-emerald-100 text-emerald-800 border-emerald-200",
-    border: "hover:border-emerald-400",
-    accent: "text-emerald-600",
-  },
-  indigo: {
-    hero: "from-indigo-600 via-indigo-700 to-violet-800",
-    badge: "bg-indigo-100 text-indigo-800 border-indigo-200",
-    border: "hover:border-indigo-400",
-    accent: "text-indigo-600",
-  },
-  amber: {
-    hero: "from-amber-500 via-orange-600 to-orange-700",
-    badge: "bg-amber-100 text-amber-800 border-amber-200",
-    border: "hover:border-amber-400",
-    accent: "text-amber-600",
-  },
-  rose: {
-    hero: "from-rose-600 via-rose-700 to-pink-800",
-    badge: "bg-rose-100 text-rose-800 border-rose-200",
-    border: "hover:border-rose-400",
-    accent: "text-rose-600",
-  },
-  violet: {
-    hero: "from-violet-600 via-purple-700 to-purple-900",
-    badge: "bg-violet-100 text-violet-800 border-violet-200",
-    border: "hover:border-violet-400",
-    accent: "text-violet-600",
-  },
-};
-
+// Un solo tema por nivel: se usa igual en la portada y en la vista del bloque.
 const NIVEL_THEMES: Record<number, {
   headerBg: string;
   btnBg: string;
   barBg: string;
   dotColor: string;
+  soft: string;
+  softText: string;
+  border: string;
+  ring: string;
   icon: string;
 }> = {
   1: {
@@ -56,6 +28,10 @@ const NIVEL_THEMES: Record<number, {
     btnBg: "bg-[#6A42C2] hover:bg-[#5833A8]",
     barBg: "bg-[#6A42C2]",
     dotColor: "text-[#6A42C2]",
+    soft: "bg-[#F3EEFF]",
+    softText: "text-[#5833A8]",
+    border: "border-[#6A42C2]",
+    ring: "focus-visible:ring-[#6A42C2]",
     icon: "🧠",
   },
   2: {
@@ -63,6 +39,10 @@ const NIVEL_THEMES: Record<number, {
     btnBg: "bg-[#00897B] hover:bg-[#007266]",
     barBg: "bg-[#00897B]",
     dotColor: "text-[#00897B]",
+    soft: "bg-[#E6F6F4]",
+    softText: "text-[#00695C]",
+    border: "border-[#00897B]",
+    ring: "focus-visible:ring-[#00897B]",
     icon: "💬",
   },
   3: {
@@ -70,6 +50,10 @@ const NIVEL_THEMES: Record<number, {
     btnBg: "bg-[#1D4ED8] hover:bg-[#1E40AF]",
     barBg: "bg-[#1D4ED8]",
     dotColor: "text-[#1D4ED8]",
+    soft: "bg-[#EAF1FF]",
+    softText: "text-[#1E40AF]",
+    border: "border-[#1D4ED8]",
+    ring: "focus-visible:ring-[#1D4ED8]",
     icon: "🔍",
   },
   4: {
@@ -77,6 +61,10 @@ const NIVEL_THEMES: Record<number, {
     btnBg: "bg-[#E11D48] hover:bg-[#BE123C]",
     barBg: "bg-[#E11D48]",
     dotColor: "text-[#E11D48]",
+    soft: "bg-[#FFEDF1]",
+    softText: "text-[#BE123C]",
+    border: "border-[#E11D48]",
+    ring: "focus-visible:ring-[#E11D48]",
     icon: "🛡️",
   },
   5: {
@@ -84,9 +72,21 @@ const NIVEL_THEMES: Record<number, {
     btnBg: "bg-[#EA580C] hover:bg-[#C2410C]",
     barBg: "bg-[#EA580C]",
     dotColor: "text-[#EA580C]",
+    soft: "bg-[#FFF1E8]",
+    softText: "text-[#C2410C]",
+    border: "border-[#EA580C]",
+    ring: "focus-visible:ring-[#EA580C]",
     icon: "📦",
   },
 };
+
+
+
+
+
+
+
+
 
 export default function AlfabetizacionView() {
   const initialBloqueId = (): string | null => {
@@ -206,12 +206,15 @@ export default function AlfabetizacionView() {
     );
   }
 
+    const FOCO = "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#5932EA]/40";
+  const proximoBloque = BLOQUES_ALFABETIZACION.find((b) => b.subtemas.some((s) => !done[s.id])) ?? null;
+
   return (
     <div class="min-h-screen">
       {/* Barra superior de la sección (ruta + progreso) */}
       <div class="sticky top-[57px] md:top-[61px] z-20 bg-white/90 backdrop-blur-md border-b border-slate-200/80">
-        <div class="w-full px-6 sm:px-10 lg:px-14 py-2.5 flex items-center justify-between gap-4">
-          <button onClick={goHome} class="text-sm font-bold hover:underline truncate cursor-pointer text-slate-800">
+        <div class="w-full px-6 sm:px-10 lg:px-14 py-3 flex items-center justify-between gap-4">
+          <button onClick={goHome} class={`text-sm sm:text-base font-bold hover:underline truncate cursor-pointer text-slate-800 rounded-lg ${FOCO}`}>
             {bloque ? (
               <span>
                 <span class="text-slate-400 font-normal">Alfabetización /</span> B{bloque.numero} · {bloque.tituloCorto}
@@ -222,26 +225,25 @@ export default function AlfabetizacionView() {
           </button>
 
           <div class="flex items-center gap-3">
-            <div class="hidden sm:flex items-center gap-2 text-xs text-slate-500">
+            <div class="hidden sm:flex items-center gap-2.5 text-sm text-slate-500">
               <span>{completedCount}/{TOTAL_SUBTEMAS} vistos</span>
-              <div class="w-24 h-2 bg-slate-100 rounded-full overflow-hidden">
-                <div class="h-full bg-[#5932EA] transition-all" style={{ width: `${pct}%` }} />
+              <div class="w-28 h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                <div class="h-full bg-[#5932EA] rounded-full transition-all" style={{ width: `${pct}%` }} />
               </div>
-              <span class="font-bold text-slate-700">{pct}%</span>
+              <span class="font-bold text-slate-700 w-10">{pct}%</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ===== PORTADA: 5 Bloques de Alfabetización según Imagen 2 ===== */}
+      {/* ===== PORTADA ===== */}
       {bloque === null && (
-        <div class="w-full px-6 sm:px-10 lg:px-14 py-8">
-          {/* Tarjeta de Progreso General (Superior) */}
-          <div class="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xs flex flex-col md:flex-row items-center justify-between gap-6 mb-10">
-            {/* Lado izquierdo: Anillo de porcentaje y texto */}
-            <div class="flex items-center gap-5 w-full md:w-auto">
-              <div class="relative w-20 h-20 shrink-0">
-                <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+        <div class="w-full px-6 sm:px-10 lg:px-14 py-8 sm:py-10">
+          {/* Progreso general */}
+          <div class="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xs grid gap-6 lg:grid-cols-[auto_1fr_auto] lg:items-center mb-10">
+            <div class="flex items-center gap-5">
+              <div class="relative w-24 h-24 shrink-0">
+                <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36" aria-hidden="true">
                   <path
                     class="text-slate-100"
                     stroke-width="3.5"
@@ -259,69 +261,84 @@ export default function AlfabetizacionView() {
                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                   />
                 </svg>
-                <div class="absolute inset-0 flex items-center justify-center font-black text-slate-900 text-lg">
+                <div class="absolute inset-0 flex items-center justify-center font-black text-slate-900 text-xl">
                   {pct}%
                 </div>
               </div>
               <div>
-                <p class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400">
+                <p class="text-xs font-extrabold uppercase tracking-widest text-slate-400">
                   TU PROGRESO GENERAL
                 </p>
-                <h3 class="text-xl font-black text-slate-900 mt-0.5">
+                <h3 class="text-2xl font-black text-slate-900 mt-0.5">
                   {pct}% completado
                 </h3>
-                <p class="text-xs text-slate-500 mt-0.5">
+                <p class="text-sm text-slate-500 mt-1 max-w-xs leading-snug">
                   Vas muy bien. Continúa con el siguiente nivel para seguir avanzando.
                 </p>
               </div>
             </div>
 
-            {/* Centro: Barra de niveles */}
-            <div class="flex flex-col items-start gap-1.5 w-full md:w-auto">
-              <div class="w-full sm:w-64 h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                <div
-                  class="h-full bg-gradient-to-r from-[#5932EA] to-[#7C5CE9] rounded-full transition-all duration-500"
-                  style={{ width: `${(completedBlocksCount / BLOQUES_ALFABETIZACION.length) * 100}%` }}
-                />
+            {/* Niveles: 5 pasos */}
+            <div class="w-full lg:max-w-md lg:justify-self-center">
+              <div class="flex items-center gap-1.5" role="img" aria-label={`${completedBlocksCount} de ${BLOQUES_ALFABETIZACION.length} niveles completados`}>
+                {BLOQUES_ALFABETIZACION.map((b) => {
+                  const completo = b.subtemas.every((s) => done[s.id]);
+                  const parcial = b.subtemas.some((s) => done[s.id]);
+                  return (
+                    <span
+                      key={b.id}
+                      class={`h-3 flex-1 rounded-full transition-colors ${completo ? "bg-[#5932EA]" : parcial ? "bg-[#7C5CE9]/50" : "bg-slate-100"}`}
+                    />
+                  );
+                })}
               </div>
-              <p class="text-xs text-slate-400 font-medium">
+              <p class="text-sm text-slate-500 font-medium mt-2">
                 {completedBlocksCount} de {BLOQUES_ALFABETIZACION.length} niveles completados
               </p>
             </div>
 
-            {/* Derecha: Consejo con foco */}
-            <div class="flex items-center gap-3.5 border-t md:border-t-0 md:border-l border-slate-100 pt-4 md:pt-0 md:pl-6 max-w-xs w-full md:w-auto">
-              <div class="w-10 h-10 rounded-full bg-[#EDE9FE] flex items-center justify-center text-[#5932EA] shrink-0 text-lg">
+            {/* Consejo */}
+            <div class="flex items-center gap-4 border-t lg:border-t-0 lg:border-l border-slate-100 pt-5 lg:pt-0 lg:pl-8 lg:max-w-xs">
+              <div class="w-12 h-12 rounded-2xl bg-[#EDE9FE] flex items-center justify-center text-2xl shrink-0" aria-hidden="true">
                 💡
               </div>
-              <div class="text-xs text-slate-600 leading-snug">
-                <p>La alfabetización en IA es el primer paso para un futuro más consciente.</p>
-                <span class="text-[#5932EA] font-bold block mt-0.5">→</span>
-              </div>
+              <p class="text-sm text-slate-600 leading-snug">
+                La alfabetización en IA es el primer paso para un futuro más consciente.
+              </p>
             </div>
           </div>
 
-          {/* Encabezado de la Sección */}
-          <div class="mb-8">
-            <p class="text-[11px] font-extrabold uppercase tracking-widest text-[#5932EA] mb-1">
-              NIVELES DE ALFABETIZACIÓN IA
-            </p>
-            <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mb-2">
-              Elige un bloque para empezar
-            </h2>
-            <p class="text-sm sm:text-base text-slate-600 max-w-3xl leading-relaxed">
-              Cada nivel te acerca a un uso más consciente, crítico y creativo de la inteligencia artificial. Completa los cinco niveles para dominar las competencias esenciales de la era de la IA.
-            </p>
+          {/* Encabezado de la sección */}
+          <div class="mb-8 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
+            <div>
+              <p class="text-xs font-extrabold uppercase tracking-widest text-[#5932EA] mb-1.5">
+                NIVELES DE ALFABETIZACIÓN IA
+              </p>
+              <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mb-3">
+                Elige un bloque para empezar
+              </h2>
+              <p class="text-base sm:text-lg text-slate-600 max-w-3xl leading-relaxed">
+                Cada nivel te acerca a un uso más consciente, crítico y creativo de la inteligencia artificial. Completa los cinco niveles para dominar las competencias esenciales de la era de la IA.
+              </p>
+            </div>
+            {proximoBloque && completedCount > 0 && (
+              <button
+                onClick={() => openBloque(proximoBloque.id)}
+                class={`shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-[#5932EA] hover:bg-[#4E2AD0] text-white text-base font-bold shadow-sm transition cursor-pointer ${FOCO}`}
+              >
+                Continuar con el Nivel {proximoBloque.numero} →
+              </button>
+            )}
           </div>
 
-          {/* Tarjetas de niveles en dos grupos: Niveles 1–3 y Niveles 4–5 */}
-          {[[0, 1, 2], [3, 4]].map((group, gi) => (
-          <div class={gi === 0 ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch mb-10" : "flex flex-col sm:flex-row justify-center gap-4 items-stretch"}>
-            {group.map((i) => {
-              const b = BLOQUES_ALFABETIZACION[i];
+          {/* Tarjetas de niveles: 3 + 2 centradas, todas del mismo tamaño */}
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-5 items-stretch mb-10">
+            {BLOQUES_ALFABETIZACION.map((b, i) => {
               const theme = NIVEL_THEMES[b.numero] ?? NIVEL_THEMES[1];
               const nDone = b.subtemas.filter((s) => done[s.id]).length;
               const bpct = Math.round((nDone / b.subtemas.length) * 100);
+              const completo = nDone === b.subtemas.length;
+              const pos = i === 3 ? "lg:col-start-2" : "";
 
               return (
                 <article
@@ -335,112 +352,100 @@ export default function AlfabetizacionView() {
                       openBloque(b.id);
                     }
                   }}
-                  class={`${gi === 1 ? "w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc((100%-2rem)/3)]" : ""} bg-white border border-slate-200/90 rounded-2xl overflow-hidden flex flex-col justify-between shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all group cursor-pointer`}
+                  class={`lg:col-span-2 ${pos} bg-white border border-slate-200/90 rounded-3xl overflow-hidden flex flex-col shadow-xs hover:shadow-lg hover:-translate-y-1 transition-all group cursor-pointer ${FOCO}`}
                 >
-                  <div>
-                    {/* Cabecera con color característico del Nivel */}
-                    <div
-                      class={`${theme.headerBg} relative overflow-hidden min-h-[132px] p-4 sm:p-5 text-white flex flex-col justify-between`}
-                    >
-                      {/* Halo de luz */}
+                  {/* Cabecera con color del nivel */}
+                  <div class={`${theme.headerBg} relative overflow-hidden p-5 sm:p-6 text-white`}>
+                    <span
+                      class="pointer-events-none absolute -top-12 -right-10 w-44 h-44 rounded-full bg-white/25 blur-2xl"
+                      aria-hidden="true"
+                    />
+                    <span
+                      class="pointer-events-none absolute inset-0 opacity-[0.15] [background-image:radial-gradient(circle,white_1px,transparent_1px)] [background-size:14px_14px]"
+                      aria-hidden="true"
+                    />
+                    <div class="relative flex items-start justify-between gap-3">
+                      <span class="inline-flex items-center gap-1.5 text-xs font-extrabold tracking-widest bg-white/20 ring-1 ring-white/30 px-3 py-1.5 rounded-full uppercase backdrop-blur-md">
+                        NIVEL {b.numero}
+                      </span>
                       <span
-                        class="pointer-events-none absolute -top-12 -right-10 w-40 h-40 rounded-full bg-white/25 blur-2xl"
-                        aria-hidden="true"
-                      />
-                      {/* Patrón de puntos */}
-                      <span
-                        class="pointer-events-none absolute inset-0 opacity-[0.18] [background-image:radial-gradient(circle,white_1px,transparent_1px)] [background-size:14px_14px]"
-                        aria-hidden="true"
-                      />
-                      {/* Emoji marca de agua */}
-                      <span
-                        class="pointer-events-none absolute -right-3 -bottom-6 text-[80px] leading-none opacity-25 select-none transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6"
+                        class="w-14 h-14 rounded-2xl bg-white/20 ring-1 ring-white/30 backdrop-blur-md flex items-center justify-center text-3xl select-none transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6"
                         aria-hidden="true"
                       >
                         {theme.icon}
                       </span>
-
-                      <span class="relative inline-flex items-center gap-1.5 text-[10px] font-extrabold tracking-widest bg-white/20 ring-1 ring-white/30 px-2.5 py-1 rounded-full uppercase w-fit backdrop-blur-md">
-                        <span class="w-1.5 h-1.5 rounded-full bg-white/80" />
-                        NIVEL {b.numero}
-                      </span>
-
-                      <h3 class="relative text-base font-extrabold mt-2 leading-snug pr-10 drop-shadow-sm">
-                        {b.titulo}
-                      </h3>
                     </div>
-
-                    {/* Contenido con textos reales del proyecto */}
-                    <div class="p-4 sm:p-5 flex-1 flex flex-col min-h-[190px]">
-                      <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed mb-4">
-                        {b.descripcion}
-                      </p>
-
-                      {/* Temas principales */}
-                      <div class="mb-4">
-                        <p class="text-[11px] font-bold text-slate-700 mb-1.5">
-                          Temas principales
-                        </p>
-                        <ul class="space-y-1">
-                          {b.subtemas.slice(0, 3).map((s) => (
-                            <li key={s.id} class="text-xs text-slate-500 truncate flex items-center gap-1.5">
-                              <span class={`${theme.dotColor} text-base leading-none`}>•</span>
-                              <span class="truncate">{s.titulo}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
+                    <h3 class="relative text-xl sm:text-2xl font-extrabold mt-4 leading-tight drop-shadow-sm">
+                      {b.titulo}
+                    </h3>
                   </div>
 
-                  {/* Barra de progreso y botón de acción */}
-                  <div class="p-4 sm:p-5 pt-0">
-                    <div class="mb-3">
-                      <div class="flex justify-between text-xs text-slate-400 mb-1">
+                  {/* Contenido */}
+                  <div class="p-5 sm:p-6 flex-1 flex flex-col">
+                    <p class="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-5">
+                      {b.descripcion}
+                    </p>
+
+                    <p class="text-sm font-bold text-slate-800 mb-2">Temas principales</p>
+                    <ul class="space-y-2 mb-6">
+                      {b.subtemas.slice(0, 3).map((s) => (
+                        <li key={s.id} class="text-sm text-slate-600 flex items-start gap-2.5">
+                          <span
+                            class={`mt-0.5 w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-black shrink-0 ${done[s.id] ? "bg-emerald-500 text-white" : `${theme.soft} ${theme.softText}`}`}
+                            aria-hidden="true"
+                          >
+                            {done[s.id] ? "✓" : "•"}
+                          </span>
+                          <span class="leading-snug">{s.titulo}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div class="mt-auto">
+                      <div class="flex justify-between text-sm text-slate-500 mb-1.5">
                         <span>{nDone}/{b.subtemas.length} vistos</span>
-                        <span class="font-bold">{bpct}%</span>
+                        <span class="font-bold text-slate-700">{bpct}%</span>
                       </div>
-                      <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden mb-4">
                         <div
-                          class={`h-full ${theme.barBg} transition-all duration-300`}
+                          class={`h-full rounded-full ${theme.barBg} transition-all duration-300`}
                           style={{ width: `${bpct}%` }}
                         />
                       </div>
-                    </div>
 
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        openBloque(b.id);
-                      }}
-                      class={`w-full py-2.5 px-3 rounded-xl ${theme.btnBg} text-white text-xs font-bold transition shadow-xs cursor-pointer flex items-center justify-center gap-1`}
-                    >
-                      {nDone > 0 ? "Continuar →" : "Comenzar →"}
-                    </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openBloque(b.id);
+                        }}
+                        class={`w-full py-3.5 px-4 rounded-2xl ${theme.btnBg} text-white text-base font-bold transition shadow-xs cursor-pointer flex items-center justify-center gap-1`}
+                      >
+                        {completo ? "Repasar →" : nDone > 0 ? "Continuar →" : "Comenzar →"}
+                      </button>
+                    </div>
                   </div>
                 </article>
               );
             })}
           </div>
-          ))}
 
-          {/* Módulo diferenciado: Laboratorio de actividades (se preserva tal cual) */}
+          {/* Laboratorio de actividades */}
           <a
             href="/alfabetizacion/actividades"
-            class="block rounded-3xl overflow-hidden bg-gradient-to-r from-slate-950 via-indigo-950 to-emerald-950 text-white p-6 sm:p-8 relative hover:shadow-2xl transition group"
+            class={`block rounded-3xl overflow-hidden bg-gradient-to-r from-slate-950 via-indigo-950 to-emerald-950 text-white p-7 sm:p-10 relative hover:shadow-2xl transition group ${FOCO}`}
           >
-            <span class="absolute -right-4 -bottom-8 text-[130px] opacity-20 select-none leading-none group-hover:scale-105 transition">
+            <span class="absolute -right-4 -bottom-8 text-[150px] opacity-20 select-none leading-none group-hover:scale-105 transition" aria-hidden="true">
               🧪
             </span>
             <div class="relative">
-              <span class="inline-block text-[11px] font-extrabold tracking-widest bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-1 rounded-lg">
+              <span class="inline-block text-xs font-extrabold tracking-widest bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-3 py-1.5 rounded-lg">
                 MÓDULO · ACTIVIDADES
               </span>
-              <h2 class="text-2xl sm:text-3xl font-extrabold mt-2">Laboratorio de actividades</h2>
-              <p class="text-sm text-white/75 mt-1 max-w-2xl leading-relaxed">
+              <h2 class="text-3xl sm:text-4xl font-extrabold mt-3">Laboratorio de actividades</h2>
+              <p class="text-base sm:text-lg text-white/80 mt-2 max-w-2xl leading-relaxed">
                 ¿Cuál respuesta elegirías? · Detector de alucinaciones forense · Prompt lab. Evalúa y construye con IA sin necesidad de una IA real.
               </p>
-              <span class="inline-block mt-4 px-5 py-2.5 rounded-xl bg-white text-gray-900 text-sm font-bold group-hover:bg-emerald-300 transition">
+              <span class="inline-block mt-5 px-6 py-3.5 rounded-2xl bg-white text-gray-900 text-base font-bold group-hover:bg-emerald-300 transition">
                 Entrar al laboratorio →
               </span>
             </div>
@@ -448,64 +453,76 @@ export default function AlfabetizacionView() {
         </div>
       )}
 
-      {/* ===== VISTA DETALLADA DEL BLOQUE SELECCIONADO ===== */}
+      {/* ===== VISTA DETALLADA DEL BLOQUE ===== */}
       {bloque !== null && (() => {
-        const st = BLOQUE_STYLES[bloque.color] ?? BLOQUE_STYLES.indigo;
+        const theme = NIVEL_THEMES[bloque.numero] ?? NIVEL_THEMES[1];
         const nDone = bloque.subtemas.filter((s) => done[s.id]).length;
         const bpct = Math.round((nDone / bloque.subtemas.length) * 100);
+        const todoVisto = nDone === bloque.subtemas.length;
 
         return (
-          <div class="w-full px-6 sm:px-10 lg:px-14 py-8">
+          <div class="w-full px-6 sm:px-10 lg:px-14 py-8 sm:py-10">
             {/* Hero del bloque */}
-            <section class={`rounded-3xl overflow-hidden bg-gradient-to-br ${st.hero} text-white p-6 sm:p-10 relative shadow-sm`}>
-              <span class="absolute right-4 top-4 text-[90px] sm:text-[140px] opacity-20 select-none leading-none">
+            <section class={`rounded-3xl overflow-hidden ${theme.headerBg} text-white p-6 sm:p-10 relative shadow-sm`}>
+              <span class="pointer-events-none absolute -top-16 -right-10 w-72 h-72 rounded-full bg-white/20 blur-3xl" aria-hidden="true" />
+              <span
+                class="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle,white_1px,transparent_1px)] [background-size:16px_16px]"
+                aria-hidden="true"
+              />
+              <span class="absolute right-6 top-6 text-[90px] sm:text-[140px] opacity-20 select-none leading-none" aria-hidden="true">
                 {bloque.icono}
               </span>
               <button
                 onClick={goHome}
-                class="text-xs bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-full font-semibold relative cursor-pointer"
+                class="relative block w-fit text-sm bg-white/20 hover:bg-white/30 px-4 py-2 rounded-full font-semibold cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/50"
               >
                 ← Todos los bloques
               </button>
-              <p class="mt-4 text-xs font-extrabold tracking-widest bg-white/20 inline-block px-2 py-1 rounded-lg relative">
+              <p class="mt-5 text-xs font-extrabold tracking-widest bg-white/20 w-fit px-3 py-1.5 rounded-lg relative">
                 BLOQUE {bloque.numero} · {bloque.subtemas.length} TEMAS
               </p>
-              <h1 class="text-3xl sm:text-5xl font-extrabold mt-2 leading-tight relative max-w-3xl">
+              <h1 class="text-3xl sm:text-5xl font-extrabold mt-3 leading-tight relative max-w-3xl">
                 {bloque.titulo}
               </h1>
-              <p class="mt-2 text-white/85 max-w-2xl text-sm sm:text-base relative leading-relaxed">
+              <p class="mt-3 text-white/90 max-w-2xl text-base sm:text-lg relative leading-relaxed">
                 {bloque.descripcion}
               </p>
-              <div class="mt-4 flex flex-wrap items-center gap-2 relative">
-                <span class="text-xs bg-white text-gray-900 font-bold px-3 py-1.5 rounded-full">
-                  {nDone}/{bloque.subtemas.length} vistos · {bpct}%
-                </span>
+
+              <div class="mt-6 relative max-w-xl">
+                <div class="flex items-center justify-between text-sm font-semibold mb-2">
+                  <span>{nDone}/{bloque.subtemas.length} vistos</span>
+                  <span>{bpct}%</span>
+                </div>
+                <div class="h-3 bg-white/25 rounded-full overflow-hidden">
+                  <div class="h-full bg-white rounded-full transition-all" style={{ width: `${bpct}%` }} />
+                </div>
+              </div>
+
+              <div class="mt-6 flex flex-wrap items-center gap-2.5 relative">
                 <button
                   onClick={expandAllCurrent}
-                  class="text-xs bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-full font-semibold cursor-pointer"
+                  class="text-sm bg-white/20 hover:bg-white/30 px-4 py-2.5 rounded-full font-semibold cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/50"
                 >
                   Expandir todo
                 </button>
                 <button
                   onClick={collapseAllCurrent}
-                  class="text-xs bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-full font-semibold cursor-pointer"
+                  class="text-sm bg-white/20 hover:bg-white/30 px-4 py-2.5 rounded-full font-semibold cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/50"
                 >
                   Colapsar
                 </button>
                 <button
-                  onClick={() => markBloque(nDone < bloque.subtemas.length)}
-                  class="text-xs bg-white text-gray-900 px-3 py-1.5 rounded-full font-bold cursor-pointer"
+                  onClick={() => markBloque(!todoVisto)}
+                  class="text-sm bg-white text-gray-900 hover:bg-slate-100 px-4 py-2.5 rounded-full font-bold cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/50"
                 >
-                  {nDone < bloque.subtemas.length ? "✓ Marcar bloque completo" : "↩ Desmarcar bloque"}
+                  {!todoVisto ? "✓ Marcar bloque completo" : "↩ Desmarcar bloque"}
                 </button>
-              </div>
-              <div class="mt-3 h-2 bg-white/25 rounded-full overflow-hidden relative max-w-xl">
-                <div class="h-full bg-white rounded-full transition-all" style={{ width: `${bpct}%` }} />
               </div>
             </section>
 
             {/* Índice rápido */}
-            <div class="mt-4 flex gap-2 overflow-x-auto pb-1">
+            <nav class="mt-5 flex items-center gap-2 overflow-x-auto pb-2" aria-label="Temas del bloque">
+              <span class="shrink-0 text-sm font-semibold text-slate-500 mr-1">Ir al tema:</span>
               {bloque.subtemas.map((s) => (
                 <a
                   key={s.id}
@@ -521,10 +538,10 @@ export default function AlfabetizacionView() {
                       30
                     );
                   }}
-                  class={`shrink-0 text-xs px-3 py-1.5 rounded-full border font-semibold ${
+                  class={`shrink-0 text-sm px-4 py-2 rounded-full border-2 font-bold transition ${FOCO} ${
                     done[s.id]
-                      ? "bg-emerald-100 border-emerald-200 text-emerald-800"
-                      : "bg-white text-gray-600 hover:border-gray-400"
+                      ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+                      : "bg-white border-slate-200 text-slate-600 hover:border-[#7C5CE9] hover:text-[#5932EA]"
                   }`}
                   title={s.titulo}
                 >
@@ -532,10 +549,10 @@ export default function AlfabetizacionView() {
                   {s.codigo}
                 </a>
               ))}
-            </div>
+            </nav>
 
-            {/* Todos los temas distribuidos */}
-            <div class="mt-4 grid gap-3">
+            {/* Temas */}
+            <div class="mt-3 grid gap-4">
               {bloque.subtemas.map((s, i) => {
                 const isOpen = !!expanded[s.id];
                 const isDone = !!done[s.id];
@@ -544,101 +561,102 @@ export default function AlfabetizacionView() {
                   <article
                     key={s.id}
                     id={`tema-${s.id}`}
-                    class={`bg-white border-2 rounded-2xl overflow-hidden scroll-mt-32 transition ${
-                      isOpen ? "border-gray-900 shadow-lg" : "border-gray-200"
-                    } ${isDone ? "opacity-95" : ""}`}
+                    class={`bg-white border-2 rounded-3xl overflow-hidden scroll-mt-32 transition ${
+                      isOpen ? `${theme.border} shadow-lg` : "border-slate-200 hover:border-slate-300"
+                    }`}
                   >
                     {/* Cabecera clicable */}
                     <button
                       onClick={() => toggleExpand(s.id)}
-                      class="w-full text-left p-4 sm:p-5 flex items-start gap-3 hover:bg-gray-50/60 cursor-pointer"
+                      aria-expanded={isOpen}
+                      class={`w-full text-left p-5 sm:p-6 flex items-start gap-4 hover:bg-slate-50/70 cursor-pointer ${FOCO}`}
                     >
                       <span
-                        class={`w-10 h-10 rounded-2xl flex items-center justify-center font-extrabold text-sm shrink-0 border ${
-                          isDone
-                            ? "bg-emerald-500 border-emerald-500 text-white"
-                            : "bg-gray-900 text-white"
+                        class={`w-12 h-12 rounded-2xl flex items-center justify-center font-extrabold text-base shrink-0 ${
+                          isDone ? "bg-emerald-500 text-white" : `${theme.soft} ${theme.softText}`
                         }`}
                       >
                         {isDone ? "✓" : s.codigo}
                       </span>
                       <span class="flex-1 min-w-0">
-                        <span class="block text-[11px] font-mono text-gray-400">
-                          Tema {i + 1}/{bloque.subtemas.length} · {s.codigo}
+                        <span class="block text-sm font-semibold text-slate-400">
+                          Tema {i + 1} de {bloque.subtemas.length} · {s.codigo}
+                          {isDone && <span class="ml-2 text-emerald-600">· Visto</span>}
                         </span>
-                        <span class="block font-bold leading-tight text-base sm:text-lg">
+                        <span class="block font-extrabold leading-tight text-lg sm:text-xl text-slate-900 mt-0.5">
                           {s.titulo}
                         </span>
-                        <span class="block text-sm text-gray-600 mt-0.5">
+                        <span class="block text-sm sm:text-base text-slate-600 mt-1.5 leading-relaxed">
                           {s.descripcion}
                         </span>
                       </span>
                       <span
-                        class={`shrink-0 w-8 h-8 rounded-full border flex items-center justify-center transition ${
-                          isOpen ? "bg-gray-900 text-white rotate-180" : "text-gray-400"
+                        class={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition ${
+                          isOpen ? `${theme.btnBg.split(" ")[0]} text-white rotate-180` : "bg-slate-100 text-slate-500"
                         }`}
+                        aria-hidden="true"
                       >
                         ▾
                       </span>
                     </button>
 
                     {isOpen && (
-                      <div class="px-4 sm:px-5 pb-5 pt-1 border-t bg-gray-50/50">
-                        <div class="py-3 flex flex-wrap items-center gap-2">
+                      <div class="px-5 sm:px-6 pb-6 pt-5 border-t border-slate-100 bg-slate-50/60">
+                        <div class="flex flex-wrap items-center gap-3">
+                          <a
+                            href={`/lecciones/${s.id}`}
+                            class={`px-6 py-3 rounded-2xl bg-[#5932EA] text-white text-base font-bold hover:bg-[#4E2AD0] transition shadow-xs ${FOCO}`}
+                          >
+                            📖 Abrir lección →
+                          </a>
                           <button
                             onClick={() => toggleDone(s.id)}
-                            class={`px-4 py-2 rounded-xl text-sm font-bold transition cursor-pointer ${
+                            class={`px-5 py-3 rounded-2xl text-base font-bold transition cursor-pointer border-2 ${FOCO} ${
                               isDone
-                                ? "bg-emerald-600 text-white hover:bg-emerald-700"
-                                : "bg-gray-900 text-white hover:bg-gray-700"
+                                ? "bg-emerald-600 border-emerald-600 text-white hover:bg-emerald-700"
+                                : "bg-white border-slate-300 text-slate-700 hover:border-slate-500"
                             }`}
                           >
                             {isDone ? "✓ Visto — desmarcar" : "Marcar como visto"}
                           </button>
-                          <a
-                            href={`/lecciones/${s.id}`}
-                            class="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-bold hover:bg-indigo-700 transition"
-                          >
-                            📖 Abrir lección →
-                          </a>
-                          <span class={`text-xs font-bold px-2 py-1 rounded-full border ${st.badge}`}>
+                          <span class={`text-sm font-bold px-3 py-1.5 rounded-full ${theme.soft} ${theme.softText}`}>
                             {bloque.tituloCorto}
                           </span>
                         </div>
 
-                        <h4 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
+                        <h4 class="text-sm font-extrabold uppercase tracking-widest text-slate-500 mt-6 mb-3">
                           Temáticas · {s.tematicas.length}
                         </h4>
-                        <ul class="grid sm:grid-cols-2 gap-2">
+                        <ul class="grid sm:grid-cols-2 gap-3">
                           {s.tematicas.map((t) => (
-                            <li key={t} class="flex gap-2 text-sm bg-white border rounded-xl px-3 py-2">
-                              <span class={`${st.accent} font-bold`}>•</span>
-                              {t}
+                            <li key={t} class="flex gap-3 text-[15px] leading-snug bg-white border border-slate-200 rounded-2xl px-4 py-3">
+                              <span class={`${theme.dotColor} font-black`} aria-hidden="true">•</span>
+                              <span>{t}</span>
                             </li>
                           ))}
                         </ul>
 
                         {s.actividad && (
-                          <div class="mt-3 bg-amber-50 border border-amber-200 rounded-xl p-4">
-                            <p class="text-sm font-bold text-amber-800">⚡ Actividad sugerida</p>
-                            <p class="text-sm text-amber-900 mt-1">{s.actividad}</p>
+                          <div class="mt-4 bg-amber-50 border-l-4 border-amber-400 rounded-2xl p-5">
+                            <p class="text-base font-bold text-amber-900">⚡ Actividad sugerida</p>
+                            <p class="text-[15px] text-amber-900/90 mt-1 leading-relaxed">{s.actividad}</p>
                           </div>
                         )}
                         {s.alcance && (
-                          <div class="mt-3 bg-blue-50 border border-blue-200 rounded-xl p-4">
-                            <p class="text-sm font-bold text-blue-800">📌 Alcance</p>
-                            <p class="text-sm text-blue-900 mt-1">{s.alcance}</p>
+                          <div class="mt-4 bg-[#F3F0FF] border-l-4 border-[#7C5CE9] rounded-2xl p-5">
+                            <p class="text-base font-bold text-[#4E2AD0]">📌 Alcance</p>
+                            <p class="text-[15px] text-slate-700 mt-1 leading-relaxed">{s.alcance}</p>
                           </div>
                         )}
                         {s.referentes && (
-                          <div class="mt-3">
-                            <p class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-1">
+                          <div class="mt-5">
+                            <p class="text-sm font-extrabold uppercase tracking-widest text-slate-500 mb-2">
                               Referentes
                             </p>
-                            <ul class="text-sm text-gray-600 space-y-1">
+                            <ul class="text-[15px] text-slate-600 space-y-2">
                               {s.referentes.map((r) => (
-                                <li key={r} class="flex gap-2">
-                                  <span>📖</span>
+                                <li key={r} class="flex gap-2.5">
+                                  <span aria-hidden="true">📖</span>
                                   {r}
                                 </li>
                               ))}
@@ -653,14 +671,14 @@ export default function AlfabetizacionView() {
             </div>
 
             {/* Navegación entre bloques */}
-            <div class="mt-6 grid sm:grid-cols-2 gap-3">
+            <div class="mt-8 grid sm:grid-cols-2 gap-4">
               {prevBloque ? (
                 <button
                   onClick={() => openBloque(prevBloque.id)}
-                  class="text-left bg-white border rounded-2xl p-4 hover:border-gray-400 cursor-pointer"
+                  class={`text-left bg-white border-2 border-slate-200 rounded-2xl p-5 hover:border-[#7C5CE9] transition cursor-pointer ${FOCO}`}
                 >
-                  <p class="text-xs text-gray-500">← Anterior</p>
-                  <p class="font-bold">B{prevBloque.numero} · {prevBloque.titulo}</p>
+                  <p class="text-sm text-slate-500">← Anterior</p>
+                  <p class="font-bold text-lg mt-0.5">B{prevBloque.numero} · {prevBloque.titulo}</p>
                 </button>
               ) : (
                 <span />
@@ -668,18 +686,18 @@ export default function AlfabetizacionView() {
               {nextBloque ? (
                 <button
                   onClick={() => openBloque(nextBloque.id)}
-                  class="text-right bg-gray-900 text-white rounded-2xl p-4 hover:bg-gray-700 cursor-pointer"
+                  class={`text-right bg-[#5932EA] text-white rounded-2xl p-5 hover:bg-[#4E2AD0] transition cursor-pointer ${FOCO}`}
                 >
-                  <p class="text-xs text-white/60">Siguiente →</p>
-                  <p class="font-bold">B{nextBloque.numero} · {nextBloque.titulo}</p>
+                  <p class="text-sm text-white/70">Siguiente →</p>
+                  <p class="font-bold text-lg mt-0.5">B{nextBloque.numero} · {nextBloque.titulo}</p>
                 </button>
               ) : (
                 <button
                   onClick={goHome}
-                  class="text-right bg-emerald-600 text-white rounded-2xl p-4 hover:bg-emerald-700 cursor-pointer"
+                  class={`text-right bg-emerald-600 text-white rounded-2xl p-5 hover:bg-emerald-700 transition cursor-pointer ${FOCO}`}
                 >
-                  <p class="text-xs text-white/70">Fin del recorrido →</p>
-                  <p class="font-bold">Volver a la portada</p>
+                  <p class="text-sm text-white/80">Fin del recorrido →</p>
+                  <p class="font-bold text-lg mt-0.5">Volver a la portada</p>
                 </button>
               )}
             </div>

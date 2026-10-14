@@ -10,33 +10,33 @@ export default function ActividadesIndice() {
   const [guardadas] = useState(loadActividades);
   const resumen = resumenLaboratorio(guardadas);
 
-  return (
+   return (
     <div>
       {/* Encabezado de la sección */}
       <div class="mb-8">
-        <p class="text-[11px] font-extrabold uppercase tracking-widest text-[#5932EA] mb-1">
+        <p class="text-xs font-extrabold uppercase tracking-widest text-[#5932EA] mb-1.5">
           MÓDULO · ACTIVIDADES
         </p>
-        <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mb-2">
+        <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mb-3">
           Laboratorio de actividades
         </h2>
-        <p class="text-sm sm:text-base text-slate-600 max-w-3xl leading-relaxed">
+        <p class="text-base sm:text-lg text-slate-600 max-w-3xl leading-relaxed">
           Elige un tipo de actividad para empezar. Evalúa respuestas de IA sin necesidad de construir una IA real.
           Tu progreso se guarda en este navegador.
         </p>
       </div>
 
       {/* Tarjetas por tipo de actividad */}
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 items-stretch">
         {resumen.tipos.map(({ meta, total, completadas, pct }) => (
           <a
             key={meta.tipo}
             href={meta.href}
-            class="bg-white border border-slate-200/90 rounded-2xl overflow-hidden flex flex-col justify-between shadow-xs hover:shadow-md transition-all group"
+            class="bg-white border border-slate-200/90 rounded-3xl overflow-hidden flex flex-col justify-between shadow-xs hover:shadow-lg hover:-translate-y-1 transition-all group focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#5932EA]/40"
           >
             <div>
               <div
-                class={`${meta.theme.headerBg} relative overflow-hidden min-h-[130px] p-4 sm:p-5 text-white flex flex-col justify-between`}
+                class={`${meta.theme.headerBg} relative overflow-hidden min-h-[150px] p-5 sm:p-6 text-white flex flex-col justify-between`}
               >
                 {/* Halo de luz */}
                 <span
@@ -56,30 +56,30 @@ export default function ActividadesIndice() {
                   {meta.icono}
                 </span>
 
-                <span class="relative inline-flex items-center gap-1.5 text-[10px] font-extrabold tracking-widest bg-white/20 ring-1 ring-white/30 px-2.5 py-1 rounded-full uppercase w-fit backdrop-blur-md">
+                <span class="relative inline-flex items-center gap-1.5 text-xs font-extrabold tracking-widest bg-white/20 ring-1 ring-white/30 px-3 py-1.5 rounded-full uppercase w-fit backdrop-blur-md">
                   <span class="w-1.5 h-1.5 rounded-full bg-white/80" />
                   {total} casos
                 </span>
 
-                <h3 class="relative text-base font-extrabold mt-2 leading-snug pr-10 drop-shadow-sm">
+                <h3 class="relative text-xl sm:text-2xl font-extrabold mt-3 leading-tight pr-10 drop-shadow-sm">
                   {meta.titulo}
                 </h3>
               </div>
 
-              <div class="p-4 sm:p-5 flex-1 flex flex-col">
-                <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">
+              <div class="p-5 sm:p-6 flex-1 flex flex-col">
+                <p class="text-[15px] text-slate-600 leading-relaxed">
                   {meta.descripcion}
                 </p>
               </div>
             </div>
 
-            <div class="p-4 sm:p-5 pt-0">
+            <div class="p-5 sm:p-6 pt-0">
               <div class="mb-3">
-                <div class="flex justify-between text-xs text-slate-400 mb-1">
+                <div class="flex justify-between text-sm text-slate-500 mb-1.5">
                   <span>{completadas}/{total} completados</span>
                   <span class="font-bold">{pct}%</span>
                 </div>
-                <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden">
                   <div
                     class={`h-full ${meta.theme.barBg} transition-all duration-300`}
                     style={{ width: `${pct}%` }}
@@ -88,7 +88,7 @@ export default function ActividadesIndice() {
               </div>
 
               <span
-                class={`w-full py-2.5 px-3 rounded-xl ${meta.theme.btnBg} text-white text-xs font-bold transition shadow-xs flex items-center justify-center gap-1`}
+                class={`w-full py-3.5 px-4 rounded-2xl ${meta.theme.btnBg} text-white text-base font-bold transition shadow-xs flex items-center justify-center gap-1`}
               >
                 Abrir →
               </span>

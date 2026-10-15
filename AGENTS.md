@@ -99,7 +99,8 @@ Variables: `CONTENT_PORT` cambia el puerto del content-server (defecto `8787`).
 │   └── migrate-alfabetizacion.mjs ← script de migración puntual (legacy)
 ├── public/
 │   ├── data/users.json, courses.json ← copia pública para `fetch("/data/...")`
-│   ├── images/logos/*.png     ← logos de curso (`logo-01.png`…`logo-15.png` desde `public/Images/Logos/`)
+│   ├── Images/sintaxia-logo.png ← logo de marca (header + footer, `h-9 w-auto`, enlaza a `/`)
+│   ├── Images/Logos/*.png     ← logos de curso (`logo-01.png`…`logo-15.png`)
 │   ├── Images/Logos/          ← logos individuales 200×200 (fuente de `/images/logos/`)
 │   ├── Images/Iconos educativos.png ← sprite legacy (1536×1024, 20 logos; no usar como fuente)
 │   ├── lessons/ / multimedia/   ← assets estáticos legacy
@@ -137,12 +138,14 @@ Variables: `CONTENT_PORT` cambia el puerto del content-server (defecto `8787`).
 
 `AppHeader.tsx` es el header global: recibe `currentPath` (marca el enlace activo),
 exige sesión (si no hay, redirige a `/`), muestra nav según rol
-(estudiante/profesor/admin) con versión desktop + móvil, marca Sintaxia,
-avatar, nombre, email, rol, código y botón "Cerrar Sesion".
+(estudiante/profesor/admin) con versión desktop + móvil, logo de marca
+(`/images/sintaxia-logo.png`, enlaza a `/`), botón "Cerrar Sesion" y, a su derecha,
+el bloque de perfil (avatar, nombre, email, rol, código).
 
-`AppFooter.tsx` es el footer global (sin props, sin auth-guard): marca Sintaxia,
-tagline, columnas **Explora** (Enseñanza / Alfabetizacion / Cursos·Actividades /
-DashBoard), **Ayuda** (enlaces `#`) y **Síguenos**, más la barra de copyright.
+`AppFooter.tsx` es el footer global (sin props, sin auth-guard): logo de marca
+(`/images/sintaxia-logo.png`), tagline, columnas **Explora** (Enseñanza /
+Alfabetizacion / Cursos·Actividades / DashBoard), **Ayuda** (enlaces `#`) y
+**Síguenos**, más la barra de copyright.
 
 **Patrón de layout de páginas (estético):** todas las páginas principales importan
 `AppHeader` + `AppFooter` y usan `<body class="bg-gray-50 text-gray-900 min-h-screen
@@ -158,8 +161,8 @@ footer.
 
 | Archivo | Responsabilidad | No tocar / cuidado |
 |---|---|---|
-| `AppHeader.tsx` | Auth-guard + nav por rol; prop `currentPath`; marca Sintaxia; botón "Cerrar Sesion" | Cambiar nav aquí afecta a todas las páginas |
-| `AppFooter.tsx` | Footer global de marca (Explora / Ayuda / Síguenos + copyright) | Sin props y sin auth-guard; solo maquetación |
+| `AppHeader.tsx` | Auth-guard + nav por rol; prop `currentPath`; logo de marca (`/images/sintaxia-logo.png`); botón "Cerrar Sesion" + bloque de perfil (avatar, nombre, email, rol, código) a la derecha | Cambiar nav aquí afecta a todas las páginas |
+| `AppFooter.tsx` | Footer global de marca (logo `/images/sintaxia-logo.png` + Explora / Ayuda / Síguenos + copyright) | Sin props y sin auth-guard; solo maquetación |
 | `Auth.tsx` | Login/registro/sesión, export `users.json` | Usa `src/utils/auth.ts` |
 | `AdminPanel.tsx` | Panel admin en 2 pestañas: **Usuarios** (listar/buscar/filtrar, cambiar rol, eliminar, stats por rol, exportar `users.json`) y **Cursos** (crear con color `COURSE_COLORS` + logo `COURSE_LOGOS`, gestionar asignación de profesores/estudiantes por lista **o por código único `600XXXX`** vía `findUserByCodigo`, exportar `courses.json`) | Solo rol `admin`; usa `utils/auth.ts` + `utils/courses.ts` |
 | `EnsenanzaView.tsx` | Explorador de cursos del usuario logueado: búsqueda, grid paginado (6/pág.), tarjeta por curso (código, color+logo, nº profes/estudiantes y actividades), estados "sin asignar"/vacío | Lee `getCoursesForUser` + `getActivities` de `utils/courses.ts`; redirige a `/` si no hay sesión |
@@ -208,13 +211,16 @@ footer.
   - Variantes/hover: `#7C5CE9`, `#6C5CE7`, `#5E3FE6`
   - Badges/acentos: `#6D28D9` (texto) sobre `#EDE9FE` (fondo)
 - Se aplica en `AppHeader.tsx`, `AppFooter.tsx`, `EnsenanzaView.tsx` y
-  `AlfabetizacionView.tsx` (logo "S", enlaces/nav activos, botones, barras de progreso,
+  `AlfabetizacionView.tsx` (enlaces/nav activos, botones, barras de progreso,
   badges de rol).
+- **Logo de marca:** `public/images/sintaxia-logo.png` (`h-9 w-auto`), usado en
+  header y footer enlazando a `/`. Sustituye al antiguo placeholder "S" (`#5932EA`)
+  + wordmark "Sintaxia".
 - **Sin CSS global extra:** `src/styles/global.css` sigue siendo solo
   `@import "tailwindcss";`; todo el estilo son clases utilitarias en los componentes.
 - **Layout de páginas:** header sticky (`bg-white/95 backdrop-blur-md`) + footer de marca
   pegado al fondo (ver §5). El contenido principal vive en un `flex-1`.
-- **Marca UI:** "Sintaxia" (caja "S" + wordmark) enlaza a `/`; alias del proyecto
+- **Marca UI:** logo `sintaxia-logo.png` enlaza a `/`; alias del proyecto
   "Gestión Empresarial" (títulos de página).
 
 ---
@@ -409,6 +415,10 @@ Protecciones: validación de slug (anti path-traversal), `409` si existe,
 - Rediseño estético aplicado: `AppHeader` + `AppFooter` con marca Sintaxia y paleta
   violeta (§6.4); todas las páginas principales usan el layout header + `flex-1` + footer
   (excepto `/editor`, sin footer).
+- Logo de marca real (`public/images/sintaxia-logo.png`) sustituye al placeholder "S +
+  Sintaxia" en header y footer. En el header se eliminaron los iconos decorativos de
+  búsqueda (lupa), notificaciones (campana) y el avatar duplicado de la izquierda; a la
+  izquierda de "Cerrar Sesion" solo queda el botón y, a su derecha, el bloque de perfil.
 - `/dashboard` es placeholder (pendiente de implementar métricas).
 - `README.md` aún es el template de Astro (desactualizado; la doc real es este
   archivo + `RULES.md`).

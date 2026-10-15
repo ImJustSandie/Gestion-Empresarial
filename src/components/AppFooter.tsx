@@ -5,13 +5,18 @@ export default function AppFooter() {
         <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8 md:gap-12 items-start">
           {/* Logo / Identidad */}
           <div class="lg:col-span-2">
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-xl bg-[#5932EA] flex items-center justify-center text-white font-bold text-lg shadow-sm">
-                S
-              </div>
-              <span class="font-extrabold text-slate-900 text-xl tracking-tight leading-none">
-                Sintaxia
-              </span>
+            <div class="flex items-center">
+              <img
+                src="/Images/sintaxia-logo.png"
+                alt="Sintaxia"
+                class="h-[50px] w-auto"
+                onError={(e) => {
+                  const target = e.currentTarget as HTMLImageElement;
+                  if (!target.src.includes("/images/sintaxia-logo.png")) {
+                    target.src = "/images/sintaxia-logo.png";
+                  }
+                }}
+              />
             </div>
             <p class="text-xs sm:text-sm text-slate-500 mt-3 max-w-sm leading-relaxed">
               Aprende crea y avanza ahora<br />

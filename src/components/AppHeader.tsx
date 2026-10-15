@@ -59,13 +59,18 @@ export default function AppHeader({ currentPath = "" }: Props) {
       <div class="w-full px-4 sm:px-8 lg:px-12 py-3.5 flex items-center justify-between gap-6">
         {/* Lado izquierdo: Logo + Navegación */}
         <div class="flex items-center gap-6 lg:gap-10">
-          <a href="/" class="flex items-center gap-3 group">
-            <div class="w-9 h-9 rounded-xl bg-[#5932EA] flex items-center justify-center shadow-sm text-white font-bold text-lg">
-              S
-            </div>
-            <span class="font-extrabold text-slate-900 text-xl tracking-tight leading-none group-hover:text-[#5932EA] transition-colors">
-              Sintaxia
-            </span>
+          <a href="/" class="flex items-center group">
+            <img
+              src="/Images/sintaxia-logo.png"
+              alt="Sintaxia"
+              class="h-9 w-auto"
+              onError={(e) => {
+                const target = e.currentTarget as HTMLImageElement;
+                if (!target.src.includes("/images/sintaxia-logo.png")) {
+                  target.src = "/images/sintaxia-logo.png";
+                }
+              }}
+            />
           </a>
 
           {/* Navegación Desktop */}
@@ -91,34 +96,6 @@ export default function AppHeader({ currentPath = "" }: Props) {
 
         {/* Lado derecho: Acciones + Cerrar Sesión + Avatar + Perfil */}
         <div class="flex items-center gap-3 sm:gap-4">
-          {/* Botón de búsqueda */}
-          <button
-            class="hidden sm:flex p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition cursor-pointer"
-            title="Buscar"
-          >
-            <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 1114 0z" />
-            </svg>
-          </button>
-
-          {/* Botón de notificaciones con punto rojo */}
-          <div class="relative hidden sm:block">
-            <button
-              class="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition cursor-pointer relative"
-              title="Notificaciones"
-            >
-              <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-              </svg>
-              <span class="w-2 h-2 rounded-full bg-red-500 ring-2 ring-white absolute top-1.5 right-1.5"></span>
-            </button>
-          </div>
-
-          {/* Avatar circular */}
-          <div class="hidden md:flex w-8 h-8 rounded-full bg-[#5932EA] text-white items-center justify-center font-bold text-xs shadow-xs flex-shrink-0">
-            {session.name ? session.name.charAt(0).toUpperCase() : "U"}
-          </div>
-
           {/* Botón Cerrar Sesión */}
           <button
             onClick={handleLogout}

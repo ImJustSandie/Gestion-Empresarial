@@ -22,6 +22,8 @@ const NIVEL_THEMES: Record<number, {
   border: string;
   ring: string;
   icon: string;
+  imagen: string;
+  capa: string;
 }> = {
   1: {
     headerBg: "bg-gradient-to-br from-[#6A42C2] to-[#8B5CF6]",
@@ -33,6 +35,8 @@ const NIVEL_THEMES: Record<number, {
     border: "border-[#6A42C2]",
     ring: "focus-visible:ring-[#6A42C2]",
     icon: "🧠",
+    imagen: "/multimedia/niveles/nivel-1.jpg",
+    capa: "linear-gradient(135deg, rgba(139,92,246,0.72), rgba(167,139,250,0.58))",
   },
   2: {
     headerBg: "bg-gradient-to-br from-[#00897B] to-[#10B981]",
@@ -44,6 +48,8 @@ const NIVEL_THEMES: Record<number, {
     border: "border-[#00897B]",
     ring: "focus-visible:ring-[#00897B]",
     icon: "💬",
+    imagen: "/multimedia/niveles/nivel-2.jpg",
+    capa: "linear-gradient(135deg, rgba(16,185,129,0.72), rgba(52,211,153,0.58))",
   },
   3: {
     headerBg: "bg-gradient-to-br from-[#1D4ED8] to-[#3B82F6]",
@@ -55,6 +61,8 @@ const NIVEL_THEMES: Record<number, {
     border: "border-[#1D4ED8]",
     ring: "focus-visible:ring-[#1D4ED8]",
     icon: "🔍",
+    imagen: "/multimedia/niveles/nivel-3.jpg",
+    capa: "linear-gradient(135deg, rgba(59,130,246,0.72), rgba(96,165,250,0.58))",
   },
   4: {
     headerBg: "bg-gradient-to-br from-[#E11D48] to-[#F43F5E]",
@@ -66,6 +74,8 @@ const NIVEL_THEMES: Record<number, {
     border: "border-[#E11D48]",
     ring: "focus-visible:ring-[#E11D48]",
     icon: "🛡️",
+    imagen: "/multimedia/niveles/nivel-4.jpg",
+    capa: "linear-gradient(135deg, rgba(244,63,94,0.72), rgba(251,113,133,0.58))",
   },
   5: {
     headerBg: "bg-gradient-to-br from-[#EA580C] to-[#F97316]",
@@ -77,6 +87,8 @@ const NIVEL_THEMES: Record<number, {
     border: "border-[#EA580C]",
     ring: "focus-visible:ring-[#EA580C]",
     icon: "📦",
+    imagen: "/multimedia/niveles/nivel-5.jpg",
+    capa: "linear-gradient(135deg, rgba(249,115,22,0.72), rgba(251,146,60,0.58))",
   },
 };
 
@@ -356,12 +368,17 @@ export default function AlfabetizacionView() {
                 >
                   {/* Cabecera con color del nivel */}
                   <div class={`${theme.headerBg} relative overflow-hidden p-5 sm:p-6 text-white`}>
-                    <span
-                      class="pointer-events-none absolute -top-12 -right-10 w-44 h-44 rounded-full bg-white/25 blur-2xl"
+                    <img
+                      src={theme.imagen}
+                      alt=""
                       aria-hidden="true"
+                      loading="lazy"
+                      class="pointer-events-none absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      style={{ filter: "grayscale(100%) contrast(1.15)" }}
                     />
                     <span
-                      class="pointer-events-none absolute inset-0 opacity-[0.15] [background-image:radial-gradient(circle,white_1px,transparent_1px)] [background-size:14px_14px]"
+                      class="pointer-events-none absolute inset-0"
+                      style={{ background: theme.capa }}
                       aria-hidden="true"
                     />
                     <div class="relative flex items-start justify-between gap-3">

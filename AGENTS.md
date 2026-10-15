@@ -128,8 +128,7 @@ Variables: `CONTENT_PORT` cambia el puerto del content-server (defecto `8787`).
   (`TipoActividad.tsx`).
 - `/alfabetizacion/actividades/<tipo>/<slug>` — caso concreto
   (`ElegirRespuesta.tsx`, `DetectorAlucinaciones.tsx`, `PromptLab.tsx`).
-- `/dashboard` — **placeholder**: tarjeta "en construcción". Aquí irán métricas
-  agregadas de enseñanza + actividades (leer de `localStorage`/IndexedDB).
+- `/dashboard` — `DashboardView.tsx`: Panel analítico docente con selector de curso, métricas ejecutivas (avance a la fecha, rendimiento ponderado, tasa de aprobación, alertas de riesgo), gráficas SVG nativas y vista drill-down por estudiante.
 - `/admin` — `AdminPanel.tsx` con 2 pestañas: **Usuarios** (roles, códigos,
   crear/eliminar) y **Cursos** (crear con color + logo, gestionar asignación de
   profesores/estudiantes por lista o por código único, exportar JSON). Solo admin.
@@ -168,6 +167,12 @@ footer.
 | `EnsenanzaView.tsx` | Explorador de cursos del usuario logueado: búsqueda, grid paginado (6/pág.), tarjeta por curso (código, color+logo, nº profes/estudiantes y actividades), estados "sin asignar"/vacío | Lee `getCoursesForUser` + `getActivities` de `utils/courses.ts`; redirige a `/` si no hay sesión |
 | `ActividadesView.tsx` | Cursos + actividades (crear/asignar/listar/borrar) | Usa `src/utils/courses.ts` + `SelectMenu.tsx` para los desplegables de curso/tipo |
 | `SelectMenu.tsx` | Dropdown reutilizable estilo marca (reemplaza `<select>` nativo): trigger + panel `rounded-2xl`, estados seleccionado/activo, cierre al clic fuera/Escape y navegación por teclado (`ArrowUp/Down`, `Enter`/`Space`, `Tab`). Props: `options` (`{value,label,meta?}`), `value`, `onChange`, `ariaLabel`, `icon`, `wrapperClass`, `textClass`, `placeholder` | Genérico; no meter lógica de negocio |
+| `DashboardView.tsx` | Panel analítico docente: selector de curso sincronizado con URL `?curso=id`, KPIs ejecutivos (avance exigible, rendimiento ponderado, tasa de aprobación, estudiantes en riesgo), gráficas SVG nativas y roster de estudiantes interactivo con búsqueda, filtros y ordenamiento | Consume `utils/dashboardAnalytics.ts` y `utils/courses.ts` |
+| `dashboard/MetricCard.tsx` | Tarjeta KPI ejecutiva con badge semafórico, barra de progreso y subtítulo | Componente atómico |
+| `dashboard/DonutProgress.tsx` | Gráfico circular SVG reactivo para avance y puntualidad con porcentaje central | Cero dependencias externas |
+| `dashboard/BarChart.tsx` | Gráfica de barras SVG nativa: `VerticalBarChart` (histograma de notas) y `HorizontalBarChart` (ranking de actividades) | Cero dependencias externas |
+| `dashboard/LineChart.tsx` | Gráfica de líneas SVG con doble serie temporal (Estudiante vs Promedio del grupo), puntos de datos y tooltip flotante | Utilizado en el drill-down |
+| `dashboard/StudentDetailModal.tsx` | Modal de auditoría y drill-down individual por estudiante: perfil, métricas vs aula, gráfica de trayectoria y tabla de entregas | Subvista nivel 2 del dashboard |
 | `AlfabetizacionView.tsx` | Portada de bloques, progreso por bloque | Lee `BLOQUES_ALFABETIZACION` de `alfabetizacionContent.ts` |
 | `ActividadesIndice.tsx` | Índice de los 3 tipos de actividades | Lee `TIPOS_ACTIVIDADES` |
 | `TipoActividad.tsx` | Portada de un tipo (lista de casos + estado) | Lee `listaPorTipo()` + `estadoCaso()` |
@@ -192,7 +197,9 @@ footer.
 | `richtext.ts` | Sintaxis inline + validación (`toSafeColor`, `fontStackFor`, `clampSize`, paletas). Antídoto contra inyección de estilos |
 | `contentApi.ts` | Cliente del content-server (`http://127.0.0.1:8787`). `backendAvailable()` con caché 10 s. `api.blocks/createBlock/updateBlock/deleteBlock/saveBlocksOrder/lessonSource/saveLessonSource/createLesson/deleteLesson/saveLessonsOrder/moveLesson/listImages/uploadImage` |
 | `auth.ts` | Usuarios + sesión. Roles `admin/profesor/estudiante/sin_asignar` (+ legacy `user`). Códigos: profesor `100XXXX`, estudiante `600XXXX`. Búsqueda por código con `findUserByCodigo`/`findUserByCodigoAsync`. Admin seed `administracion@sintaxia.com / 12345678`. Persistencia: IndexedDB `users-json` + `fetch("/data/users.json")` + import inicial; sesión en `localStorage` |
-| `courses.ts` | Cursos (`code` auto de 6 dígitos) + actividades (`tarea/actividad/evaluacion`), asignación de usuarios. API: `getCourses/getCoursesForUser/createCourse/deleteCourse/assignUserToCourse/unassignUserFromCourse/getActivities/createActivity/deleteActivity/exportCoursesJson/exportActivitiesJson`. Campos opcionales de apariencia: `color` (clave de `COURSE_COLORS`, `COURSE_COLOR_IDS` = 15 colores) e `icon` (logo `logo-01.png`…`logo-15.png` de `/images/logos/`, `COURSE_LOGOS`). IndexedDB `courses-json` + `activities-json` |
+| `courses.ts` | Cursos (`code` auto de 6 dígitos) + actividades (`tarea/actividad/evaluacion`) + entregas (`ActivitySubmission`), asignación de usuarios. API: `getCourses/getCoursesForUser/createCourse/deleteCourse/assignUserToCourse/unassignUserFromCourse/getActivities/createActivity/deleteActivity/getSubmissions/saveSubmission/bulkSaveSubmissions/resetCourseSubmissions`. IndexedDB `courses-json`, `activities-json`, `submissions-json` |
+| `dashboardAnalytics.ts` | Motor analítico: agrega métricas por curso y estudiante (avance a la fecha según fecha límite, rendimiento ponderado 50% eval / 30% tarea / 20% act, tasa de aprobación >= 60 pts, buckets de histograma y serie temporal para trayectoria) |
+| `dashboardMock.ts` | Generador de entregas sintéticas realistas para cursos sin entregas previas, simulando distribuciones estadísticas para docencia |
 | `alfabetizacionContent.ts` | Adapta `content/blocks/` → `{ Bloque, Subtema }` para la vista. Convenciones: `## Temáticas|Temas + lista`, `## Referentes + lista`, `## Alcance + párrafos`, `> Actividad: ...`; sin sección Temáticas, los `##/###` son temáticas |
 | `alfabetizacionActividades.ts` | Tipos + carga de los 3 JSON de actividades, índice `MODULOS_ACTIVIDADES`, `TIPOS_ACTIVIDADES` (cada tipo con `theme`: `headerBg/btnBg/barBg/dotColor/badge/borderHover` y acento propio), `actividadPorSlug`, persistencia `gestion-empresarial:actividades-v2`, `estadoCaso()`, `resumenLaboratorio()` (agregado para la portada) |
 
@@ -419,7 +426,7 @@ Protecciones: validación de slug (anti path-traversal), `409` si existe,
   Sintaxia" en header y footer. En el header se eliminaron los iconos decorativos de
   búsqueda (lupa), notificaciones (campana) y el avatar duplicado de la izquierda; a la
   izquierda de "Cerrar Sesion" solo queda el botón y, a su derecha, el bloque de perfil.
-- `/dashboard` es placeholder (pendiente de implementar métricas).
+- `/dashboard` implementado: módulo analítico docente con KPIs, gráficas SVG y drill-down individual por estudiante.
 - `README.md` aún es el template de Astro (desactualizado; la doc real es este
   archivo + `RULES.md`).
 - `src/data/alfabetizacion.ts` es legacy (la vista usa `alfabetizacionContent.ts`

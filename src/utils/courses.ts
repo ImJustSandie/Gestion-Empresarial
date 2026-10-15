@@ -25,6 +25,18 @@ export interface Activity {
   createdBy: string;
 }
 
+export interface ActivitySubmission {
+  id: string;
+  activityId: string;
+  courseId: string;
+  studentId: string;
+  status: "pendiente" | "entregado" | "calificado" | "no_entregado";
+  submittedAt?: string;
+  score?: number;      // 0 a 100
+  maxScore: number;    // 100 por defecto
+  feedback?: string;
+}
+
 export const COURSE_COLORS: Record<string, { from: string; to: string; label: string }> = {
   morado: { from: "#7C5CE9", to: "#5E3FE6", label: "Morado" },
   violeta: { from: "#8B5CF6", to: "#6D28D9", label: "Violeta" },
@@ -51,9 +63,11 @@ const IDB_DB_NAME = "gestion-empresarial";
 const IDB_STORE = "kv";
 const IDB_COURSES_KEY = "courses-json";
 const IDB_ACTIVITIES_KEY = "activities-json";
+const IDB_SUBMISSIONS_KEY = "submissions-json";
 
 let coursesCache: Course[] = [...(initialCourses as Course[])];
 let activitiesCache: Activity[] = [];
+let submissionsCache: ActivitySubmission[] = [];
 let cacheHydrated = false;
 let hydratePromise: Promise<void> | null = null;
 
@@ -113,6 +127,10 @@ async function persistActivities(): Promise<void> {
   await idbSet(IDB_ACTIVITIES_KEY, JSON.stringify(activitiesCache, null, 2));
 }
 
+async function persistSubmissions(): Promise<void> {
+  await idbSet(IDB_SUBMISSIONS_KEY, JSON.stringify(submissionsCache, null, 2));
+}
+
 async function hydrate(): Promise<void> {
   if (cacheHydrated) return;
   if (hydratePromise) return hydratePromise;
@@ -140,6 +158,13 @@ async function hydrate(): Promise<void> {
       try {
         const parsed = JSON.parse(rawActs);
         if (Array.isArray(parsed)) activitiesCache = parsed;
+      } catch {}
+    }
+    const rawSubs = await idbGet(IDB_SUBMISSIONS_KEY);
+    if (rawSubs) {
+      try {
+        const parsed = JSON.parse(rawSubs);
+        if (Array.isArray(parsed)) submissionsCache = parsed;
       } catch {}
     }
     cacheHydrated = true;
@@ -204,8 +229,10 @@ export async function deleteCourse(courseId: string): Promise<{ success: boolean
   if (!coursesCache.some((c) => c.id === courseId)) return { success: false, message: "Curso no encontrado." };
   coursesCache = coursesCache.filter((c) => c.id !== courseId);
   activitiesCache = activitiesCache.filter((a) => a.courseId !== courseId);
+  submissionsCache = submissionsCache.filter((s) => s.courseId !== courseId);
   await persistCourses();
   await persistActivities();
+  await persistSubmissions();
   return { success: true, message: "Curso eliminado." };
 }
 
@@ -272,8 +299,69 @@ export async function createActivity(data: { courseId: string; title: string; de
 export async function deleteActivity(activityId: string): Promise<{ success: boolean; message: string }> {
   await hydrate();
   activitiesCache = activitiesCache.filter((a) => a.id !== activityId);
+  submissionsCache = submissionsCache.filter((s) => s.activityId !== activityId);
   await persistActivities();
+  await persistSubmissions();
   return { success: true, message: "Actividad eliminada." };
+}
+
+// Entregas y Calificaciones (Submissions)
+export async function getSubmissions(courseId?: string): Promise<ActivitySubmission[]> {
+  await hydrate();
+  if (courseId) return submissionsCache.filter((s) => s.courseId === courseId);
+  return [...submissionsCache];
+}
+
+export function getSubmissionsSync(courseId?: string): ActivitySubmission[] {
+  if (courseId) return submissionsCache.filter((s) => s.courseId === courseId);
+  return [...submissionsCache];
+}
+
+export async function saveSubmission(
+  sub: Omit<ActivitySubmission, "id"> & { id?: string }
+): Promise<{ success: boolean; submission: ActivitySubmission }> {
+  await hydrate();
+  const id = sub.id || `sub-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+  const fullSub: ActivitySubmission = {
+    id,
+    activityId: sub.activityId,
+    courseId: sub.courseId,
+    studentId: sub.studentId,
+    status: sub.status,
+    submittedAt: sub.submittedAt,
+    score: sub.score !== undefined ? Math.max(0, Math.min(100, sub.score)) : undefined,
+    maxScore: sub.maxScore || 100,
+    feedback: sub.feedback,
+  };
+  const idx = submissionsCache.findIndex(
+    (s) => s.activityId === sub.activityId && s.studentId === sub.studentId
+  );
+  if (idx >= 0) {
+    submissionsCache[idx] = fullSub;
+  } else {
+    submissionsCache.push(fullSub);
+  }
+  await persistSubmissions();
+  return { success: true, submission: fullSub };
+}
+
+export async function bulkSaveSubmissions(subs: ActivitySubmission[]): Promise<void> {
+  await hydrate();
+  const map = new Map<string, ActivitySubmission>();
+  for (const s of submissionsCache) {
+    map.set(`${s.activityId}_${s.studentId}`, s);
+  }
+  for (const s of subs) {
+    map.set(`${s.activityId}_${s.studentId}`, s);
+  }
+  submissionsCache = Array.from(map.values());
+  await persistSubmissions();
+}
+
+export async function resetCourseSubmissions(courseId: string): Promise<void> {
+  await hydrate();
+  submissionsCache = submissionsCache.filter((s) => s.courseId !== courseId);
+  await persistSubmissions();
 }
 
 export function exportCoursesJson(): string {
@@ -281,4 +369,7 @@ export function exportCoursesJson(): string {
 }
 export function exportActivitiesJson(): string {
   return JSON.stringify(activitiesCache, null, 2);
+}
+export function exportSubmissionsJson(): string {
+  return JSON.stringify(submissionsCache, null, 2);
 }

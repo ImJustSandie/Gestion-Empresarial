@@ -29,7 +29,7 @@ interface VerticalBarChartProps {
 
 export function VerticalBarChart({
   items,
-  height = 180,
+  height = 200,
   valueSuffix = "est.",
   emptyMessage = "Sin datos disponibles",
 }: VerticalBarChartProps) {
@@ -39,71 +39,171 @@ export function VerticalBarChart({
     return <div class="text-xs text-gray-400 py-8 text-center">{emptyMessage}</div>;
   }
 
-  const maxValue = Math.max(...items.map((i) => i.value), 1);
+  // Dimensiones SVG
+  const svgWidth = 420;
+  const svgHeight = height;
+  const paddingLeft = 32;
+  const paddingRight = 16;
+  const paddingTop = 26;
+  const paddingBottom = 42;
+
+  const chartWidth = svgWidth - paddingLeft - paddingRight;
+  const chartHeight = svgHeight - paddingTop - paddingBottom;
+  const baselineY = paddingTop + chartHeight;
+
+  // Escala máxima (al menos 4 para tener guías visuales legibles)
+  const rawMax = Math.max(...items.map((i) => i.value), 0);
+  const maxValue = rawMax === 0 ? 5 : Math.ceil(rawMax * 1.25);
+
+  // Niveles del eje Y para las líneas de cuadrícula
+  const ySteps = [0, Math.round(maxValue / 2), maxValue];
+
+  const colWidth = chartWidth / items.length;
+  const barWidth = Math.min(46, colWidth * 0.65);
 
   return (
-    <div class="w-full">
-      <div
-        class="flex items-end justify-between gap-3 pt-6 pb-2 border-b border-gray-100"
-        style={{ height }}
+    <div class="w-full relative">
+      <svg
+        viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+        class="w-full h-auto overflow-visible select-none"
       >
+        {/* Líneas horizontales de fondo */}
+        {ySteps.map((val) => {
+          const y = baselineY - (val / maxValue) * chartHeight;
+          return (
+            <g key={val}>
+              <line
+                x1={paddingLeft}
+                y1={y}
+                x2={svgWidth - paddingRight}
+                y2={y}
+                stroke="#F1F5F9"
+                strokeWidth="1.5"
+                strokeDasharray={val === 0 ? undefined : "3 3"}
+              />
+              <text
+                x={paddingLeft - 6}
+                y={y + 3.5}
+                textAnchor="end"
+                class="text-[10px] font-mono fill-slate-400"
+              >
+                {val}
+              </text>
+            </g>
+          );
+        })}
+
+        {/* Columnas y Barras */}
         {items.map((item, idx) => {
-          const barHeightPct = Math.max(8, Math.round((item.value / maxValue) * 100));
+          const colCenterX = paddingLeft + idx * colWidth + colWidth / 2;
+          const barX = colCenterX - barWidth / 2;
           const isHovered = hoveredIdx === idx;
+
+          // Altura de la barra
+          const barH = item.value > 0 ? Math.max(8, (item.value / maxValue) * chartHeight) : 4;
+          const barY = baselineY - barH;
           const barColor = item.color || "#5932EA";
 
           return (
-            <div
+            <g
               key={item.key}
-              class="flex-1 flex flex-col items-center h-full justify-end relative group cursor-pointer"
+              class="cursor-pointer"
               onMouseEnter={() => setHoveredIdx(idx)}
               onMouseLeave={() => setHoveredIdx(null)}
             >
-              {/* Tooltip flotante */}
-              {isHovered && (
-                <div class="absolute -top-10 bg-gray-900 text-white text-[11px] font-semibold py-1 px-2 rounded shadow-lg z-20 whitespace-nowrap animate-fade-in pointer-events-none">
-                  {item.value} {valueSuffix} {typeof item.pct === "number" ? `(${item.pct}%)` : ""}
-                </div>
+              {/* Pista de fondo translúcida (Track) */}
+              <rect
+                x={barX}
+                y={paddingTop}
+                width={barWidth}
+                height={chartHeight}
+                rx="8"
+                fill={isHovered ? "#F1F5F9" : "#F8FAFC"}
+                class="transition-colors duration-150"
+              />
+
+              {/* Barra de valor rellena */}
+              <rect
+                x={barX}
+                y={barY}
+                width={barWidth}
+                height={barH}
+                rx="7"
+                fill={barColor}
+                opacity={hoveredIdx !== null && !isHovered ? 0.65 : 1}
+                class="transition-all duration-300 ease-out"
+              />
+
+              {/* Borde sutil superior de la barra cuando tiene valor */}
+              {item.value > 0 && (
+                <line
+                  x1={barX + 4}
+                  y1={barY}
+                  x2={barX + barWidth - 4}
+                  y2={barY}
+                  stroke="#FFFFFF"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  opacity="0.8"
+                />
               )}
 
-              {/* Valor superior */}
-              <span
-                class={`text-xs font-bold mb-1 transition-colors ${
-                  isHovered ? "text-gray-900 font-extrabold" : "text-gray-500"
+              {/* Valor numérico encima de la barra */}
+              <text
+                x={colCenterX}
+                y={item.value > 0 ? barY - 6 : baselineY - 8}
+                textAnchor="middle"
+                class={`text-[12px] font-mono transition-all duration-150 ${
+                  isHovered ? "font-black fill-gray-950 scale-105" : "font-bold fill-gray-700"
                 }`}
               >
                 {item.value}
-              </span>
+              </text>
 
-              {/* Barra */}
-              <div class="w-full max-w-[48px] bg-gray-100 rounded-t-lg overflow-hidden flex flex-col justify-end">
-                <div
-                  class="w-full rounded-t-lg transition-all duration-500 ease-out"
-                  style={{
-                    height: `${barHeightPct}%`,
-                    backgroundColor: barColor,
-                    opacity: hoveredIdx !== null && !isHovered ? 0.6 : 1,
-                  }}
-                />
-              </div>
-            </div>
+              {/* Etiqueta del rango de calificación (Eje X) */}
+              <text
+                x={colCenterX}
+                y={baselineY + 16}
+                textAnchor="middle"
+                class={`text-[11px] font-bold transition-colors ${
+                  isHovered ? "fill-[#5932EA]" : "fill-gray-700"
+                }`}
+              >
+                {item.sublabel || item.label}
+              </text>
+
+              {/* Porcentaje o categoría corta */}
+              <text
+                x={colCenterX}
+                y={baselineY + 29}
+                textAnchor="middle"
+                class="text-[9px] font-semibold fill-gray-400"
+              >
+                {typeof item.pct === "number" ? `${item.pct}%` : item.label}
+              </text>
+            </g>
           );
         })}
-      </div>
+      </svg>
 
-      {/* Etiquetas inferiores */}
-      <div class="flex items-start justify-between gap-3 pt-2">
-        {items.map((item) => (
-          <div key={item.key} class="flex-1 text-center min-w-0">
-            <p class="text-xs font-semibold text-gray-700 truncate" title={item.label}>
-              {item.label}
-            </p>
-            {item.sublabel && (
-              <p class="text-[10px] text-gray-400 truncate">{item.sublabel}</p>
-            )}
-          </div>
-        ))}
-      </div>
+      {/* Tooltip flotante al pasar el cursor */}
+      {hoveredIdx !== null && (
+        <div
+          class="absolute -top-3 left-1/2 -translate-x-1/2 bg-gray-900/95 backdrop-blur-xs text-white text-xs px-3 py-1.5 rounded-xl shadow-xl pointer-events-none z-20 flex items-center gap-2 animate-fade-in"
+        >
+          <span
+            class="w-2.5 h-2.5 rounded-full"
+            style={{ backgroundColor: items[hoveredIdx].color || "#5932EA" }}
+          />
+          <span class="font-bold">{items[hoveredIdx].label}:</span>
+          <span class="font-mono text-violet-200">
+            {items[hoveredIdx].value} {valueSuffix}
+          </span>
+          {typeof items[hoveredIdx].pct === "number" && (
+            <span class="text-gray-400">({items[hoveredIdx].pct}%)</span>
+          )}
+        </div>
+      )}
     </div>
   );
 }

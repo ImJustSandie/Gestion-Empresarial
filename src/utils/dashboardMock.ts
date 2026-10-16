@@ -2,6 +2,7 @@
 import type { Course, Activity, ActivitySubmission } from "./courses";
 import type { User } from "./auth";
 import { bulkSaveSubmissions } from "./courses";
+import { BLOQUES_ALFABETIZACION, saveAlfabetizacionProgress } from "./alfabetizacionContent";
 
 const NOMBRES_MOCK = [
   "Valentina Gómez",
@@ -162,4 +163,73 @@ export function getMockStudentName(studentId: string, index: number = 0): string
     return NOMBRES_MOCK[(num - 1) % NOMBRES_MOCK.length];
   }
   return NOMBRES_MOCK[index % NOMBRES_MOCK.length];
+}
+
+/**
+ * Simula el progreso de alfabetización para los estudiantes de un curso.
+ * Las lecciones completadas son coherentes con el perfil académico de cada estudiante:
+ *  - alto   → 70–100 % de lecciones completadas
+ *  - medio  → 40–75 % de lecciones completadas
+ *  - riesgo → 10–45 % de lecciones completadas
+ *  - crítico → 0–20 % de lecciones completadas
+ *
+ * El avance se distribuye de forma secuencial (bloque 1 antes que bloque 2, etc.)
+ * para simular un comportamiento realista de consumo de contenido.
+ */
+export async function seedAlfabetizacionProgressForCourse(
+  studentIds: string[]
+): Promise<void> {
+  // Recopilar todos los IDs de lecciones en orden (bloque 1 → bloque N)
+  const allLessonIds: string[] = [];
+  for (const bloque of BLOQUES_ALFABETIZACION) {
+    for (const subtema of bloque.subtemas) {
+      allLessonIds.push(subtema.id);
+    }
+  }
+  const total = allLessonIds.length;
+  if (total === 0) return;
+
+  for (let sIdx = 0; sIdx < studentIds.length; sIdx++) {
+    const studentId = studentIds[sIdx];
+
+    // Determinar perfil del estudiante (mismo esquema que seedMockDataForCourse)
+    let profile: "alto" | "medio" | "riesgo" | "critico";
+    const mod = sIdx % 10;
+    if (mod < 2) profile = "alto";
+    else if (mod < 7) profile = "medio";
+    else if (mod < 9) profile = "riesgo";
+    else profile = "critico";
+
+    // Rango de completitud según perfil
+    let minPct = 0;
+    let maxPct = 100;
+    if (profile === "alto") { minPct = 70; maxPct = 100; }
+    else if (profile === "medio") { minPct = 40; maxPct = 75; }
+    else if (profile === "riesgo") { minPct = 10; maxPct = 45; }
+    else { minPct = 0; maxPct = 20; }
+
+    // Calcular cuántas lecciones completa (+ pequeña variación aleatoria)
+    const pct = minPct + Math.random() * (maxPct - minPct);
+    const completedCount = Math.round((pct / 100) * total);
+
+    // Marcar las primeras N lecciones como completadas (secuencial)
+    const progress: Record<string, boolean> = {};
+    for (let i = 0; i < completedCount; i++) {
+      progress[allLessonIds[i]] = true;
+    }
+
+    await saveAlfabetizacionProgress(studentId, progress);
+  }
+}
+
+/**
+ * Borra el progreso de alfabetización de un conjunto de estudiantes.
+ * Llama a saveAlfabetizacionProgress con objeto vacío para cada uno.
+ */
+export async function clearAlfabetizacionProgressForStudents(
+  studentIds: string[]
+): Promise<void> {
+  for (const studentId of studentIds) {
+    await saveAlfabetizacionProgress(studentId, {});
+  }
 }

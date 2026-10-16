@@ -47,11 +47,6 @@ export default function AppFooter() {
                   Cursos / Actividades
                 </a>
               </li>
-              <li>
-                <a href="/dashboard" class="hover:text-[#5932EA] transition-colors">
-                  DashBoard
-                </a>
-              </li>
             </ul>
           </div>
 

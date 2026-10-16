@@ -43,7 +43,6 @@ export default function AppHeader({ currentPath = "" }: Props) {
     { href: "/ensenanza", label: "Enseñanza" },
     { href: "/alfabetizacion", label: "Alfabetizacion IA" },
     { href: "/actividades", label: "Cursos/Actividades" },
-    { href: "/dashboard", label: "DashBoard" },
   ];
   const baseNavProfesor = [
     { href: "/ensenanza", label: "Enseñanza" },
@@ -51,8 +50,19 @@ export default function AppHeader({ currentPath = "" }: Props) {
     { href: "/actividades", label: "Cursos/Actividades" },
     { href: "/dashboard", label: "DashBoard" },
   ];
-  const baseNav = session.role === "profesor" ? baseNavProfesor : baseNavEstudiante;
-  const navItems = session.role === "admin" ? [{ href: "/admin", label: "Admin" }, ...baseNav] : baseNav;
+  const baseNavAdmin = [
+    { href: "/admin", label: "Admin" },
+    { href: "/ensenanza", label: "Enseñanza" },
+    { href: "/alfabetizacion", label: "Alfabetizacion IA" },
+    { href: "/actividades", label: "Cursos/Actividades" },
+    { href: "/dashboard", label: "DashBoard" },
+  ];
+  const navItems =
+    session.role === "admin"
+      ? baseNavAdmin
+      : session.role === "profesor"
+      ? baseNavProfesor
+      : baseNavEstudiante;
 
   return (
     <header class="border-b border-slate-100 bg-white/95 backdrop-blur-md sticky top-0 z-30 shadow-[0_2px_12px_rgba(0,0,0,0.04)] w-full">

@@ -11,15 +11,21 @@ import {
   type ActivitySubmission,
   resetCourseSubmissions,
 } from "../utils/courses";
-import { seedMockDataForCourse } from "../utils/dashboardMock";
+import { seedMockDataForCourse, seedAlfabetizacionProgressForCourse, clearAlfabetizacionProgressForStudents } from "../utils/dashboardMock";
 import {
   calculateCourseAnalytics,
   type CourseAnalyticsSummary,
   type StudentCourseMetric,
 } from "../utils/dashboardAnalytics";
+import {
+  getAlfabetizacionProgressForUsers,
+  BLOQUES_ALFABETIZACION,
+  type UserAlfabetizacionSummary,
+} from "../utils/alfabetizacionContent";
 import SelectMenu from "./SelectMenu";
 import MetricCard from "./dashboard/MetricCard";
 import DonutProgress from "./dashboard/DonutProgress";
+import MultiSegmentDonut, { type DonutSegment } from "./dashboard/MultiSegmentDonut";
 import { VerticalBarChart, HorizontalBarChart, type VerticalBarItem, type HorizontalBarItem } from "./dashboard/BarChart";
 import StudentDetailModal from "./dashboard/StudentDetailModal";
 
@@ -32,6 +38,9 @@ export default function DashboardView() {
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [generatingMock, setGeneratingMock] = useState(false);
+  // Progreso de alfabetización por estudiante del curso
+  const [alfabetizacionProgress, setAlfabetizacionProgress] = useState<UserAlfabetizacionSummary[]>([]);
+  const [loadingAlfProgress, setLoadingAlfProgress] = useState(false);
 
   // Filtros y ordenamiento en el roster de estudiantes
   const [searchQuery, setSearchQuery] = useState("");
@@ -44,6 +53,8 @@ export default function DashboardView() {
 
   // Estudiante seleccionado para el Drill-down modal
   const [selectedStudent, setSelectedStudent] = useState<StudentCourseMetric | null>(null);
+  // Modal de lista completa de estudiantes en riesgo
+  const [showRiskModal, setShowRiskModal] = useState(false);
 
   // Carga inicial
   useEffect(() => {
@@ -53,6 +64,11 @@ export default function DashboardView() {
       const s = getSession();
       if (!s) {
         window.location.href = "/";
+        return;
+      }
+      // Solo profesor y admin pueden acceder al dashboard
+      if (s.role !== "profesor" && s.role !== "admin") {
+        window.location.href = "/ensenanza";
         return;
       }
       setSession(s);
@@ -95,6 +111,21 @@ export default function DashboardView() {
     return courses.find((c) => c.id === selectedCourseId) || null;
   }, [courses, selectedCourseId]);
 
+  // Cargar progreso de alfabetización de los estudiantes del curso seleccionado
+  useEffect(() => {
+    if (!selectedCourse || loading) return;
+    const studentIds = selectedCourse.estudianteIds || [];
+    if (studentIds.length === 0) {
+      setAlfabetizacionProgress([]);
+      return;
+    }
+    setLoadingAlfProgress(true);
+    getAlfabetizacionProgressForUsers(studentIds).then((summaries) => {
+      setAlfabetizacionProgress(summaries);
+      setLoadingAlfProgress(false);
+    });
+  }, [selectedCourseId, loading]);
+
   // Si el curso actual no tiene submissions y tiene actividades, poblarlas automáticamente con seed realista
   useEffect(() => {
     if (!selectedCourse || loading) return;
@@ -114,12 +145,31 @@ export default function DashboardView() {
   const handleRegenerateSeed = async () => {
     if (!selectedCourse) return;
     setGeneratingMock(true);
+
+    // 1. Regenerar entregas de actividades
     await resetCourseSubmissions(selectedCourse.id);
     const courseActs = activities.filter((a) => a.courseId === selectedCourse.id);
     const newSubs = await seedMockDataForCourse(selectedCourse, courseActs, allUsers, []);
     setSubmissions((prev) => [...prev.filter((s) => s.courseId !== selectedCourse.id), ...newSubs]);
+
+    // 2. Regenerar progreso de alfabetización
+    // Usar misma lógica de selección de estudiantes que seedMockDataForCourse
+    let alfStudentIds = selectedCourse.estudianteIds ?? [];
+    if (alfStudentIds.length === 0) {
+      // Fallback: usar estudiantes reales del sistema (misma lógica que el seed de actividades)
+      const realStudents = allUsers.filter((u) => u.role === "estudiante");
+      alfStudentIds = realStudents.map((u) => u.id);
+    }
+    if (alfStudentIds.length > 0) {
+      await clearAlfabetizacionProgressForStudents(alfStudentIds);
+      await seedAlfabetizacionProgressForCourse(alfStudentIds);
+      const summaries = await getAlfabetizacionProgressForUsers(alfStudentIds);
+      setAlfabetizacionProgress(summaries);
+    }
+
     setGeneratingMock(false);
   };
+
 
   // Motor analítico del curso seleccionado
   const analytics: CourseAnalyticsSummary | null = useMemo(() => {
@@ -246,6 +296,100 @@ export default function DashboardView() {
       }))
     : [];
 
+  // Módulo seleccionado para ver avance por estudiante en el KPI de Alfabetización
+  const [selectedModuleIndex, setSelectedModuleIndex] = useState<number | null>(null);
+
+  const handleModuleClick = (index: number) => {
+    setSelectedModuleIndex((prev) => (prev === index ? null : index));
+  };
+
+  // Segmento interactivo de puntualidad: hover y selección persistente
+  const [hoveredPunctualityKey, setHoveredPunctualityKey] = useState<string | null>(null);
+  const [selectedPunctualityKey, setSelectedPunctualityKey] = useState<string | null>(null);
+
+  const handlePunctualityClick = (key: string) => {
+    setSelectedPunctualityKey((prev) => (prev === key ? null : key));
+  };
+
+  // Preparar datos para la dona multisegmento de puntualidad y cumplimiento
+  const punctualitySegments: DonutSegment[] = useMemo(() => {
+    if (!analytics) return [];
+    return [
+      {
+        key: "a_tiempo",
+        label: "A tiempo",
+        count: analytics.submissionsOnTime,
+        color: "#10B981", // verde esmeralda
+      },
+      {
+        key: "con_retraso",
+        label: "Con retraso",
+        count: analytics.submissionsLate,
+        color: "#F59E0B", // ámbar
+      },
+      {
+        key: "pendientes",
+        label: "Pendientes / No entregadas",
+        count: analytics.submissionsPendingOrMissing,
+        color: "#EF4444", // rojo
+      },
+    ];
+  }, [analytics]);
+
+  const totalDelivered = analytics ? analytics.submissionsOnTime + analytics.submissionsLate : 0;
+  const netPunctualityPct = totalDelivered > 0 ? Math.round((analytics!.submissionsOnTime / totalDelivered) * 100) : 0;
+  const totalSubmissionsPool = analytics
+    ? analytics.submissionsOnTime + analytics.submissionsLate + analytics.submissionsPendingOrMissing
+    : 0;
+
+  // Clasifica a cada estudiante según sus entregas: a tiempo, con retraso, pendientes
+  const studentsByPunctualityCategory = useMemo(() => {
+    type Entry = { student: StudentCourseMetric; count: number };
+    const empty: Record<string, Entry[]> = { a_tiempo: [], con_retraso: [], pendientes: [] };
+    if (!analytics || !selectedCourse) return empty;
+
+    const courseActs = activities.filter((a) => a.courseId === selectedCourse.id);
+    const courseSubs = submissions.filter((s) => s.courseId === selectedCourse.id);
+
+    const result: Record<string, Entry[]> = {
+      a_tiempo: [],
+      con_retraso: [],
+      pendientes: [],
+    };
+
+    analytics.students.forEach((student) => {
+      let onTimeCount = 0;
+      let lateCount = 0;
+      let pendingCount = 0;
+
+      courseActs.forEach((act) => {
+        const sub = courseSubs.find(
+          (s) => s.studentId === student.studentId && s.activityId === act.id
+        );
+        if (!sub || sub.status === "no_entregado" || sub.status === "pendiente") {
+          pendingCount++;
+        } else if (sub.submittedAt && act.dueDate) {
+          if (new Date(sub.submittedAt).getTime() > new Date(act.dueDate).getTime()) {
+            lateCount++;
+          } else {
+            onTimeCount++;
+          }
+        } else {
+          onTimeCount++;
+        }
+      });
+
+      if (onTimeCount > 0) result.a_tiempo.push({ student, count: onTimeCount });
+      if (lateCount > 0) result.con_retraso.push({ student, count: lateCount });
+      if (pendingCount > 0) result.pendientes.push({ student, count: pendingCount });
+    });
+
+    // Ordenar por count descendente
+    Object.values(result).forEach((arr) => arr.sort((a, b) => b.count - a.count));
+
+    return result;
+  }, [analytics, selectedCourse, activities, submissions]);
+
   return (
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-fade-in">
       {/* Barra Superior: Título + Selector de Curso */}
@@ -255,10 +399,17 @@ export default function DashboardView() {
             <h1 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
               Dashboard Analítico
             </h1>
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#EDE9FE] text-[#6D28D9]">
-              Docente
+            <span
+              class={`px-2.5 py-0.5 rounded-full text-xs font-bold ${
+                session?.role === "admin"
+                  ? "bg-amber-100 text-amber-700"
+                  : "bg-[#EDE9FE] text-[#6D28D9]"
+              }`}
+            >
+              {session?.role === "admin" ? "Admin" : "Docente"}
             </span>
           </div>
+
           <p class="text-xs sm:text-sm text-gray-500 mt-1">
             Supervisa el rendimiento académico, avance de entregas y alertas tempranas por curso.
           </p>
@@ -284,28 +435,203 @@ export default function DashboardView() {
         </div>
       </div>
 
+
       {analytics && (
         <>
           {/* Fila 1: Tarjetas KPI de Resumen Ejecutivo */}
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* KPI 1: Avance Promedio a la Fecha (Decisión B - Opción 2) */}
-            <MetricCard
-              title="Avance Promedio a la Fecha"
-              value={`${analytics.averageProgressDuePct}%`}
-              subtitle={`Relativo a ${analytics.dueActivitiesCount} actividades exigibles`}
-              badge={{
-                text: analytics.averageProgressDuePct >= 70 ? "Al día" : "Atención",
-                variant: analytics.averageProgressDuePct >= 70 ? "success" : "warning",
-              }}
-              progressPct={analytics.averageProgressDuePct}
-              progressColor="#5932EA"
-              footerNote={`Avance global del programa: ${analytics.averageProgressTotalPct}% (${analytics.totalActivities} actividades)`}
-              icon={
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              }
-            />
+            {/* KPI 1: Avance en M\u00f3dulos de Alfabetizaci\u00f3n */}
+            {(() => {
+              const avgOverall =
+                alfabetizacionProgress.length > 0
+                  ? Math.round(alfabetizacionProgress.reduce((a, s) => a + s.overallPct, 0) / alfabetizacionProgress.length)
+                  : 0;
+              const studentsWithAny = alfabetizacionProgress.filter((s) => s.totalCompleted > 0).length;
+              const bloqueAvgs = BLOQUES_ALFABETIZACION.map((b, i) => ({
+                titulo: b.tituloCorto,
+                avg:
+                  alfabetizacionProgress.length > 0
+                    ? Math.round(
+                        alfabetizacionProgress.reduce((a, s) => a + (s.bloques[i]?.pct ?? 0), 0) /
+                          alfabetizacionProgress.length
+                      )
+                    : 0,
+              }));
+
+              return (
+                <div class="bg-white rounded-3xl p-5 border border-gray-200/80 shadow-xs flex flex-col gap-3">
+                  {/* Encabezado */}
+                  <div class="flex items-start justify-between">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0" style={{ background: "linear-gradient(135deg,#EDE9FE,#DDD6FE)" }}>
+                        <svg class="w-5 h-5 text-[#5932EA]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="text-[11px] font-bold uppercase tracking-wider text-gray-400">Avance Alfabetización</p>
+                        <p class="text-2xl font-black text-gray-900 leading-tight">{avgOverall}%</p>
+                      </div>
+                    </div>
+                    <span
+                      class={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                        avgOverall >= 70 ? "bg-emerald-100 text-emerald-700" : avgOverall >= 40 ? "bg-amber-100 text-amber-700" : "bg-gray-100 text-gray-500"
+                      }`}
+                    >
+                      {avgOverall >= 70 ? "Avanzado" : avgOverall >= 40 ? "En progreso" : "Iniciando"}
+                    </span>
+                  </div>
+
+                  {/* Barra global */}
+                  <div class="space-y-1">
+                    <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                      <div
+                        class="h-full rounded-full transition-all duration-700"
+                        style={{ width: `${avgOverall}%`, background: "linear-gradient(90deg,#7C5CE9,#5932EA)" }}
+                      />
+                    </div>
+                    <p class="text-[10px] text-gray-400">
+                      {loadingAlfProgress
+                        ? "Cargando progreso..."
+                        : alfabetizacionProgress.length === 0
+                        ? "Sin estudiantes asignados"
+                        : `${studentsWithAny} de ${alfabetizacionProgress.length} est. con avance · 5 módulos`}
+                    </p>
+                  </div>
+
+                  {/* Desglose por módulo — cada fila es clickeable */}
+                  <div class="space-y-1 pt-1 border-t border-gray-100">
+                    {bloqueAvgs.map(({ titulo, avg }, i) => {
+                      const isOpen = selectedModuleIndex === i;
+                      const barColor = avg >= 70 ? "#10B981" : avg >= 40 ? "#F59E0B" : "#5932EA";
+                      // Estudiantes de este bloque
+                      const studentsInModule = alfabetizacionProgress
+                        .map((s) => {
+                          const bp = s.bloques[i];
+                          // Buscar nombre del estudiante en allUsers
+                          const user = allUsers.find((u) => u.id === s.userId);
+                          return {
+                            userId: s.userId,
+                            name: user?.name ?? s.userId,
+                            codigo: user?.codigo ?? "",
+                            pct: bp?.pct ?? 0,
+                            completed: bp?.completed ?? 0,
+                            total: bp?.total ?? 0,
+                          };
+                        })
+                        .sort((a, b) => b.pct - a.pct);
+
+                      return (
+                        <div key={i}>
+                          {/* Fila de módulo — clickeable */}
+                          <button
+                            onClick={() => handleModuleClick(i)}
+                            class={`w-full flex items-center gap-2 px-1.5 py-1 rounded-lg transition-all duration-150 cursor-pointer ${
+                              isOpen
+                                ? "bg-[#EDE9FE]"
+                                : "hover:bg-gray-50"
+                            }`}
+                          >
+                            <span
+                              class={`text-[10px] w-4 shrink-0 font-mono font-bold ${
+                                isOpen ? "text-[#5932EA]" : "text-gray-500"
+                              }`}
+                            >
+                              {i + 1}
+                            </span>
+                            <span
+                              class={`text-[10px] truncate flex-1 min-w-0 text-left ${
+                                isOpen ? "text-[#5932EA] font-semibold" : "text-gray-600"
+                              }`}
+                            >
+                              {titulo}
+                            </span>
+                            <div class="w-14 bg-gray-100 rounded-full h-1 overflow-hidden shrink-0">
+                              <div
+                                class="h-full rounded-full transition-all duration-500"
+                                style={{ width: `${avg}%`, backgroundColor: barColor }}
+                              />
+                            </div>
+                            <span
+                              class={`text-[10px] font-bold font-mono w-7 text-right shrink-0 ${
+                                isOpen ? "text-[#5932EA]" : "text-gray-500"
+                              }`}
+                            >
+                              {avg}%
+                            </span>
+                            <svg
+                              class={`w-3 h-3 shrink-0 transition-transform duration-200 ${
+                                isOpen ? "rotate-180 text-[#5932EA]" : "text-gray-300"
+                              }`}
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </button>
+
+                          {/* Panel expandible: avance por estudiante */}
+                          {isOpen && (
+                            <div class="mt-1 mb-1 ml-4 mr-1 rounded-xl border border-[#DDD6FE] bg-[#F5F3FF] p-2 space-y-1.5 animate-fade-in">
+                              {loadingAlfProgress ? (
+                                <p class="text-[10px] text-[#7C5CE9] text-center py-1">Cargando...</p>
+                              ) : studentsInModule.length === 0 ? (
+                                <p class="text-[10px] text-gray-400 text-center py-1">Sin estudiantes asignados</p>
+                              ) : (
+                                studentsInModule.map((st) => {
+                                  const stBarColor =
+                                    st.pct >= 70 ? "#10B981" : st.pct >= 40 ? "#F59E0B" : "#EF4444";
+                                  return (
+                                    <div key={st.userId} class="flex items-center gap-2">
+                                      {/* Avatar inicial */}
+                                      <div
+                                        class="w-5 h-5 rounded-md flex items-center justify-center font-bold text-[9px] shrink-0 bg-[#EDE9FE] text-[#5932EA] border border-[#DDD6FE]"
+                                      >
+                                        {st.name.charAt(0).toUpperCase()}
+                                      </div>
+                                      {/* Nombre + código */}
+                                      <div class="flex-1 min-w-0">
+                                        <p class="text-[10px] font-semibold text-gray-700 truncate leading-tight">
+                                          {st.name}
+                                        </p>
+                                        {st.codigo && (
+                                          <p class="text-[9px] font-mono text-gray-400 leading-none">
+                                            {st.codigo}
+                                          </p>
+                                        )}
+                                      </div>
+                                      {/* Barra de progreso */}
+                                      <div class="w-14 bg-white rounded-full h-1.5 overflow-hidden border border-gray-200 shrink-0">
+                                        <div
+                                          class="h-full rounded-full transition-all duration-500"
+                                          style={{ width: `${st.pct}%`, backgroundColor: stBarColor }}
+                                        />
+                                      </div>
+                                      {/* Porcentaje */}
+                                      <span
+                                        class="text-[10px] font-bold font-mono w-8 text-right shrink-0"
+                                        style={{ color: stBarColor }}
+                                      >
+                                        {st.pct}%
+                                      </span>
+                                      {/* Lecciones */}
+                                      <span class="text-[9px] text-gray-400 shrink-0 font-mono">
+                                        {st.completed}/{st.total}
+                                      </span>
+                                    </div>
+                                  );
+                                })
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* KPI 2: Rendimiento Ponderado (Decisión A - Opción 2) */}
             <MetricCard
@@ -345,25 +671,115 @@ export default function DashboardView() {
               }
             />
 
-            {/* KPI 4: Estudiantes en Riesgo Académico */}
-            <MetricCard
-              title="Estudiantes en Riesgo"
-              value={analytics.atRiskCount}
-              subtitle="Nota ponderada < 60 o avance < 50%"
-              badge={{
-                text: analytics.atRiskCount === 0 ? "Sin alertas" : `${analytics.atRiskCount} en alerta`,
-                variant: analytics.atRiskCount === 0 ? "success" : "danger",
-              }}
-              progressPct={(analytics.atRiskCount / Math.max(1, analytics.totalStudents)) * 100}
-              progressColor="#EF4444"
-              footerNote={`${analytics.regularCount} en nivel regular · ${analytics.excellentCount} destacados`}
-              onClick={() => setStatusFilter("riesgo")}
-              icon={
-                <svg class="w-6 h-6 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-              }
-            />
+            {/* KPI 4: Estudiantes en Riesgo Académico — con lista + modal si > 3 */}
+            {(() => {
+              const riskStudents = analytics.students
+                .filter((s) => s.status === "riesgo")
+                .sort((a, b) => a.weightedScore - b.weightedScore); // peor nota primero
+              const preview = riskStudents.slice(0, 3);
+              const hasMore = riskStudents.length > 3;
+
+              const RiskRow = ({ s, onClick }: { s: StudentCourseMetric; onClick: () => void }) => {
+                const motivo =
+                  s.weightedScore < 60 && s.progressDuePct < 50
+                    ? "Nota y avance bajos"
+                    : s.weightedScore < 60
+                    ? `Nota: ${s.weightedScore} pts`
+                    : `Avance: ${s.progressDuePct}%`;
+                return (
+                  <button
+                    onClick={onClick}
+                    class="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-xl hover:bg-rose-50 transition-colors group text-left cursor-pointer"
+                  >
+                    <div class={`w-7 h-7 rounded-lg flex items-center justify-center font-bold text-[10px] border shrink-0 ${s.avatarColor}`}>
+                      {s.name.charAt(0)}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-[11px] font-semibold text-gray-800 truncate group-hover:text-rose-700 transition-colors">{s.name}</p>
+                      <p class="text-[9px] font-mono text-gray-400">{s.codigo}</p>
+                    </div>
+                    <div class="flex flex-col items-end gap-0.5 shrink-0">
+                      <span class="text-[10px] font-extrabold font-mono text-rose-600">{s.weightedScore} pts</span>
+                      <span class="text-[9px] text-gray-400 leading-none">{motivo}</span>
+                    </div>
+                  </button>
+                );
+              };
+
+              return (
+                <div class="bg-white rounded-3xl p-5 border border-gray-200/80 shadow-xs flex flex-col gap-3">
+                  {/* Encabezado */}
+                  <div class="flex items-start justify-between">
+                    <div class="flex items-center gap-2.5">
+                      <div class={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${riskStudents.length === 0 ? "bg-emerald-50" : "bg-rose-50"}`}>
+                        <svg class={`w-5 h-5 ${riskStudents.length === 0 ? "text-emerald-500" : "text-rose-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="text-[11px] font-bold uppercase tracking-wider text-gray-400">Estudiantes en Riesgo</p>
+                        <p class={`text-2xl font-black leading-tight ${riskStudents.length === 0 ? "text-emerald-600" : "text-rose-600"}`}>
+                          {riskStudents.length}
+                        </p>
+                      </div>
+                    </div>
+                    <span class={`px-2 py-0.5 rounded-full text-[10px] font-bold ${riskStudents.length === 0 ? "bg-emerald-100 text-emerald-700" : "bg-rose-100 text-rose-700"}`}>
+                      {riskStudents.length === 0 ? "Sin alertas" : `${riskStudents.length} en alerta`}
+                    </span>
+                  </div>
+
+                  {/* Barra de proporción */}
+                  <div class="space-y-1">
+                    <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                      <div
+                        class="h-full rounded-full transition-all duration-700"
+                        style={{
+                          width: `${(riskStudents.length / Math.max(1, analytics.totalStudents)) * 100}%`,
+                          backgroundColor: riskStudents.length === 0 ? "#10B981" : "#EF4444",
+                        }}
+                      />
+                    </div>
+                    <p class="text-[10px] text-gray-400">
+                      {analytics.regularCount} regulares · {analytics.excellentCount} destacados · {analytics.totalStudents} total
+                    </p>
+                  </div>
+
+                  {/* Lista de estudiantes en riesgo (máx 3 en preview) */}
+                  <div class="border-t border-gray-100 pt-2">
+                    {riskStudents.length === 0 ? (
+                      <div class="flex items-center gap-2 py-2">
+                        <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span class="text-xs text-gray-500">Ningún estudiante en situación de alerta</span>
+                      </div>
+                    ) : (
+                      <div class="space-y-1">
+                        {preview.map((s) => (
+                          <RiskRow key={s.studentId} s={s} onClick={() => setSelectedStudent(s)} />
+                        ))}
+                        {hasMore && (
+                          <button
+                            onClick={() => setShowRiskModal(true)}
+                            class="w-full mt-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 transition-colors cursor-pointer group"
+                          >
+                            <svg class="w-3.5 h-3.5 text-rose-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span class="text-[11px] font-bold text-rose-600 group-hover:text-rose-700">
+                              Ver todos ({riskStudents.length})
+                            </span>
+                            <svg class="w-3 h-3 text-rose-400 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+                            </svg>
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })()}
           </div>
 
           {/* Fila 2: Visualizaciones Gráficas */}
@@ -446,57 +862,171 @@ export default function DashboardView() {
               </div>
             </div>
 
-            {/* Gráfica 3: Estado de Cumplimiento de Entregas */}
+            {/* Gráfica 3: Estado de Cumplimiento de Entregas (Gráfico Circular Multisegmento) */}
             <div class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-xs flex flex-col justify-between">
               <div>
-                <h3 class="text-sm font-bold text-gray-900 mb-1">
-                  Puntualidad y Cumplimiento
-                </h3>
+                <div class="flex items-center justify-between mb-1">
+                  <h3 class="text-sm font-bold text-gray-900">
+                    Puntualidad y Cumplimiento
+                  </h3>
+                  <span class="text-xs font-mono text-gray-400">
+                    Total: {totalSubmissionsPool}
+                  </span>
+                </div>
                 <p class="text-xs text-gray-500 mb-4">
-                  Monitoreo de entregas a tiempo frente a entregas tardías y pendientes.
+                  Distribución proporcional de entregas a tiempo, con retraso y no entregadas.
                 </p>
               </div>
 
               <div class="py-2 flex items-center justify-center">
-                <DonutProgress
-                  percentage={analytics.averageProgressDuePct}
-                  size={140}
-                  strokeWidth={14}
-                  color="#5932EA"
-                  bgColor="#EDE9FE"
-                  label="Cumplimiento"
+                <MultiSegmentDonut
+                  segments={punctualitySegments}
+                  size={185}
+                  activeSegmentKey={hoveredPunctualityKey}
+                  selectedSegmentKey={selectedPunctualityKey}
+                  onHoverSegment={setHoveredPunctualityKey}
+                  onClickSegment={handlePunctualityClick}
                 />
               </div>
 
-              <div class="space-y-2 pt-4 border-t border-gray-100">
-                <div class="flex items-center justify-between text-xs">
-                  <div class="flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-                    <span class="text-gray-600">Entregadas a tiempo</span>
-                  </div>
-                  <span class="font-bold text-gray-900 font-mono">
-                    {analytics.submissionsOnTime}
-                  </span>
-                </div>
-                <div class="flex items-center justify-between text-xs">
-                  <div class="flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500" />
-                    <span class="text-gray-600">Entregadas con retraso</span>
-                  </div>
-                  <span class="font-bold text-gray-900 font-mono">
-                    {analytics.submissionsLate}
-                  </span>
-                </div>
-                <div class="flex items-center justify-between text-xs">
-                  <div class="flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-rose-500" />
-                    <span class="text-gray-600">Pendientes o no entregadas</span>
-                  </div>
-                  <span class="font-bold text-gray-900 font-mono">
-                    {analytics.submissionsPendingOrMissing}
-                  </span>
-                </div>
+              {/* Leyenda interactiva con porcentajes, "X de Y entregas" y clic para drill-down */}
+              <div class="space-y-1 pt-4 border-t border-gray-100">
+                {punctualitySegments.map((seg) => {
+                  const isHovered = hoveredPunctualityKey === seg.key;
+                  const isSelected = selectedPunctualityKey === seg.key;
+                  const isAnyHovered = hoveredPunctualityKey !== null;
+                  const isAnySelected = selectedPunctualityKey !== null;
+                  const pct = totalSubmissionsPool > 0 ? Math.round((seg.count / totalSubmissionsPool) * 100) : 0;
+
+                  return (
+                    <div
+                      key={seg.key}
+                      onMouseEnter={() => setHoveredPunctualityKey(seg.key)}
+                      onMouseLeave={() => setHoveredPunctualityKey(null)}
+                      onClick={() => handlePunctualityClick(seg.key)}
+                      class={`flex items-center justify-between px-2.5 py-2 rounded-xl transition-all duration-200 cursor-pointer ${
+                        isSelected
+                          ? "ring-2 shadow-sm scale-[1.01]"
+                          : isHovered
+                          ? "bg-gray-100 shadow-xs scale-[1.01]"
+                          : isAnyHovered || (isAnySelected && !isSelected)
+                          ? "opacity-50"
+                          : "hover:bg-gray-50"
+                      }`}
+                      style={isSelected ? { ringColor: seg.color, backgroundColor: seg.color + "12" } : {}}
+                    >
+                      {/* Dot + nombre + subtexto */}
+                      <div class="flex items-center gap-2.5 min-w-0">
+                        <span
+                          class="w-2.5 h-2.5 rounded-full shrink-0 transition-colors duration-200"
+                          style={{ backgroundColor: isSelected || isHovered ? seg.color : isAnyHovered || (isAnySelected && !isSelected) ? "#CBD5E1" : seg.color }}
+                        />
+                        <div class="flex flex-col leading-tight min-w-0">
+                          <span class={`text-xs font-medium transition-colors duration-200 ${isSelected ? "font-bold" : "text-gray-700"}`}>
+                            {seg.label}
+                          </span>
+                          <span class="text-[10px] font-mono text-gray-400">
+                            {seg.count} de {totalSubmissionsPool} entregas
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Pastilla pct + flecha toggle */}
+                      <div class="flex items-center gap-1.5 shrink-0">
+                        <span
+                          class={`text-[11px] font-extrabold font-mono px-2 py-0.5 rounded-lg transition-colors duration-200 ${
+                            isSelected ? "text-white" : isHovered ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-500"
+                          }`}
+                          style={isSelected ? { backgroundColor: seg.color } : {}}
+                        >
+                          {pct}%
+                        </span>
+                        <svg
+                          class={`w-3.5 h-3.5 transition-transform duration-200 ${isSelected ? "rotate-180" : ""}`}
+                          style={{ color: isSelected ? seg.color : "#9CA3AF" }}
+                          fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        >
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
+
+              {/* Panel de detalle de estudiantes al seleccionar un segmento */}
+              {selectedPunctualityKey && (() => {
+                const seg = punctualitySegments.find((s) => s.key === selectedPunctualityKey)!;
+                const studentList = studentsByPunctualityCategory[selectedPunctualityKey] || [];
+
+                const labelMap: Record<string, { title: string; noun: string }> = {
+                  a_tiempo: { title: "Entregas a tiempo", noun: "act. a tiempo" },
+                  con_retraso: { title: "Entregas con retraso", noun: "act. con retraso" },
+                  pendientes: { title: "Sin entregar / pendientes", noun: "act. pendientes" },
+                };
+                const meta = labelMap[selectedPunctualityKey] || { title: selectedPunctualityKey, noun: "entregas" };
+
+                return (
+                  <div class="mt-3 border-t border-gray-100 pt-3">
+                    {/* Encabezado del panel */}
+                    <div class="flex items-center justify-between mb-2">
+                      <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full" style={{ backgroundColor: seg.color }} />
+                        <span class="text-xs font-bold text-gray-900">{meta.title}</span>
+                        <span
+                          class="text-[10px] font-semibold px-1.5 py-0.5 rounded-md text-white"
+                          style={{ backgroundColor: seg.color }}
+                        >
+                          {studentList.length} estudiantes
+                        </span>
+                      </div>
+                      <button
+                        onClick={() => setSelectedPunctualityKey(null)}
+                        class="text-gray-400 hover:text-gray-700 transition-colors cursor-pointer"
+                        title="Cerrar"
+                      >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+
+                    {/* Lista de estudiantes */}
+                    {studentList.length === 0 ? (
+                      <p class="text-xs text-gray-400 text-center py-3">Ningún estudiante en esta categoría</p>
+                    ) : (
+                      <div class="space-y-1 max-h-48 overflow-y-auto pr-1">
+                        {studentList.map(({ student, count }) => (
+                          <div
+                            key={student.studentId}
+                            onClick={() => setSelectedStudent(student)}
+                            class="flex items-center gap-2.5 px-2 py-1.5 rounded-xl hover:bg-gray-50 cursor-pointer transition-colors group"
+                          >
+                            {/* Avatar */}
+                            <div class={`w-7 h-7 rounded-lg flex items-center justify-center font-bold text-[10px] border shrink-0 ${student.avatarColor}`}>
+                              {student.name.charAt(0)}
+                            </div>
+                            {/* Info */}
+                            <div class="flex-1 min-w-0">
+                              <p class="text-[11px] font-semibold text-gray-800 truncate group-hover:text-[#5932EA] transition-colors">
+                                {student.name}
+                              </p>
+                              <p class="text-[9px] font-mono text-gray-400">{student.codigo}</p>
+                            </div>
+                            {/* Conteo */}
+                            <span
+                              class="text-[10px] font-extrabold font-mono px-1.5 py-0.5 rounded-md text-white shrink-0"
+                              style={{ backgroundColor: seg.color + "CC" }}
+                            >
+                              {count} {meta.noun}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
             </div>
           </div>
 
@@ -758,6 +1288,106 @@ export default function DashboardView() {
           onClose={() => setSelectedStudent(null)}
         />
       )}
+
+      {/* Modal: Lista completa de estudiantes en riesgo */}
+      {showRiskModal && analytics && (() => {
+        const riskStudents = analytics.students
+          .filter((s) => s.status === "riesgo")
+          .sort((a, b) => a.weightedScore - b.weightedScore);
+        return (
+          <div
+            class="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ backgroundColor: "rgba(0,0,0,0.5)", backdropFilter: "blur(4px)" }}
+            onClick={(e) => { if (e.target === e.currentTarget) setShowRiskModal(false); }}
+          >
+            <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg flex flex-col max-h-[85vh] overflow-hidden animate-fade-in">
+              {/* Header del modal */}
+              <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-2xl bg-rose-50 flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h2 class="text-base font-black text-gray-900">Estudiantes en Riesgo Académico</h2>
+                    <p class="text-xs text-gray-500">{riskStudents.length} estudiantes · Nota ponderada &lt; 60 o avance &lt; 50%</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowRiskModal(false)}
+                  class="w-8 h-8 rounded-xl flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-700 transition-colors cursor-pointer"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Cuerpo: lista scrolleable */}
+              <div class="overflow-y-auto flex-1 px-4 py-3 space-y-2">
+                {riskStudents.map((s, i) => {
+                  const motivo =
+                    s.weightedScore < 60 && s.progressDuePct < 50
+                      ? "Nota ponderada y avance bajos"
+                      : s.weightedScore < 60
+                      ? "Nota ponderada insuficiente"
+                      : "Avance a la fecha insuficiente";
+                  return (
+                    <button
+                      key={s.studentId}
+                      onClick={() => { setShowRiskModal(false); setSelectedStudent(s); }}
+                      class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl border border-gray-100 hover:border-rose-200 hover:bg-rose-50 transition-all group text-left cursor-pointer"
+                    >
+                      {/* Posición */}
+                      <span class="text-xs font-black text-gray-300 w-5 shrink-0 text-center">{i + 1}</span>
+                      {/* Avatar */}
+                      <div class={`w-9 h-9 rounded-xl flex items-center justify-center font-black text-sm border-2 shrink-0 ${s.avatarColor}`}>
+                        {s.name.charAt(0)}
+                      </div>
+                      {/* Info principal */}
+                      <div class="flex-1 min-w-0">
+                        <p class="text-sm font-bold text-gray-900 truncate group-hover:text-rose-700 transition-colors">{s.name}</p>
+                        <div class="flex items-center gap-2 mt-0.5">
+                          <span class="text-[10px] font-mono text-gray-400">{s.codigo}</span>
+                          <span class="text-[10px] text-rose-500 font-semibold">{motivo}</span>
+                        </div>
+                      </div>
+                      {/* Métricas */}
+                      <div class="flex items-center gap-3 shrink-0">
+                        <div class="text-center">
+                          <p class="text-base font-black text-rose-600">{s.weightedScore}</p>
+                          <p class="text-[9px] text-gray-400 leading-none">pts</p>
+                        </div>
+                        <div class="text-center">
+                          <p class="text-sm font-bold text-gray-500">{s.progressDuePct}%</p>
+                          <p class="text-[9px] text-gray-400 leading-none">avance</p>
+                        </div>
+                        <svg class="w-4 h-4 text-gray-300 group-hover:text-rose-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Footer */}
+              <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+                <p class="text-xs text-gray-400">
+                  Haz clic en un estudiante para ver su detalle completo
+                </p>
+                <button
+                  onClick={() => setShowRiskModal(false)}
+                  class="px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-sm font-semibold text-gray-700 transition-colors cursor-pointer"
+                >
+                  Cerrar
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }

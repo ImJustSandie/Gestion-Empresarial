@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "preact/hooks";
-import { BLOQUES_ALFABETIZACION, STORAGE_KEY_PROGRESS, TOTAL_SUBTEMAS } from "../utils/alfabetizacionContent";
+import { BLOQUES_ALFABETIZACION, STORAGE_KEY_PROGRESS, TOTAL_SUBTEMAS, saveAlfabetizacionProgress } from "../utils/alfabetizacionContent";
+import { getSession, initAuth } from "../utils/auth";
 
 function loadProgress(): Record<string, boolean> {
   try {
@@ -114,6 +115,7 @@ export default function AlfabetizacionView() {
 
   const [bloqueId, setBloqueId] = useState<string | null>(initialBloqueId);
   const [done, setDone] = useState<Record<string, boolean>>({});
+  const [userId, setUserId] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<Record<string, boolean>>(() => {
     const id = initialBloqueId();
     if (!id) return {};
@@ -123,16 +125,24 @@ export default function AlfabetizacionView() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setDone(loadProgress());
-    setMounted(true);
+    (async () => {
+      await initAuth();
+      const session = getSession();
+      if (session) setUserId(session.userId);
+      setDone(loadProgress());
+      setMounted(true);
+    })();
   }, []);
 
   const persist = (next: Record<string, boolean>) => {
     setDone(next);
-    try {
-      localStorage.setItem(STORAGE_KEY_PROGRESS, JSON.stringify(next));
-    } catch {
-      /* sin localStorage */
+    if (userId) {
+      // Guarda en localStorage + IndexedDB (para el dashboard del profesor)
+      saveAlfabetizacionProgress(userId, next).catch(() => {
+        try { localStorage.setItem(STORAGE_KEY_PROGRESS, JSON.stringify(next)); } catch { /* sin localStorage */ }
+      });
+    } else {
+      try { localStorage.setItem(STORAGE_KEY_PROGRESS, JSON.stringify(next)); } catch { /* sin localStorage */ }
     }
   };
 

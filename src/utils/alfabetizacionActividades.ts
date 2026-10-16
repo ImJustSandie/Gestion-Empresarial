@@ -129,6 +129,8 @@ export interface TipoTheme {
   badge: string;
   /** Borde en hover de las tarjetas de caso. */
   borderHover: string;
+  imagen?: string;
+  capa?: string;
 }
 
 export interface TipoMeta {
@@ -159,6 +161,8 @@ export const TIPOS_ACTIVIDADES: TipoMeta[] = [
       dotColor: "text-[#5932EA]",
       badge: "bg-[#EDE9FE] text-[#6D28D9] border-[#DDD6FE]",
       borderHover: "hover:border-[#7C5CE9]",
+      imagen: "/multimedia/actividades/elegir.jpg",
+      capa: "linear-gradient(135deg, rgba(89,50,234,0.72), rgba(124,92,233,0.58))",
     },
   },
   {
@@ -176,6 +180,8 @@ export const TIPOS_ACTIVIDADES: TipoMeta[] = [
       dotColor: "text-emerald-600",
       badge: "bg-emerald-50 text-emerald-700 border-emerald-200",
       borderHover: "hover:border-emerald-500",
+      imagen: "/multimedia/actividades/detector.jpg",
+      capa: "linear-gradient(135deg, rgba(15,23,42,0.72), rgba(2,6,23,0.58))",
     },
   },
   {
@@ -193,6 +199,8 @@ export const TIPOS_ACTIVIDADES: TipoMeta[] = [
       dotColor: "text-teal-600",
       badge: "bg-teal-50 text-teal-700 border-teal-200",
       borderHover: "hover:border-teal-500",
+      imagen: "/multimedia/actividades/promptlab.jpg",
+      capa: "linear-gradient(135deg, rgba(13,148,136,0.72), rgba(4,120,87,0.58))",
     },
   },
 ];

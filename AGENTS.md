@@ -432,8 +432,12 @@ Protecciones: validación de slug (anti path-traversal), `409` si existe,
   archivo + `RULES.md`).
 - `src/data/alfabetizacion.ts` es legacy (la vista usa `alfabetizacionContent.ts`
   desde `content/blocks/`).
-- `public/lessons/` y `public/multimedia/` son assets legacy (las imágenes
-  actuales viven en `content/blocks/*/images/`).
+- `public/lessons/` es legacy (las imágenes de lecciones viven en
+  `content/blocks/*/images/`). En `public/multimedia/` sí se usan
+  `niveles/nivel-N.jpg` (cabecera de cards y hero de bloque en `AlfabetizacionView`,
+  vía `NIVEL_THEMES.imagen/capa`) y `actividades/{elegir,detector,promptlab}.jpg`
+  (cards de `ActividadesIndice` y hero de `TipoActividad`, vía `TipoTheme.imagen/capa`).
+  La imagen va en blanco y negro con la `capa` de color del nivel/tipo encima.
 - `server/migrate-alfabetizacion.mjs` es script puntual (no parte del flujo).
 - `src/data/actividades-elegir.json` presenta caracteres con encoding corrupto
   (revisar antes de editar a mano; preferir edición vía script).

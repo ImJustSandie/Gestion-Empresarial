@@ -27,12 +27,27 @@ export default function TipoActividad({ tipo }: { tipo: TipoActividad }) {
     <div>
       {/* Hero del tipo */}
       <section class={`rounded-3xl overflow-hidden p-6 sm:p-10 relative shadow-lg ${meta.hero}`}>
-        {/* Capas decorativas */}
-        <span class="pointer-events-none absolute -top-16 -right-10 w-72 h-72 rounded-full bg-white/20 blur-3xl" aria-hidden="true" />
-        <span class="pointer-events-none absolute -bottom-24 left-1/4 w-64 h-64 rounded-full bg-black/10 blur-3xl" aria-hidden="true" />
-        <span class="pointer-events-none absolute -right-6 -bottom-10 text-[180px] sm:text-[240px] leading-none opacity-10 select-none" aria-hidden="true">
-          {meta.icono}
-        </span>
+        {meta.theme.imagen ? (
+          <>
+            <img
+              src={meta.theme.imagen}
+              alt=""
+              aria-hidden="true"
+              class="pointer-events-none absolute inset-0 w-full h-full object-cover"
+              style={{ filter: "grayscale(100%) contrast(1.15)" }}
+            />
+            <span class="pointer-events-none absolute inset-0" style={{ background: meta.theme.capa }} aria-hidden="true" />
+          </>
+        ) : (
+          <>
+            {/* Capas decorativas */}
+            <span class="pointer-events-none absolute -top-16 -right-10 w-72 h-72 rounded-full bg-white/20 blur-3xl" aria-hidden="true" />
+            <span class="pointer-events-none absolute -bottom-24 left-1/4 w-64 h-64 rounded-full bg-black/10 blur-3xl" aria-hidden="true" />
+            <span class="pointer-events-none absolute -right-6 -bottom-10 text-[180px] sm:text-[240px] leading-none opacity-10 select-none" aria-hidden="true">
+              {meta.icono}
+            </span>
+          </>
+        )}
 
         <div class="relative flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
           <div class="flex-1 min-w-0">

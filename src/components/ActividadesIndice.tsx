@@ -38,23 +38,43 @@ export default function ActividadesIndice() {
               <div
                 class={`${meta.theme.headerBg} relative overflow-hidden min-h-[150px] p-5 sm:p-6 text-white flex flex-col justify-between`}
               >
-                {/* Halo de luz */}
-                <span
-                  class="pointer-events-none absolute -top-12 -right-10 w-40 h-40 rounded-full bg-white/25 blur-2xl"
-                  aria-hidden="true"
-                />
-                {/* Patrón de puntos */}
-                <span
-                  class="pointer-events-none absolute inset-0 opacity-[0.18] [background-image:radial-gradient(circle,white_1px,transparent_1px)] [background-size:14px_14px]"
-                  aria-hidden="true"
-                />
-                {/* Emoji marca de agua */}
-                <span
-                  class="pointer-events-none absolute -right-3 -bottom-6 text-[80px] leading-none opacity-25 select-none transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6"
-                  aria-hidden="true"
-                >
-                  {meta.icono}
-                </span>
+                {meta.theme.imagen ? (
+                  <>
+                    <img
+                      src={meta.theme.imagen}
+                      alt=""
+                      aria-hidden="true"
+                      loading="lazy"
+                      class="pointer-events-none absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      style={{ filter: "grayscale(100%) contrast(1.15)" }}
+                    />
+                    <span
+                      class="pointer-events-none absolute inset-0"
+                      style={{ background: meta.theme.capa }}
+                      aria-hidden="true"
+                    />
+                  </>
+                ) : (
+                  <>
+                    {/* Halo de luz */}
+                    <span
+                      class="pointer-events-none absolute -top-12 -right-10 w-40 h-40 rounded-full bg-white/25 blur-2xl"
+                      aria-hidden="true"
+                    />
+                    {/* Patrón de puntos */}
+                    <span
+                      class="pointer-events-none absolute inset-0 opacity-[0.18] [background-image:radial-gradient(circle,white_1px,transparent_1px)] [background-size:14px_14px]"
+                      aria-hidden="true"
+                    />
+                    {/* Emoji marca de agua */}
+                    <span
+                      class="pointer-events-none absolute -right-3 -bottom-6 text-[80px] leading-none opacity-25 select-none transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6"
+                      aria-hidden="true"
+                    >
+                      {meta.icono}
+                    </span>
+                  </>
+                )}
 
                 <span class="relative inline-flex items-center gap-1.5 text-xs font-extrabold tracking-widest bg-white/20 ring-1 ring-white/30 px-3 py-1.5 rounded-full uppercase w-fit backdrop-blur-md">
                   <span class="w-1.5 h-1.5 rounded-full bg-white/80" />

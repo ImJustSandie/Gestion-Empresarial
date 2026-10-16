@@ -395,12 +395,6 @@ export default function AlfabetizacionView() {
                       <span class="inline-flex items-center gap-1.5 text-xs font-extrabold tracking-widest bg-white/20 ring-1 ring-white/30 px-3 py-1.5 rounded-full uppercase backdrop-blur-md">
                         NIVEL {b.numero}
                       </span>
-                      <span
-                        class="w-14 h-14 rounded-2xl bg-white/20 ring-1 ring-white/30 backdrop-blur-md flex items-center justify-center text-3xl select-none transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6"
-                        aria-hidden="true"
-                      >
-                        {theme.icon}
-                      </span>
                     </div>
                     <h3 class="relative text-xl sm:text-2xl font-extrabold mt-4 leading-tight drop-shadow-sm">
                       {b.titulo}
@@ -491,14 +485,18 @@ export default function AlfabetizacionView() {
           <div class="w-full px-6 sm:px-10 lg:px-14 py-8 sm:py-10">
             {/* Hero del bloque */}
             <section class={`rounded-3xl overflow-hidden ${theme.headerBg} text-white p-6 sm:p-10 relative shadow-sm`}>
-              <span class="pointer-events-none absolute -top-16 -right-10 w-72 h-72 rounded-full bg-white/20 blur-3xl" aria-hidden="true" />
+              <img
+                src={theme.imagen}
+                alt=""
+                aria-hidden="true"
+                class="pointer-events-none absolute inset-0 w-full h-full object-cover"
+                style={{ filter: "grayscale(100%) contrast(1.15)" }}
+              />
               <span
-                class="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle,white_1px,transparent_1px)] [background-size:16px_16px]"
+                class="pointer-events-none absolute inset-0"
+                style={{ background: theme.capa }}
                 aria-hidden="true"
               />
-              <span class="absolute right-6 top-6 text-[90px] sm:text-[140px] opacity-20 select-none leading-none" aria-hidden="true">
-                {bloque.icono}
-              </span>
               <button
                 onClick={goHome}
                 class="relative block w-fit text-sm bg-white/20 hover:bg-white/30 px-4 py-2 rounded-full font-semibold cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/50"

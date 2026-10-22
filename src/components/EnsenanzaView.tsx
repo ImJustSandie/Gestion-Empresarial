@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "preact/hooks";
 import { initAuth, getSession, type Session } from "../utils/auth";
-import { initCourses, getCoursesForUser, getActivities, COURSE_COLORS, type Course, type Activity } from "../utils/courses";
+import { initCourses, getCoursesForUser, getActivities, courseCoverUrl, COURSE_COLORS, type Course, type Activity } from "../utils/courses";
 
 export default function EnsenanzaView() {
   const [session, setSession] = useState<Session | null>(null);
@@ -166,9 +166,36 @@ export default function EnsenanzaView() {
             return (
               <div
                 key={course.id}
-                class="bg-white rounded-2xl border border-slate-200/90 p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+                class="relative rounded-2xl p-6 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col justify-between text-white"
+                style={{ minHeight: "220px" }}
               >
-                <div>
+                <img
+                  src={courseCoverUrl(course)}
+                  alt=""
+                  aria-hidden="true"
+                  class="absolute inset-0 w-full h-full pointer-events-none"
+                  style={{ objectFit: "cover" }}
+                />
+                <span
+                  class="absolute inset-0 pointer-events-none"
+                  style={{ background: "linear-gradient(180deg, rgba(15,23,42,0.35) 0%, rgba(15,23,42,0.55) 50%, rgba(15,23,42,0.85) 100%)" }}
+                />
+                <span
+                  class="pointer-events-none"
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    height: "90px",
+                    backdropFilter: "blur(5px)",
+                    WebkitBackdropFilter: "blur(5px)",
+                    background: "rgba(255,255,255,0.04)",
+                    maskImage: "linear-gradient(180deg, transparent 0%, #000 40%)",
+                    WebkitMaskImage: "linear-gradient(180deg, transparent 0%, #000 40%)",
+                  }}
+                />
+                <div class="relative">
                   <div class="flex items-start gap-4">
                     {/* Ícono del curso: color + logo elegidos (fallback: rueda morada) */}
                     <div
@@ -205,36 +232,37 @@ export default function EnsenanzaView() {
                     </div>
 
                     <div class="min-w-0 flex-1">
-                      <p class="text-xs font-semibold text-slate-400 font-mono tracking-wider">
+                      <p class="text-xs font-semibold font-mono tracking-wider" style={{ color: "rgba(255,255,255,0.75)" }}>
                         {course.code}
                       </p>
                       <h3
-                        class="text-lg font-bold text-slate-900 mt-0.5 leading-snug truncate"
+                        class="text-lg font-bold mt-0.5 leading-snug truncate"
+                        style={{ textShadow: "0 1px 3px rgba(0,0,0,0.4)" }}
                         title={course.name}
                       >
                         {course.name}
                       </h3>
-                      <p class="text-xs text-slate-400 mt-0.5">
+                      <p class="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.75)" }}>
                         {course.profesorIds.length} prof. - {course.estudianteIds.length} est.
                       </p>
                     </div>
                   </div>
 
                   {course.description && (
-                    <p class="text-xs sm:text-sm text-slate-500 line-clamp-3 mt-4 leading-relaxed">
+                    <p class="text-xs sm:text-sm line-clamp-3 mt-4 leading-relaxed" style={{ color: "rgba(255,255,255,0.9)" }}>
                       {course.description}
                     </p>
                   )}
                 </div>
 
-                <div class="mt-6 pt-3 border-t border-slate-100">
+                <div class="relative mt-6 pt-3" style={{ borderTop: "1px solid rgba(255,255,255,0.2)" }}>
                   <div class="flex items-center justify-between">
-                    <span class="text-[11px] text-slate-400 font-medium">
+                    <span class="font-medium" style={{ fontSize: "11px", color: "rgba(255,255,255,0.8)" }}>
                       {courseActs.length} {courseActs.length === 1 ? "actividad" : "actividades"}
                     </span>
                     <a
                       href="/actividades"
-                      class="text-xs sm:text-sm font-semibold text-[#6C5CE7] hover:text-[#5E3FE6] transition flex items-center gap-1"
+                      class="text-xs sm:text-sm font-semibold text-white hover:underline transition flex items-center gap-1"
                     >
                       Ver curso →
                     </a>

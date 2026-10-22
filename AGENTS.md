@@ -118,6 +118,8 @@ Variables: `CONTENT_PORT` cambia el puerto del content-server (defecto `8787`).
 - `/ensenanza` — `EnsenanzaView.tsx`: explorador de **cursos del usuario** (búsqueda,
   grid paginado 6 por página, tarjeta con color + logo del curso y nº de
   actividades), estado "sin asignar" y estado vacío. Es la landing del `estudiante`.
+  Cada tarjeta usa la portada del curso (`courseCoverUrl`) como fondo a color, con
+  degradado oscuro para el texto y desenfoque de 5px bajo la línea del pie.
 - `/alfabetizacion` — `AlfabetizacionView.tsx` (5 bloques desde `content/blocks/`).
   Query `?bloque=<id>` para volver al bloque tras ver una lección.
 - `/lecciones/:id` — visor de lección (`LessonRenderer.tsx` + navegación
@@ -198,7 +200,7 @@ footer.
 | `richtext.ts` | Sintaxis inline + validación (`toSafeColor`, `fontStackFor`, `clampSize`, paletas). Antídoto contra inyección de estilos |
 | `contentApi.ts` | Cliente del content-server (`http://127.0.0.1:8787`). `backendAvailable()` con caché 10 s. `api.blocks/createBlock/updateBlock/deleteBlock/saveBlocksOrder/lessonSource/saveLessonSource/createLesson/deleteLesson/saveLessonsOrder/moveLesson/listImages/uploadImage` |
 | `auth.ts` | Usuarios + sesión. Roles `admin/profesor/estudiante/sin_asignar` (+ legacy `user`). Códigos: profesor `100XXXX`, estudiante `600XXXX`. Búsqueda por código con `findUserByCodigo`/`findUserByCodigoAsync`. Admin seed `administracion@sintaxia.com / 12345678`. Persistencia: IndexedDB `users-json` + `fetch("/data/users.json")` + import inicial; sesión en `localStorage` |
-| `courses.ts` | Cursos (`code` auto de 6 dígitos) + actividades (`tarea/actividad/evaluacion`) + entregas (`ActivitySubmission`), asignación de usuarios. API: `getCourses/getCoursesForUser/createCourse/deleteCourse/assignUserToCourse/unassignUserFromCourse/getActivities/createActivity/deleteActivity/getSubmissions/saveSubmission/bulkSaveSubmissions/resetCourseSubmissions`. IndexedDB `courses-json`, `activities-json`, `submissions-json` |
+| `courses.ts` | Cursos (`code` auto de 6 dígitos; `cover` de `COURSE_COVERS` = `public/multimedia/cursos/curso-01..10.jpg`, elegida al azar entre las menos usadas en `createCourse` (no se repite hasta usar las 10); `hydrate()` asigna y persiste `cover` a cursos antiguos sin ella con la misma regla) + actividades (`tarea/actividad/evaluacion`) + entregas (`ActivitySubmission`), asignación de usuarios. API: `getCourses/getCoursesForUser/createCourse/deleteCourse/assignUserToCourse/unassignUserFromCourse/getActivities/createActivity/deleteActivity/getSubmissions/saveSubmission/bulkSaveSubmissions/resetCourseSubmissions`. IndexedDB `courses-json`, `activities-json`, `submissions-json` |
 | `dashboardAnalytics.ts` | Motor analítico: agrega métricas por curso y estudiante (avance a la fecha según fecha límite, rendimiento ponderado 50% eval / 30% tarea / 20% act, tasa de aprobación >= 60 pts, buckets de histograma y serie temporal para trayectoria) |
 | `dashboardMock.ts` | Generador de entregas sintéticas realistas para cursos sin entregas previas, simulando distribuciones estadísticas para docencia |
 | `alfabetizacionContent.ts` | Adapta `content/blocks/` → `{ Bloque, Subtema }` para la vista. Convenciones: `## Temáticas|Temas + lista`, `## Referentes + lista`, `## Alcance + párrafos`, `> Actividad: ...`; sin sección Temáticas, los `##/###` son temáticas |
@@ -437,6 +439,7 @@ Protecciones: validación de slug (anti path-traversal), `409` si existe,
   `niveles/nivel-N.jpg` (cabecera de cards y hero de bloque en `AlfabetizacionView`,
   vía `NIVEL_THEMES.imagen/capa`) y `actividades/{elegir,detector,promptlab}.jpg`
   (cards de `ActividadesIndice` y hero de `TipoActividad`, vía `TipoTheme.imagen/capa`).
+  `cursos/curso-NN.jpg` son las portadas de curso (tarjetas de `/ensenanza`, a color).
   La imagen va en blanco y negro con la `capa` de color del nivel/tipo encima.
 - `server/migrate-alfabetizacion.mjs` es script puntual (no parte del flujo).
 - `src/data/actividades-elegir.json` presenta caracteres con encoding corrupto

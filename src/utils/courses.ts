@@ -8,6 +8,7 @@ export interface Course {
   description: string;
   color?: string;
   icon?: string;
+  cover?: string;
   profesorIds: string[];
   estudianteIds: string[];
   createdAt: string;
@@ -58,6 +59,44 @@ export const COURSE_COLORS: Record<string, { from: string; to: string; label: st
 export const COURSE_COLOR_IDS = Object.keys(COURSE_COLORS);
 
 export const COURSE_LOGOS = Array.from({ length: 15 }, (_, i) => `logo-${String(i + 1).padStart(2, "0")}.png`);
+
+export const COURSE_COVERS = Array.from({ length: 10 }, (_, i) => `curso-${String(i + 1).padStart(2, "0")}.jpg`);
+
+function hashId(id: string): number {
+  let hash = 0;
+  for (const ch of id) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
+  return hash;
+}
+
+function pickLeastUsedCover(courses: Course[], courseId: string): string {
+  const counts = new Map(COURSE_COVERS.map((c) => [c, 0]));
+  for (const c of courses) {
+    if (c.cover && counts.has(c.cover)) counts.set(c.cover, counts.get(c.cover)! + 1);
+  }
+  const min = Math.min(...counts.values());
+  const candidates = COURSE_COVERS.filter((c) => counts.get(c) === min);
+  return candidates[hashId(courseId) % candidates.length];
+}
+
+function withCovers(courses: Course[]): Course[] {
+  if (courses.every((c) => c.cover && COURSE_COVERS.includes(c.cover))) return courses;
+  const assigned = courses.filter((c) => c.cover && COURSE_COVERS.includes(c.cover));
+  const pending = courses
+    .filter((c) => !c.cover || !COURSE_COVERS.includes(c.cover))
+    .sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || "") || a.id.localeCompare(b.id));
+  const covers = new Map<string, string>();
+  for (const c of pending) {
+    const cover = pickLeastUsedCover(assigned, c.id);
+    covers.set(c.id, cover);
+    assigned.push({ ...c, cover });
+  }
+  return courses.map((c) => (covers.has(c.id) ? { ...c, cover: covers.get(c.id) } : c));
+}
+
+export function courseCoverUrl(course: Course): string {
+  const cover = course.cover && COURSE_COVERS.includes(course.cover) ? course.cover : COURSE_COVERS[hashId(course.id) % COURSE_COVERS.length];
+  return `/multimedia/cursos/${cover}`;
+}
 
 const IDB_DB_NAME = "gestion-empresarial";
 const IDB_STORE = "kv";
@@ -167,6 +206,11 @@ async function hydrate(): Promise<void> {
         if (Array.isArray(parsed)) submissionsCache = parsed;
       } catch {}
     }
+    const covered = withCovers(coursesCache);
+    if (covered !== coursesCache) {
+      coursesCache = covered;
+      if (isBrowser()) await persistCourses();
+    }
     cacheHydrated = true;
   })();
   return hydratePromise;
@@ -207,13 +251,15 @@ export async function createCourse(data: { name: string; description: string; cr
   if (!/^\d{6}$/.test(code)) {
     return { success: false, message: "El código debe ser de 6 números." };
   }
+  const id = `course-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
   const course: Course = {
-    id: `course-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+    id,
     code,
     name,
     description: data.description.trim(),
     color: data.color?.trim() || undefined,
     icon: data.icon?.trim() || undefined,
+    cover: pickLeastUsedCover(coursesCache, id),
     profesorIds: [],
     estudianteIds: [],
     createdAt: new Date().toISOString(),

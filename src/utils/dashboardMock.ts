@@ -23,8 +23,53 @@ const NOMBRES_MOCK = [
 ];
 
 /**
+ * Estudiantes de referencia para el seed: matriculados en el curso o,
+ * en su defecto, estudiantes reales del sistema o IDs sintéticos.
+ */
+function resolveStudentIds(course: Course, existingUsers: User[]): string[] {
+  if (course.estudianteIds && course.estudianteIds.length > 0) return [...course.estudianteIds];
+  const realStudents = existingUsers.filter((u) => u.role === "estudiante");
+  if (realStudents.length > 0) return realStudents.map((s) => s.id);
+  return NOMBRES_MOCK.slice(0, 8).map((_, idx) => `mock-student-${idx + 1}`);
+}
+
+/** Perfil académico por índice de estudiante (determinista) */
+function perfilPorIndice(sIdx: number): "alto" | "medio" | "riesgo" | "critico" {
+  const mod = sIdx % 10;
+  if (mod < 2) return "alto";
+  if (mod < 7) return "medio";
+  if (mod < 9) return "riesgo";
+  return "critico";
+}
+
+/** Rango de nota coherente con el perfil (más estricto en evaluaciones) */
+function notaParaPerfil(profile: "alto" | "medio" | "riesgo" | "critico", tipo: Activity["type"]): number {
+  let minScore = 65;
+  let rango = 25;
+  if (profile === "alto") {
+    minScore = 85;
+    rango = 15;
+  } else if (profile === "riesgo") {
+    minScore = 45;
+    rango = 25;
+  } else if (profile === "critico") {
+    minScore = 20;
+    rango = 35;
+  }
+  let score = Math.round(minScore + Math.random() * rango);
+  if (tipo === "evaluacion") {
+    score = Math.max(10, score - 5);
+  }
+  return Math.min(100, Math.max(0, score));
+}
+
+const FEEDBACK_ALTO = "Buen trabajo, conceptos claros.";
+const FEEDBACK_REFUERZO = "Revisar temas de refuerzo.";
+
+/**
  * Asegura que el curso tenga al menos algunas actividades y estudiantes inscritos
  * con entregas realistas para que el docente pueda explorar el dashboard de inmediato.
+ * Solo se aplica si el curso aún no tiene entregas registradas.
  */
 export async function seedMockDataForCourse(
   course: Course,
@@ -42,18 +87,7 @@ export async function seedMockDataForCourse(
     return [];
   }
 
-  // Estudiantes a considerar: los del curso o un conjunto sintético
-  let studentIds = course.estudianteIds;
-  if (!studentIds || studentIds.length === 0) {
-    // Tomar estudiantes reales del sistema o crear ids representativos
-    const realStudents = existingUsers.filter((u) => u.role === "estudiante");
-    if (realStudents.length > 0) {
-      studentIds = realStudents.map((s) => s.id);
-    } else {
-      // IDs sintéticos
-      studentIds = NOMBRES_MOCK.slice(0, 8).map((_, idx) => `mock-student-${idx + 1}`);
-    }
-  }
+  const studentIds = resolveStudentIds(course, existingUsers);
 
   const generated: ActivitySubmission[] = [];
   const now = Date.now();
@@ -64,12 +98,7 @@ export async function seedMockDataForCourse(
   // - 20% en riesgo (notas 40-60, algunas no entregadas)
   // - 10% críticos (notas < 40 o abandonos)
   studentIds.forEach((studentId, sIdx) => {
-    let profile: "alto" | "medio" | "riesgo" | "critico";
-    const mod = sIdx % 10;
-    if (mod < 2) profile = "alto";
-    else if (mod < 7) profile = "medio";
-    else if (mod < 9) profile = "riesgo";
-    else profile = "critico";
+    const profile = perfilPorIndice(sIdx);
 
     existingActivities.forEach((activity, aIdx) => {
       const isDue = activity.dueDate ? new Date(activity.dueDate).getTime() <= now : true;
@@ -109,28 +138,7 @@ export async function seedMockDataForCourse(
       }
 
       // Si ha entregado: generar nota coherente
-      let minScore = 70;
-      let maxScoreRange = 30;
-      if (profile === "alto") {
-        minScore = 85;
-        maxScoreRange = 15;
-      } else if (profile === "medio") {
-        minScore = 65;
-        maxScoreRange = 25;
-      } else if (profile === "riesgo") {
-        minScore = 45;
-        maxScoreRange = 25;
-      } else {
-        minScore = 20;
-        maxScoreRange = 35;
-      }
-
-      // Añadir pequeña variación según el tipo (evaluación suele ser más estricta)
-      let score = Math.round(minScore + Math.random() * maxScoreRange);
-      if (activity.type === "evaluacion") {
-        score = Math.max(10, score - 5);
-      }
-      score = Math.min(100, Math.max(0, score));
+      const score = notaParaPerfil(profile, activity.type);
 
       // Determinar si fue a tiempo o tardía
       const fueTardia = profile === "riesgo" || profile === "critico" ? Math.random() > 0.5 : Math.random() > 0.85;
@@ -145,7 +153,101 @@ export async function seedMockDataForCourse(
         submittedAt: submittedDate,
         score,
         maxScore: 100,
-        feedback: score >= 75 ? "Buen trabajo, conceptos claros." : "Revisar temas de refuerzo.",
+        feedback: score >= 75 ? FEEDBACK_ALTO : FEEDBACK_REFUERZO,
+      });
+    });
+  });
+
+  if (generated.length > 0) {
+    await bulkSaveSubmissions(generated);
+  }
+
+  return generated;
+}
+
+/**
+ * Regenera los datos sintéticos SIN borrar las entregas reales de los estudiantes
+ * (las que tienen texto). Para cada entrega con texto existente solo genera nota y
+ * retroalimentación, conservando el contenido y la fecha de entrega. Para los pares
+ * (estudiante, actividad) sin entrega con texto genera entregas sintéticas como de costumbre.
+ */
+export async function regenerateMockDataForCourse(
+  course: Course,
+  existingActivities: Activity[],
+  existingUsers: User[],
+  existingSubmissions: ActivitySubmission[]
+): Promise<ActivitySubmission[]> {
+  if (existingActivities.length === 0) {
+    return existingSubmissions.filter((s) => s.courseId === course.id);
+  }
+
+  const courseSubs = existingSubmissions.filter((s) => s.courseId === course.id);
+  // Entregas reales con texto (se conservan intactas, salvo nota/feedback/status)
+  const entregasConTexto = new Map(
+    courseSubs.filter((s) => s.content?.trim()).map((s) => [`${s.activityId}_${s.studentId}`, s])
+  );
+
+  const studentIds = resolveStudentIds(course, existingUsers);
+  const generated: ActivitySubmission[] = [];
+  const now = Date.now();
+
+  studentIds.forEach((studentId, sIdx) => {
+    const profile = perfilPorIndice(sIdx);
+
+    existingActivities.forEach((activity, aIdx) => {
+      const base = {
+        activityId: activity.id,
+        courseId: course.id,
+        studentId,
+      };
+
+      // 1) Entrega real con texto: solo nota + retroalimentación, sin tocar contenido
+      const real = entregasConTexto.get(`${activity.id}_${studentId}`);
+      if (real) {
+        const score = notaParaPerfil(profile, activity.type);
+        generated.push({
+          id: real.id,
+          ...base,
+          status: "calificado",
+          submittedAt: real.submittedAt,
+          content: real.content,
+          score,
+          maxScore: real.maxScore ?? 100,
+          feedback: score >= 75 ? FEEDBACK_ALTO : FEEDBACK_REFUERZO,
+        });
+        return;
+      }
+
+      // 2) Sin texto: generar entrega sintética (como seedMockDataForCourse)
+      const isDue = activity.dueDate ? new Date(activity.dueDate).getTime() <= now : true;
+      let entregaProb = 0.95;
+      if (profile === "medio") entregaProb = 0.85;
+      if (profile === "riesgo") entregaProb = 0.55;
+      if (profile === "critico") entregaProb = 0.25;
+
+      const haEntregado = Math.random() < entregaProb;
+
+      if (!haEntregado) {
+        if (isDue) {
+          generated.push({ ...base, id: `sub-${course.id}-${activity.id}-${studentId}`, status: "no_entregado", score: 0, maxScore: 100, feedback: "Actividad no entregada a la fecha límite." });
+        } else {
+          generated.push({ ...base, id: `sub-${course.id}-${activity.id}-${studentId}`, status: "pendiente", maxScore: 100 });
+        }
+        return;
+      }
+
+      const score = notaParaPerfil(profile, activity.type);
+      const fueTardia = profile === "riesgo" || profile === "critico" ? Math.random() > 0.5 : Math.random() > 0.85;
+      const submittedDate = new Date(now - (existingActivities.length - aIdx) * 86400000 * 3 + (fueTardia ? 86400000 : 0)).toISOString();
+
+      generated.push({
+        id: `sub-${course.id}-${activity.id}-${studentId}`,
+        ...base,
+        status: "calificado",
+        submittedAt: submittedDate,
+        score,
+        maxScore: 100,
+        feedback: score >= 75 ? FEEDBACK_ALTO : FEEDBACK_REFUERZO,
       });
     });
   });

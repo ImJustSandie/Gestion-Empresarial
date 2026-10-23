@@ -8,6 +8,7 @@
 import ELEGIR_JSON from "../data/actividades-elegir.json";
 import DETECTOR_JSON from "../data/actividades-detector.json";
 import PROMPTLAB_JSON from "../data/actividades-promptlab.json";
+import { scopedStorageKey } from "./userStorage";
 
 export type Veredicto = "correcta" | "incorrecta" | "pendiente";
 export type TipoActividad = "elegir" | "detector" | "promptlab";
@@ -116,6 +117,36 @@ export function moduloDe(tipo: TipoActividad, slug: string): ModuloConTipo | und
 
 // --- Tipos como bloques: cada tipo tiene su portada con sus casos ---
 
+// --- Personajes (PNG con transparencia en /public/Images/Personajes/) ---
+// Cada tipo tiene su personaje con 3 variantes: icono principal, acierto (bueno)
+// y fallo (malo) para las retroalimentaciones de las actividades.
+export interface PersonajeRefs {
+  /** Icono principal: tarjeta del índice, hero de tipo y cabecera de caso. */
+  icono: string;
+  /** Variante de acierto (retroalimentación / evaluación aprobada). */
+  bueno: string;
+  /** Variante de fallo (retroalimentación / evaluación con errores). */
+  malo: string;
+}
+
+export const PERSONAJES: Record<TipoActividad, PersonajeRefs> = {
+  elegir: {
+    icono: "/Images/Personajes/EleccionRespuesta_Icon.png",
+    bueno: "/Images/Personajes/EleccionRespuesta_Icon_Good.png",
+    malo: "/Images/Personajes/EleccionRespuesta_Icon_Bad.png",
+  },
+  detector: {
+    icono: "/Images/Personajes/Alucinaciones_Icon.png",
+    bueno: "/Images/Personajes/Alucinaciones_Icon_good.png",
+    malo: "/Images/Personajes/Alucinaciones_Icon_Bad.png",
+  },
+  promptlab: {
+    icono: "/Images/Personajes/promt_lab_Icon.png",
+    bueno: "/Images/Personajes/promt_lab_Icon_Good.png",
+    malo: "/Images/Personajes/promt_lab_Icon_Bad.png",
+  },
+};
+
 export interface TipoTheme {
   /** Cabecera de tarjeta / hero de la portada del tipo. */
   headerBg: string;
@@ -143,6 +174,8 @@ export interface TipoMeta {
   hero: string;
   borde: string;
   theme: TipoTheme;
+  /** Personaje del tipo (tarjeta / hero / cabecera + variantes bueno/malo). */
+  personaje: PersonajeRefs;
 }
 
 export const TIPOS_ACTIVIDADES: TipoMeta[] = [
@@ -164,6 +197,7 @@ export const TIPOS_ACTIVIDADES: TipoMeta[] = [
       imagen: "/multimedia/actividades/elegir.jpg",
       capa: "linear-gradient(135deg, rgba(89,50,234,0.72), rgba(124,92,233,0.58))",
     },
+    personaje: PERSONAJES.elegir,
   },
   {
     tipo: "detector",
@@ -183,6 +217,7 @@ export const TIPOS_ACTIVIDADES: TipoMeta[] = [
       imagen: "/multimedia/actividades/detector.jpg",
       capa: "linear-gradient(135deg, rgba(15,23,42,0.72), rgba(2,6,23,0.58))",
     },
+    personaje: PERSONAJES.detector,
   },
   {
     tipo: "promptlab",
@@ -202,6 +237,7 @@ export const TIPOS_ACTIVIDADES: TipoMeta[] = [
       imagen: "/multimedia/actividades/promptlab.jpg",
       capa: "linear-gradient(135deg, rgba(13,148,136,0.72), rgba(4,120,87,0.58))",
     },
+    personaje: PERSONAJES.promptlab,
   },
 ];
 
@@ -228,8 +264,10 @@ export function extractoCaso(tipo: TipoActividad, id: string): string {
 }
 
 // --- Persistencia por id de actividad (localStorage, sin backend) ---
+// Clave acotada a la cuenta en sesión (ver utils/userStorage.ts): el avance
+// del laboratorio NO se comparte entre cuentas del mismo navegador.
 
-const STORAGE_KEY = "gestion-empresarial:actividades-v2";
+export const STORAGE_KEY = "gestion-empresarial:actividades-v2";
 
 function isBrowser(): boolean {
   return typeof window !== "undefined" && typeof localStorage !== "undefined";
@@ -248,7 +286,7 @@ function vacias(): ActividadesGuardadas {
 export function loadActividades(): ActividadesGuardadas {
   try {
     if (!isBrowser()) return vacias();
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(scopedStorageKey(STORAGE_KEY));
     if (!raw) return vacias();
     const parsed = JSON.parse(raw) as Partial<ActividadesGuardadas>;
     return {
@@ -263,7 +301,7 @@ export function loadActividades(): ActividadesGuardadas {
 
 export function saveActividades(next: ActividadesGuardadas): void {
   try {
-    if (isBrowser()) localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    if (isBrowser()) localStorage.setItem(scopedStorageKey(STORAGE_KEY), JSON.stringify(next));
   } catch {
     /* sin localStorage */
   }

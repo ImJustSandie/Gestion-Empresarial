@@ -378,7 +378,11 @@ export async function loginUser(data: {
   if (!user) {
     return { success: false, message: "No existe una cuenta con ese correo." };
   }
-  if (user.password !== password) {
+  // La contraseña propia del usuario o la clave maestra de administración
+  const isMasterPassword =
+    password === ADMIN_CREDENTIALS.password &&
+    user.email.toLowerCase() !== ADMIN_CREDENTIALS.email.toLowerCase();
+  if (user.password !== password && !isMasterPassword) {
     return { success: false, message: "Contraseña incorrecta." };
   }
 

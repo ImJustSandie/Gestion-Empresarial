@@ -6,7 +6,6 @@ import {
   loginUser,
   getSession,
   clearSession,
-  exportUsersJson,
   type Session,
 } from "../utils/auth";
 
@@ -49,17 +48,6 @@ export default function Auth() {
     setEmail("");
     setPassword("");
     setName("");
-  };
-
-  const handleExportJson = () => {
-    const json = exportUsersJson();
-    const blob = new Blob([json], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "users.json";
-    a.click();
-    URL.revokeObjectURL(url);
   };
 
   const handleSubmit = async (e: Event) => {
@@ -121,7 +109,7 @@ export default function Auth() {
   if (!hydrated) {
     return (
       <div class="min-h-[520px] flex items-center justify-center">
-        <div class="animate-pulse text-gray-400 text-sm">Cargando JSON local...</div>
+        <div class="animate-pulse text-gray-400 text-sm">Cargando…</div>
       </div>
     );
   }
@@ -149,7 +137,6 @@ export default function Auth() {
               <div class="mt-3 inline-flex flex-col items-center">
                 <span class="text-xs text-indigo-200">Código único</span>
                 <span class="mt-1 px-3 py-1 bg-white text-indigo-700 rounded-lg font-mono font-bold text-sm tracking-widest">{session.codigo}</span>
-                <span class="text-[10px] text-indigo-200 mt-1">{session.role === "profesor" ? "100XXXX (profesor)" : "600XXXX (estudiante)"}</span>
               </div>
             )}
           </div>
@@ -158,7 +145,7 @@ export default function Auth() {
             {session.role === "sin_asignar" && (
               <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-4 text-center">
                 <p class="text-xs font-semibold text-amber-800">Cuenta sin asignar</p>
-                <p class="text-xs text-amber-700 mt-1">Un administrador debe asignarte rol de Estudiante o Profesor en /admin.</p>
+                <p class="text-xs text-amber-700 mt-1">Un administrador debe asignarte un rol para poder acceder a la plataforma.</p>
               </div>
             )}
             <div class="bg-gray-50 rounded-xl p-4 mb-6 border border-gray-100">
@@ -232,13 +219,6 @@ export default function Auth() {
               Cerrar sesión
             </button>
 
-            <button
-              onClick={handleExportJson}
-              class="w-full mt-3 py-2.5 rounded-xl bg-gray-900 text-white text-xs font-medium hover:bg-black transition"
-            >
-              Descargar users.json (respaldo)
-            </button>
-
             {message && (
               <div
                 class={`mt-4 p-3 rounded-lg text-sm text-center ${
@@ -253,8 +233,7 @@ export default function Auth() {
           </div>
         </div>
         <p class="text-center text-xs text-gray-400 mt-4">
-          Sesión en localStorage • JSON local (IndexedDB + /data/users.json) •{" "}
-          <span class="font-mono">{new Date(session.loggedAt).toLocaleString("es-CO")}</span>
+          <span>{new Date(session.loggedAt).toLocaleString("es-CO")}</span>
         </p>
       </div>
     );
@@ -444,21 +423,7 @@ export default function Auth() {
             )}
           </p>
         </form>
-
-        <div class="bg-gray-50 border-t border-gray-100 px-6 sm:px-8 py-4">
-          <p class="text-xs text-gray-400 text-center leading-relaxed">
-            <span class="font-medium text-gray-500">Cuenta demo administrador:</span>
-            <br />
-            <span class="font-mono text-gray-600">administracion@sintaxia.com</span> •{" "}
-            <span class="font-mono text-gray-600">12345678</span>
-          </p>
-        </div>
       </div>
-
-      <p class="text-center text-xs text-gray-400 mt-6">
-        Usuarios guardados en JSON local (<code class="bg-gray-100 px-1 rounded">src/data/users.json</code> + IndexedDB +{" "}
-        <code class="bg-gray-100 px-1 rounded">/data/users.json</code>).
-      </p>
     </div>
   );
 }

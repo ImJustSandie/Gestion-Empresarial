@@ -1,1 +1,61 @@
 @import "tailwindcss";
+
+/* --- Animaciones de los personajes (SintaxIA Tools) ---
+   Levitar: icono de tarjeta en /alfabetizacion/actividades (estático hasta
+   hover de la tarjeta). Flotar3d: icono continuo del hero de tipo y de las
+   páginas de caso (levitación + ligera rotación en eje X). */
+@theme {
+  --animate-levitar: levitar 2.4s ease-in-out infinite;
+  --animate-inclinar: inclinar 5s ease-in-out infinite;
+
+  @keyframes levitar {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  /* Levitación VIVA: el personaje sube y baja de forma continua durante TODO
+     el ciclo (nunca queda quieto en vertical), y en la cima de cada subida se
+     inclina alternando izquierda → derecha. Sin tocar su base. La amplitud
+     vertical está exagerada a propósito; el ciclo es continuo (−3px ↔ −16px). */
+  @keyframes inclinar {
+    0% {
+      transform: translateY(-3px) rotate(0deg);
+    }
+    12.5% {
+      transform: translateY(-16px) rotate(-5deg);
+    }
+    25% {
+      transform: translateY(-3px) rotate(0deg);
+    }
+    37.5% {
+      transform: translateY(-16px) rotate(5deg);
+    }
+    50% {
+      transform: translateY(-3px) rotate(0deg);
+    }
+    62.5% {
+      transform: translateY(-16px) rotate(-5deg);
+    }
+    75% {
+      transform: translateY(-3px) rotate(0deg);
+    }
+    87.5% {
+      transform: translateY(-16px) rotate(5deg);
+    }
+    100% {
+      transform: translateY(-3px) rotate(0deg);
+    }
+  }
+}
+
+/* El personaje se balancea sobre su base (parte inferior del dibujo), no sobre
+   el centro del rectángulo del PNG: si el sujeto está descentrado o tiene
+   márgenes transparentes desiguales, rotar desde el centro se ve colgante. */
+.animate-inclinar {
+  transform-origin: 50% 88%;
+}

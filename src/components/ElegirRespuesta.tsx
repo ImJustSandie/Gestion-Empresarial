@@ -3,10 +3,11 @@
 // y tres respuestas de IA (superficial / detallada con un dato falso /
 // contextualizada con fuentes). Elige una, comprueba y recibe retroalimentación.
 import { useState } from "preact/hooks";
-import { loadActividades, saveActividades, type ActividadElegir } from "../utils/alfabetizacionActividades";
+import PersonajeIcon from "./PersonajeIcon";
+import { loadActividades, saveActividades, type ActividadElegir, type PersonajeRefs } from "../utils/alfabetizacionActividades";
 
 const FOCO = "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#5932EA]/40";
-export default function ElegirRespuesta({ act, numero }: { act: ActividadElegir; numero: number }) {
+export default function ElegirRespuesta({ act, numero, personaje }: { act: ActividadElegir; numero: number; personaje: PersonajeRefs }) {
   const guardado = loadActividades().elegir[act.id];
   const [seleccion, setSeleccion] = useState<"A" | "B" | "C" | null>(guardado ? guardado.seleccion : null);
   const [comprobado, setComprobado] = useState<boolean>(!!guardado);
@@ -36,7 +37,15 @@ export default function ElegirRespuesta({ act, numero }: { act: ActividadElegir;
       <div class="bg-gradient-to-br from-[#5932EA] via-[#4E2AD0] to-[#7C5CE9] text-white p-6 sm:p-9 relative overflow-hidden">
         <span class="pointer-events-none absolute -top-16 -right-10 w-64 h-64 rounded-full bg-white/20 blur-3xl" aria-hidden="true" />
         <span class="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle,white_1px,transparent_1px)] [background-size:16px_16px]" aria-hidden="true" />
-        <span class="absolute -right-3 -bottom-8 text-[120px] opacity-20 select-none leading-none" aria-hidden="true">⚖️</span>
+        <span class="absolute -right-3 -bottom-8 text-[120px] opacity-20 select-none leading-none sm:hidden" aria-hidden="true">⚖️</span>
+        {/* Personaje a la derecha de la descripción: levitación + rotación en X continuas */}
+        <div class="pointer-events-none absolute right-3 sm:right-10 bottom-2 sm:bottom-6 w-14 sm:w-24" aria-hidden="true">
+          <PersonajeIcon
+            src={personaje.icono}
+            alt=""
+            class="w-full h-auto animate-inclinar drop-shadow-xl"
+          />
+        </div>
         <span class="relative inline-block text-xs font-extrabold tracking-widest bg-white/20 px-3 py-1.5 rounded-full">ACTIVIDAD {numero} · EVALUAR RESPUESTAS</span>
         <h2 class="relative text-2xl sm:text-4xl font-extrabold mt-3 leading-tight">{act.titulo}</h2>
         <p class="relative text-base sm:text-lg text-white/90 mt-3 max-w-2xl leading-relaxed">{act.contexto}</p>
@@ -105,7 +114,11 @@ export default function ElegirRespuesta({ act, numero }: { act: ActividadElegir;
 
         {comprobado && seleccion && (
           <div class={`mt-6 rounded-2xl p-5 sm:p-6 border-2 flex gap-4 ${acierto ? "bg-emerald-50 border-emerald-200" : "bg-rose-50 border-rose-200"}`} role="status">
-            <span class="text-3xl leading-none shrink-0" aria-hidden="true">{acierto ? "🎉" : "🤔"}</span>
+            <PersonajeIcon
+              src={acierto ? personaje.bueno : personaje.malo}
+              alt=""
+              class="w-20 h-20 sm:w-24 sm:h-24 object-contain shrink-0 -my-2"
+            />
             <div class="min-w-0">
               <p class={`text-lg font-extrabold ${acierto ? "text-emerald-800" : "text-rose-800"}`}>
                 {acierto ? "✓ ¡Elegiste la mejor respuesta!" : `✕ Elegiste la ${seleccion}. Mira por qué no es la mejor.`}

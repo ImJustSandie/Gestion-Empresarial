@@ -142,7 +142,7 @@ export default function AdminPanel() {
       return;
     }
     if (!code.startsWith("600")) {
-      setActionMsg({ type: "error", text: "Solo códigos de estudiante (600XXXX) pueden usarse aquí." });
+      setActionMsg({ type: "error", text: "Ese código no pertenece a un estudiante." });
       setTimeout(() => setActionMsg(null), 2500);
       return;
     }
@@ -281,7 +281,7 @@ export default function AdminPanel() {
                 <polyline points="7 10 12 15 17 10" />
                 <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
-              <span>Exportar {tab === "usuarios" ? "usuarios" : "cursos"} JSON</span>
+              <span>Exportar respaldo de {tab === "usuarios" ? "usuarios" : "cursos"}</span>
             </button>
             <a
               href="/"
@@ -411,7 +411,7 @@ export default function AdminPanel() {
                             ) : (
                               <span class="text-xs text-slate-400">—</span>
                             )}
-                            {u.codigo && <span class="ml-1 text-[10px] text-slate-400">{u.role === "profesor" ? "100XXXX" : u.role === "estudiante" ? "600XXXX" : ""}</span>}
+                            {u.codigo && <span class="ml-1 text-[10px] text-slate-400">{u.role === "profesor" ? "profesor" : u.role === "estudiante" ? "estudiante" : ""}</span>}
                           </td>
                           <td class="px-4 py-3"><span class={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold border ${roleBadgeClass(u.role)}`}>{ROLE_LABELS[u.role]}</span></td>
                           <td class="px-4 py-3">
@@ -430,7 +430,7 @@ export default function AdminPanel() {
                 </table>
               </div>
               <div class="bg-slate-50 border-t border-slate-200/90 px-4 py-2 text-xs text-slate-500">
-                Profesor: <span class="font-mono font-bold">100XXXX</span> (7 dígitos) • Estudiante: <span class="font-mono font-bold">600XXXX</span> • Generación automática y única.
+                Los códigos se asignan automáticamente y son únicos.
               </div>
             </div>
           </>
@@ -439,14 +439,7 @@ export default function AdminPanel() {
             {/* Crear curso */}
             <form onSubmit={handleCreateCourse} class="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 mb-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
               <h3 class="text-base sm:text-lg font-bold text-slate-900 leading-tight">Crear nuevo curso</h3>
-              <p class="text-xs text-slate-400 mt-1 mb-4">El código se genera automáticamente (6 números). Asigna nombre y descripción.</p>
-              <div class="bg-indigo-50/70 border border-indigo-200/80 rounded-xl px-4 py-3 mb-4 flex items-center gap-3">
-                <span class="w-8 h-8 rounded-lg bg-[#5932EA] text-white flex items-center justify-center text-[10px] font-bold shrink-0">auto</span>
-                <div>
-                  <p class="text-xs font-semibold text-indigo-800">Código automático de 6 dígitos</p>
-                  <p class="text-xs text-indigo-600">Ej: 482913 • Se asigna al crear y es único.</p>
-                </div>
-              </div>
+              <p class="text-xs text-slate-400 mt-1 mb-4">Asigna nombre y descripción.</p>
               <input
                 placeholder="Nombre del curso (ej: Gestión Empresarial 101)"
                 value={newName}
@@ -645,7 +638,7 @@ export default function AdminPanel() {
                                   Añadir por código
                                 </button>
                               </div>
-                              <p class="text-[11px] text-slate-500 mt-1">Formato estudiante: <span class="font-mono font-bold">600XXXX</span> (7 dígitos). Lista y código son intercambiables.</p>
+                              <p class="text-[11px] text-slate-500 mt-1">Lista y código son intercambiables.</p>
                             </div>
                           </div>
                         </div>

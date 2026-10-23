@@ -2,7 +2,7 @@
 import AppHeader from "../../../../components/AppHeader.tsx";
 import AppFooter from "../../../../components/AppFooter.tsx";
 import DetectorAlucinaciones from "../../../../components/DetectorAlucinaciones.tsx";
-import { ACTIVIDADES_DETECTOR, MODULOS_ACTIVIDADES, TIPOS_ACTIVIDADES } from "../../../../utils/alfabetizacionActividades.ts";
+import { ACTIVIDADES_DETECTOR, MODULOS_ACTIVIDADES, PERSONAJES, TIPOS_ACTIVIDADES } from "../../../../utils/alfabetizacionActividades.ts";
 import "../../../../styles/global.css";
 
 export function getStaticPaths() {
@@ -33,7 +33,7 @@ const next = idx < ACTIVIDADES_DETECTOR.length - 1 ? ACTIVIDADES_DETECTOR[idx + 
       </div>
 
       <div class="mt-6">
-        <DetectorAlucinaciones act={act} numero={numero} client:load />
+        <DetectorAlucinaciones act={act} numero={numero} personaje={PERSONAJES.detector} client:load />
       </div>
 
       <div class="mt-6 bg-white border rounded-2xl p-5">

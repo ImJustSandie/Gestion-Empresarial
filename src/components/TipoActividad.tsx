@@ -3,6 +3,7 @@
 // caso aleatorio y lista de casos (Caso 1, Caso 2…) identificados por su
 // contenido, sin necesidad de nombres.
 import { useState } from "preact/hooks";
+import PersonajeIcon from "./PersonajeIcon";
 import {
   TIPOS_ACTIVIDADES,
   estadoCaso,
@@ -62,17 +63,25 @@ export default function TipoActividad({ tipo }: { tipo: TipoActividad }) {
             </div>
           </div>
 
-          {/* Emoji protagonista */}
-          <div class="hidden md:flex shrink-0 w-32 h-32 lg:w-40 lg:h-40 rounded-3xl bg-white/15 border border-white/25 backdrop-blur-md shadow-2xl items-center justify-center text-6xl lg:text-7xl rotate-3 transition-transform hover:rotate-0 hover:scale-105">
-            {meta.icono}
+          {/* Personaje protagonista (sin recuadro): levitación + rotación en X continuas */}
+          <div class="hidden md:flex shrink-0 w-48 lg:w-60" aria-hidden="true">
+            <PersonajeIcon
+              src={meta.personaje.icono}
+              alt=""
+              class="w-full h-auto object-contain drop-shadow-2xl animate-inclinar"
+            />
           </div>
 
-          {/* Insignia compacta en móvil */}
+          {/* Personaje compacto en móvil */}
           <span
-            class="md:hidden absolute right-4 top-4 w-12 h-12 rounded-2xl bg-white/20 border border-white/25 backdrop-blur-md shadow-lg flex items-center justify-center text-2xl select-none"
+            class="md:hidden absolute right-4 top-4 w-16"
             aria-hidden="true"
           >
-            {meta.icono}
+            <PersonajeIcon
+              src={meta.personaje.icono}
+              alt=""
+              class="w-full h-auto object-contain drop-shadow-xl animate-inclinar"
+            />
           </span>
         </div>
       </section>

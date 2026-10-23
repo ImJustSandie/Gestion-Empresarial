@@ -2,8 +2,9 @@
 // Celda-bloque `quiz`: pregunta de selección múltiple con una respuesta correcta.
 // La respuesta NO se muestra directamente: el estudiante elige una opción,
 // pulsa "Comprobar" y solo entonces recibe retroalimentación + explicación.
-// El resultado se guarda en localStorage por lección + celda.
+// El resultado se guarda en localStorage por usuario + lección + celda.
 import { useState } from "preact/hooks";
+import { scopedStorageKey } from "../utils/userStorage";
 
 export interface QuizBlockData {
   id: string;
@@ -28,7 +29,7 @@ function storageKey(lessonId: string, blockId: string): string {
 function loadResultado(lessonId: string, blockId: string): { seleccion: number; acierto: boolean } | null {
   try {
     if (typeof window === "undefined" || typeof localStorage === "undefined") return null;
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(scopedStorageKey(STORAGE_KEY));
     if (!raw) return null;
     const parsed = JSON.parse(raw) as Record<string, { seleccion: number; acierto: boolean }>;
     return parsed[storageKey(lessonId, blockId)] ?? null;
@@ -40,10 +41,11 @@ function loadResultado(lessonId: string, blockId: string): { seleccion: number; 
 function saveResultado(lessonId: string, blockId: string, seleccion: number, acierto: boolean): void {
   try {
     if (typeof window === "undefined" || typeof localStorage === "undefined") return;
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const effKey = scopedStorageKey(STORAGE_KEY);
+    const raw = localStorage.getItem(effKey);
     const parsed = (raw ? JSON.parse(raw) : {}) as Record<string, { seleccion: number; acierto: boolean }>;
     parsed[storageKey(lessonId, blockId)] = { seleccion, acierto };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+    localStorage.setItem(effKey, JSON.stringify(parsed));
   } catch {
     /* sin localStorage */
   }
@@ -52,11 +54,12 @@ function saveResultado(lessonId: string, blockId: string, seleccion: number, aci
 function clearResultado(lessonId: string, blockId: string): void {
   try {
     if (typeof window === "undefined" || typeof localStorage === "undefined") return;
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const effKey = scopedStorageKey(STORAGE_KEY);
+    const raw = localStorage.getItem(effKey);
     if (!raw) return;
     const parsed = JSON.parse(raw) as Record<string, { seleccion: number; acierto: boolean }>;
     delete parsed[storageKey(lessonId, blockId)];
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+    localStorage.setItem(effKey, JSON.stringify(parsed));
   } catch {
     /* sin localStorage */
   }

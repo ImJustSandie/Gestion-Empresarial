@@ -2,7 +2,7 @@
 import AppHeader from "../../../../components/AppHeader.tsx";
 import AppFooter from "../../../../components/AppFooter.tsx";
 import PromptLab from "../../../../components/PromptLab.tsx";
-import { ACTIVIDADES_PROMPTLAB, MODULOS_ACTIVIDADES, TIPOS_ACTIVIDADES } from "../../../../utils/alfabetizacionActividades.ts";
+import { ACTIVIDADES_PROMPTLAB, MODULOS_ACTIVIDADES, PERSONAJES, TIPOS_ACTIVIDADES } from "../../../../utils/alfabetizacionActividades.ts";
 import "../../../../styles/global.css";
 
 export function getStaticPaths() {
@@ -33,7 +33,7 @@ const next = idx < ACTIVIDADES_PROMPTLAB.length - 1 ? ACTIVIDADES_PROMPTLAB[idx 
       </div>
 
       <div class="mt-6">
-        <PromptLab act={act} numero={numero} client:load />
+        <PromptLab act={act} numero={numero} personaje={PERSONAJES.promptlab} client:load />
       </div>
 
       <div class="mt-6 bg-white border rounded-2xl p-5">

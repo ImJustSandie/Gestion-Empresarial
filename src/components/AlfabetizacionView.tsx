@@ -1,16 +1,13 @@
 import { useEffect, useMemo, useState } from "preact/hooks";
-import { BLOQUES_ALFABETIZACION, STORAGE_KEY_PROGRESS, TOTAL_SUBTEMAS, saveAlfabetizacionProgress } from "../utils/alfabetizacionContent";
+import {
+  BLOQUES_ALFABETIZACION,
+  STORAGE_KEY_PROGRESS,
+  TOTAL_SUBTEMAS,
+  getAlfabetizacionProgressForUser,
+  saveAlfabetizacionProgress,
+} from "../utils/alfabetizacionContent";
 import { getSession, initAuth } from "../utils/auth";
-
-function loadProgress(): Record<string, boolean> {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY_PROGRESS);
-    if (!raw) return {};
-    return JSON.parse(raw) as Record<string, boolean>;
-  } catch {
-    return {};
-  }
-}
+import { scopedStorageKey } from "../utils/userStorage";
 
 // Un solo tema por nivel: se usa igual en la portada y en la vista del bloque.
 const NIVEL_THEMES: Record<number, {
@@ -128,8 +125,13 @@ export default function AlfabetizacionView() {
     (async () => {
       await initAuth();
       const session = getSession();
-      if (session) setUserId(session.userId);
-      setDone(loadProgress());
+      // El progreso se lee SIEMPRE del espacio de la cuenta en sesión
+      // (IndexedDB `alfabetizacion-progress:<userId>`): las cuentas del mismo
+      // navegador no comparten avance.
+      if (session) {
+        setUserId(session.userId);
+        setDone(await getAlfabetizacionProgressForUser(session.userId));
+      }
       setMounted(true);
     })();
   }, []);
@@ -137,12 +139,12 @@ export default function AlfabetizacionView() {
   const persist = (next: Record<string, boolean>) => {
     setDone(next);
     if (userId) {
-      // Guarda en localStorage + IndexedDB (para el dashboard del profesor)
+      // Guarda en IndexedDB por usuario + localStorage con clave por cuenta
       saveAlfabetizacionProgress(userId, next).catch(() => {
-        try { localStorage.setItem(STORAGE_KEY_PROGRESS, JSON.stringify(next)); } catch { /* sin localStorage */ }
+        try { localStorage.setItem(scopedStorageKey(STORAGE_KEY_PROGRESS), JSON.stringify(next)); } catch { /* sin localStorage */ }
       });
     } else {
-      try { localStorage.setItem(STORAGE_KEY_PROGRESS, JSON.stringify(next)); } catch { /* sin localStorage */ }
+      try { localStorage.setItem(scopedStorageKey(STORAGE_KEY_PROGRESS), JSON.stringify(next)); } catch { /* sin localStorage */ }
     }
   };
 

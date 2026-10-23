@@ -1,4 +1,4 @@
-# AGENTS.md — Guía para agentes IA del proyecto "Gestión Empresarial"
+﻿# AGENTS.md — Guía para agentes IA del proyecto "Gestión Empresarial"
 
 > Lee este archivo antes de hacer cualquier cambio. Contiene toda la arquitectura, asi mismo, actualizar este archivo cada vez que se realicen cambios grandes en la arquitectura del mismo
 > convenciones y recetas para modificar el proyecto sin tener que explorarlo desde cero.
@@ -99,13 +99,10 @@ Variables: `CONTENT_PORT` cambia el puerto del content-server (defecto `8787`).
 │   └── migrate-alfabetizacion.mjs ← script de migración puntual (legacy)
 ├── public/
 │   ├── data/users.json, courses.json ← copia pública para `fetch("/data/...")`
-<<<<<<< HEAD
-=======
 │   ├── Images/sintaxia-logo.png ← logo de marca (header + footer, `h-9 w-auto`, enlaza a `/`)
 │   ├── Images/Logos/*.png     ← logos de curso (`logo-01.png`…`logo-15.png`)
 │   ├── Images/Logos/          ← logos individuales 200×200 (fuente de `/images/logos/`)
 │   ├── Images/Iconos educativos.png ← sprite legacy (1536×1024, 20 logos; no usar como fuente)
->>>>>>> 0037706b81782a3841af0b6947fe4b7bb7613fda
 │   ├── lessons/ / multimedia/   ← assets estáticos legacy
 │   └── favicon.svg / favicon.ico
 └── dist/                        ← build (generado, no editar)
@@ -118,15 +115,11 @@ Variables: `CONTENT_PORT` cambia el puerto del content-server (defecto `8787`).
 - `/` — login/registro + estado de sesión (`Auth.tsx`). Redirige por rol:
   `admin → /admin`, `profesor → /actividades`, `estudiante → /ensenanza`,
   `sin_asignar → se queda en /` con aviso.
-<<<<<<< HEAD
-- `/ensenanza` — `EnsenanzaView.tsx` (contenido de enseñanza).
-=======
 - `/ensenanza` — `EnsenanzaView.tsx`: explorador de **cursos del usuario** (búsqueda,
   grid paginado 6 por página, tarjeta con color + logo del curso y nº de
   actividades), estado "sin asignar" y estado vacío. Es la landing del `estudiante`.
   Cada tarjeta usa la portada del curso (`courseCoverUrl`) como fondo a color, con
   degradado oscuro para el texto y desenfoque de 5px bajo la línea del pie.
->>>>>>> 0037706b81782a3841af0b6947fe4b7bb7613fda
 - `/alfabetizacion` — `AlfabetizacionView.tsx` (5 bloques desde `content/blocks/`).
   Query `?bloque=<id>` para volver al bloque tras ver una lección.
 - `/lecciones/:id` — visor de lección (`LessonRenderer.tsx` + navegación
@@ -137,17 +130,6 @@ Variables: `CONTENT_PORT` cambia el puerto del content-server (defecto `8787`).
   (`TipoActividad.tsx`).
 - `/alfabetizacion/actividades/<tipo>/<slug>` — caso concreto
   (`ElegirRespuesta.tsx`, `DetectorAlucinaciones.tsx`, `PromptLab.tsx`).
-<<<<<<< HEAD
-- `/dashboard` — **placeholder**: tarjeta "en construcción". Aquí irán métricas
-  agregadas de enseñanza + actividades (leer de `localStorage`/IndexedDB).
-- `/admin` — `AdminPanel.tsx` (gestión de usuarios, roles, cursos). Solo admin.
-- `/editor` — **oculta** (`<meta robots noindex>`, no está en el nav):
-  `LessonStudio.tsx` = editor de bloques + lessons + imágenes.
-
-`AppHeader.tsx` es el header global: exige sesión (si no hay, redirige a `/`),
-muestra nav según rol (estudiante/profesor/admin) con versión desktop + móvil,
-avatar, rol, código y botón Salir.
-=======
 - `/dashboard` — `DashboardView.tsx`: Panel analítico docente con selector de curso, métricas ejecutivas (avance a la fecha, rendimiento ponderado, tasa de aprobación, alertas de riesgo), gráficas SVG nativas y vista drill-down por estudiante.
 - `/admin` — `AdminPanel.tsx` con 2 pestañas: **Usuarios** (roles, códigos,
   crear/eliminar) y **Cursos** (crear con color + logo, gestionar asignación de
@@ -171,7 +153,6 @@ Alfabetizacion / Cursos·Actividades / DashBoard), **Ayuda** (enlaces `#`) y
 flex flex-col">`, con el contenido en un `flex-1` (para pegar el footer al fondo) y
 `<AppFooter client:load />` al final. **Excepción:** `/editor` (`editor.astro`) no usa
 footer.
->>>>>>> 0037706b81782a3841af0b6947fe4b7bb7613fda
 
 ---
 
@@ -181,19 +162,13 @@ footer.
 
 | Archivo | Responsabilidad | No tocar / cuidado |
 |---|---|---|
-<<<<<<< HEAD
-| `AppHeader.tsx` | Auth-guard + nav por rol | Cambiar nav aquí afecta a todas las páginas |
-| `Auth.tsx` | Login/registro/sesión, export `users.json` | Usa `src/utils/auth.ts` |
-| `AdminPanel.tsx` | CRUD usuarios, roles, asignación a cursos | Solo rol `admin` |
-| `EnsenanzaView.tsx` | Módulo enseñanza | Persistencia en `localStorage` |
-| `ActividadesView.tsx` | Cursos + actividades (crear/asignar/listar/borrar) | Usa `src/utils/courses.ts` |
-=======
 | `AppHeader.tsx` | Auth-guard + nav por rol; prop `currentPath`; logo de marca (`/images/sintaxia-logo.png`); botón "Cerrar Sesion" + bloque de perfil (avatar, nombre, email, rol, código) a la derecha | Cambiar nav aquí afecta a todas las páginas |
 | `AppFooter.tsx` | Footer global de marca (logo `/images/sintaxia-logo.png` + Explora / Ayuda / Síguenos + copyright) | Sin props y sin auth-guard; solo maquetación |
 | `Auth.tsx` | Login/registro/sesión, export `users.json` | Usa `src/utils/auth.ts` |
 | `AdminPanel.tsx` | Panel admin en 2 pestañas: **Usuarios** (listar/buscar/filtrar, cambiar rol, eliminar, stats por rol, exportar `users.json`) y **Cursos** (crear con color `COURSE_COLORS` + logo `COURSE_LOGOS`, gestionar asignación de profesores/estudiantes por lista **o por código único `600XXXX`** vía `findUserByCodigo`, exportar `courses.json`) | Solo rol `admin`; usa `utils/auth.ts` + `utils/courses.ts` |
 | `EnsenanzaView.tsx` | Explorador de cursos del usuario logueado: búsqueda, grid paginado (6/pág.), tarjeta por curso (código, color+logo, nº profes/estudiantes y actividades), estados "sin asignar"/vacío | Lee `getCoursesForUser` + `getActivities` de `utils/courses.ts`; redirige a `/` si no hay sesión |
-| `ActividadesView.tsx` | Cursos + actividades (crear/asignar/listar/borrar) | Usa `src/utils/courses.ts` + `SelectMenu.tsx` para los desplegables de curso/tipo |
+| `ActividadesView.tsx` | Cursos + actividades (crear/asignar/listar/borrar). Estudiantes pueden "Entregar" texto por actividad (badge de estado: Entregada/Calificada · nota, aviso de Vencida); docentes ven "Revisar entregas" + badge "N por revisar". El modal dual vive en `SubmissionModal.tsx`. El formulario de creación incluye la sección desplegable **SintaxIA Tools**: elegir uno de los 3 tipos de SintaxIA (elegir · detector · promptlab) + caso concreto opcional (SelectMenu con "Cualquier caso al azar" + casos reales del tipo) y guarda `Activity.sintaxia` vía `createActivity`; la lista muestra badge "✨" con la herramienta vinculada (`sintaxiaToolHref`, abre en pestaña nueva) | Usa `src/utils/courses.ts` + `SelectMenu.tsx` para los desplegables de curso/tipo + `utils/alfabetizacionActividades.ts` (casos de SintaxIA) |
+| `SubmissionModal.tsx` | Modal dual de entregas: modo **estudiante** (textarea de texto de la entrega, permite reenviar hasta que esté calificada; muestra nota/feedback cuando el profesor califica; **puede modificar y reenviar SIEMPRE**, incluso tras calificar (conserva nota/feedback previos y la entrega vuelve a `entregado` para re-revisión, con banner "Nota anterior")) y modo **profesor** (lista de estudiantes matriculados con estado; botón "Leer y calificar" siempre disponible abre `ReviewPanel`: panel propio de lectura del texto a página completa + nota 0-100 + retroalimentación + "Guardar calificación"). Re-calificable siempre: con nota → `calificado`; vaciar nota → vuelve a `entregado`. Bloqueo de edición por el profesor en 2 niveles: `Activity.locked` (botón 🔒 por actividad en el listado, `setActivityLock`) y `ActivitySubmission.locked` (botón "Bloquear edición/Desbloquear entrega" en `ReviewPanel`); el estudiante lo ve como "Entrega bloqueada" con campos de solo lectura. Si la actividad tiene `sintaxia?: SintaxiaToolRef`, el estudiante ve tarjeta "Abre la actividad de SintaxIA" (link a pestaña nueva al caso vinculado) + badge "✨ SintaxIA Tool" en la cabecera | Usa `saveSubmission` + `sintaxiaToolHref` de `utils/courses.ts`; entregas en texto, sin archivos |
 | `SelectMenu.tsx` | Dropdown reutilizable estilo marca (reemplaza `<select>` nativo): trigger + panel `rounded-2xl`, estados seleccionado/activo, cierre al clic fuera/Escape y navegación por teclado (`ArrowUp/Down`, `Enter`/`Space`, `Tab`). Props: `options` (`{value,label,meta?}`), `value`, `onChange`, `ariaLabel`, `icon`, `wrapperClass`, `textClass`, `placeholder` | Genérico; no meter lógica de negocio |
 | `DashboardView.tsx` | Panel analítico docente: selector de curso sincronizado con URL `?curso=id`, KPIs ejecutivos (avance exigible, rendimiento ponderado, tasa de aprobación, estudiantes en riesgo), gráficas SVG nativas y roster de estudiantes interactivo con búsqueda, filtros y ordenamiento | Consume `utils/dashboardAnalytics.ts` y `utils/courses.ts` |
 | `dashboard/MetricCard.tsx` | Tarjeta KPI ejecutiva con badge semafórico, barra de progreso y subtítulo | Componente atómico |
@@ -202,14 +177,14 @@ footer.
 | `dashboard/BarChart.tsx` | Gráfica de barras SVG nativa: `VerticalBarChart` (histograma de notas) y `HorizontalBarChart` (ranking de actividades) | Cero dependencias externas |
 | `dashboard/LineChart.tsx` | Gráfica de líneas SVG con doble serie temporal (Estudiante vs Promedio del grupo), puntos de datos y tooltip flotante | Utilizado en el drill-down |
 | `dashboard/StudentDetailModal.tsx` | Modal de auditoría y drill-down individual por estudiante: perfil, métricas vs aula, gráfica de trayectoria y tabla de entregas | Subvista nivel 2 del dashboard |
->>>>>>> 0037706b81782a3841af0b6947fe4b7bb7613fda
 | `AlfabetizacionView.tsx` | Portada de bloques, progreso por bloque | Lee `BLOQUES_ALFABETIZACION` de `alfabetizacionContent.ts` |
 | `ActividadesIndice.tsx` | Índice de los 3 tipos de actividades | Lee `TIPOS_ACTIVIDADES` |
 | `TipoActividad.tsx` | Portada de un tipo (lista de casos + estado) | Lee `listaPorTipo()` + `estadoCaso()` |
 | `ElegirRespuesta.tsx` | Actividad "¿Cuál respuesta elegirías?" (A/B/C) | Datos de `actividades-elegir.json` |
 | `DetectorAlucinaciones.tsx` | Actividad forense (clasificar afirmaciones) | Datos de `actividades-detector.json` |
 | `PromptLab.tsx` | Actividad "arma tu prompt por piezas" | Datos de `actividades-promptlab.json` |
-| `QuizBlock.tsx` | Quiz inline dentro de lecciones | Guarda en `localStorage` clave `gestion-empresarial:quiz` |
+| `PersonajeIcon.tsx` | `<img>` reutilizable para los personajes del laboratorio (`public/Images/Personajes/`): intenta `/Images/...` y hace fallback a `/images/...` (mismo patrón que logo/logos). La animación la aplica el padre con `animate-levitar` / `animate-flotar3d` + `[perspective:*]` | Genérico; no meter lógica |
+| `QuizBlock.tsx` | Quiz inline dentro de lecciones | Guarda en `localStorage` base `gestion-empresarial:quiz` (con sufijo por cuenta `:u:<userId>`) |
 | `LessonRenderer.tsx` | Render de `Lesson` (celdas → HTML + richtext + imágenes) | Presentacional; el parseo vive en `utils/lesson.ts` |
 | `LessonStudio.tsx` | Editor completo (bloques/lessons/imágenes, dual backend/local) | El más complejo; usa `utils/contentApi.ts` + `utils/lessons.ts` |
 | `LessonCellEditor.tsx` / `LessonCellForm.tsx` | Edición de una celda / crear celda | Operan con `moveCell/createCell/cellWithText` de `utils/lesson.ts` |
@@ -226,19 +201,13 @@ footer.
 | `lessonImages.ts` | Resuelve `images/<file>` → URL Vite desde `content/blocks/<b>/images/<lesson>/`. Absolutas/http/data: pasan intactas |
 | `richtext.ts` | Sintaxis inline + validación (`toSafeColor`, `fontStackFor`, `clampSize`, paletas). Antídoto contra inyección de estilos |
 | `contentApi.ts` | Cliente del content-server (`http://127.0.0.1:8787`). `backendAvailable()` con caché 10 s. `api.blocks/createBlock/updateBlock/deleteBlock/saveBlocksOrder/lessonSource/saveLessonSource/createLesson/deleteLesson/saveLessonsOrder/moveLesson/listImages/uploadImage` |
-<<<<<<< HEAD
-| `auth.ts` | Usuarios + sesión. Roles `admin/profesor/estudiante/sin_asignar` (+ legacy `user`). Códigos: profesor `100XXXX`, estudiante `600XXXX`. Admin seed `administracion@sintaxia.com / 12345678`. Persistencia: IndexedDB `users-json` + `fetch("/data/users.json")` + import inicial; sesión en `localStorage` |
-| `courses.ts` | Cursos (`code` auto de 6 dígitos) + actividades (`tarea/actividad/evaluacion`), asignación de usuarios. IndexedDB `courses-json` + `activities-json` |
-| `alfabetizacionContent.ts` | Adapta `content/blocks/` → `{ Bloque, Subtema }` para la vista. Convenciones: `## Temáticas|Temas + lista`, `## Referentes + lista`, `## Alcance + párrafos`, `> Actividad: ...`; sin sección Temáticas, los `##/###` son temáticas |
-| `alfabetizacionActividades.ts` | Tipos + carga de los 3 JSON de actividades, índice `MODULOS_ACTIVIDADES`, `TIPOS_ACTIVIDADES`, `actividadPorSlug`, persistencia `gestion-empresarial:actividades-v2`, `estadoCaso()` |
-=======
 | `auth.ts` | Usuarios + sesión. Roles `admin/profesor/estudiante/sin_asignar` (+ legacy `user`). Códigos: profesor `100XXXX`, estudiante `600XXXX`. Búsqueda por código con `findUserByCodigo`/`findUserByCodigoAsync`. Admin seed `administracion@sintaxia.com / 12345678`. Persistencia: IndexedDB `users-json` + `fetch("/data/users.json")` + import inicial; sesión en `localStorage` |
-| `courses.ts` | Cursos (`code` auto de 6 dígitos; `cover` de `COURSE_COVERS` = `public/multimedia/cursos/curso-01..10.jpg`, elegida al azar entre las menos usadas en `createCourse` (no se repite hasta usar las 10); `hydrate()` asigna y persiste `cover` a cursos antiguos sin ella con la misma regla) + actividades (`tarea/actividad/evaluacion`) + entregas (`ActivitySubmission`), asignación de usuarios. API: `getCourses/getCoursesForUser/createCourse/deleteCourse/assignUserToCourse/unassignUserFromCourse/getActivities/createActivity/deleteActivity/getSubmissions/saveSubmission/bulkSaveSubmissions/resetCourseSubmissions`. IndexedDB `courses-json`, `activities-json`, `submissions-json` |
+| `courses.ts` | Cursos (`code` auto de 6 dígitos; `cover` de `COURSE_COVERS` = `public/multimedia/cursos/curso-01..10.jpg`, elegida al azar entre las menos usadas en `createCourse` (no se repite hasta usar las 10); `hydrate()` asigna y persiste `cover` a cursos antiguos sin ella con la misma regla) + actividades (`tarea/actividad/evaluacion`; campo `locked?: boolean` = entregas bloqueadas por el profesor, vía `setActivityLock`; campo `sintaxia?: SintaxiaToolRef` = link a caso de SintaxIA `{tipo: "elegir"|"detector"|"promptlab", slug?}`, con `slug` undefined = caso al azar — véase la sección "SintaxIA Tools" de `ActividadesView`; helper `sintaxiaToolHref()` / tipos `SintaxiaToolTipo` `SintaxiaToolRef`) + entregas (`ActivitySubmission` con `content` (texto) y `locked?: boolean` por entrega), asignación de usuarios. API: `getCourses/getCoursesForUser/createCourse/deleteCourse/assignUserToCourse/unassignUserFromCourse/getActivities/createActivity/deleteActivity/setActivityLock/getSubmissions/saveSubmission/bulkSaveSubmissions/resetCourseSubmissions`. IndexedDB `courses-json`, `activities-json`, `submissions-json` |
 | `dashboardAnalytics.ts` | Motor analítico: agrega métricas por curso y estudiante (avance a la fecha según fecha límite, rendimiento ponderado 50% eval / 30% tarea / 20% act, tasa de aprobación >= 60 pts, buckets de histograma y serie temporal para trayectoria) |
-| `dashboardMock.ts` | Generador de entregas sintéticas realistas para cursos sin entregas previas, simulando distribuciones estadísticas para docencia |
+| `dashboardMock.ts` | Generador de entregas sintéticas realistas para cursos sin entregas previas, simulando distribuciones estadísticas para docencia. `regenerateMockDataForCourse` (botón "simular datos" del dashboard) NO borra entregas reales: las que tienen texto (`content`) solo reciben nota + feedback (→ `calificado`), conservando contenido y fecha; para el resto genera sintéticas. Helpers compartidos: `resolveStudentIds`, `perfilPorIndice`, `notaParaPerfil` |
+| `userStorage.ts` | Espacio de almacenamiento POR CUENTA: `scopedStorageKey(base)` añade sufijo `:u:<userId>` de la sesión activa. Obligatorio para todo progreso de estudiante en `localStorage` (alfabetización, laboratorio, quizzes): las cuentas del mismo navegador no comparten avance |
 | `alfabetizacionContent.ts` | Adapta `content/blocks/` → `{ Bloque, Subtema }` para la vista. Convenciones: `## Temáticas|Temas + lista`, `## Referentes + lista`, `## Alcance + párrafos`, `> Actividad: ...`; sin sección Temáticas, los `##/###` son temáticas |
-| `alfabetizacionActividades.ts` | Tipos + carga de los 3 JSON de actividades, índice `MODULOS_ACTIVIDADES`, `TIPOS_ACTIVIDADES` (cada tipo con `theme`: `headerBg/btnBg/barBg/dotColor/badge/borderHover` y acento propio), `actividadPorSlug`, persistencia `gestion-empresarial:actividades-v2`, `estadoCaso()`, `resumenLaboratorio()` (agregado para la portada) |
->>>>>>> 0037706b81782a3841af0b6947fe4b7bb7613fda
+| `alfabetizacionActividades.ts` | Tipos + carga de los 3 JSON de actividades, índice `MODULOS_ACTIVIDADES`, `TIPOS_ACTIVIDADES` (cada tipo con `theme`: `headerBg/btnBg/barBg/dotColor/badge/borderHover` y acento propio), `PERSONAJES` (mapa `TipoActividad → {icono, bueno, malo}` con rutas a `public/Images/Personajes/`; `TipoMeta.personaje`). `actividadPorSlug`, persistencia base `gestion-empresarial:actividades-v2` (con sufijo por cuenta `:u:<userId>`), `estadoCaso()`, `resumenLaboratorio()` (agregado para la portada) |
 
 ### 6.3 `src/data/`
 
@@ -247,8 +216,6 @@ footer.
 **añadir un objeto = nuevo caso, las rutas se generan solas**),
 `alfabetizacion.ts` (módulo legacy, preferir `utils/alfabetizacionContent.ts`).
 
-<<<<<<< HEAD
-=======
 ### 6.4 Sistema de diseño (marca Sintaxia)
 
 - **Paleta de marca** (violeta Sintaxia), usada como valores hex arbitrarios de Tailwind
@@ -262,14 +229,30 @@ footer.
 - **Logo de marca:** `public/images/sintaxia-logo.png` (`h-9 w-auto`), usado en
   header y footer enlazando a `/`. Sustituye al antiguo placeholder "S" (`#5932EA`)
   + wordmark "Sintaxia".
-- **Sin CSS global extra:** `src/styles/global.css` sigue siendo solo
-  `@import "tailwindcss";`; todo el estilo son clases utilitarias en los componentes.
+- **Sin CSS global extra:** `src/styles/global.css` = `@import "tailwindcss";`
+  + un único bloque `@theme` con las animaciones de marca `--animate-levitar`
+  (levitación on-hover en tarjetas, para `group-hover:animate-levitar`) y
+  `--animate-inclinar` (levitación continua y exagerada: sube y baja durante
+  TODO el ciclo sin quedar quieto en vertical (−3px ↔ −16px, ~1.25s por vaivén
+  vertical) y en la cima de cada subida inclina alternando izquierda →
+  derecha, sin tocar su base; ciclo de 5s ease-in-out infinito). Los
+  personajes usan
+  `transform-origin: 50% 88%` (la animación se aplica SIEMPRE con la clase
+  `.animate-inclinar`, que define el pivote del balanceo). Todo el resto del
+  estilo son clases utilitarias en los componentes.
+- **Personajes del laboratorio:** PNG con transparencia en
+  `public/Images/Personajes/`: `<tipo>_Icon.png` + variantes `*_Good.png` /
+  `*_Bad.png` (elegir, detector, promptlab). Zonas de uso: tarjeta del índice
+  `/alfabetizacion/actividades` (estático, levita al hover de la tarjeta), hero
+  de cada tipo y cabecera de cada caso a la derecha de la descripción
+  (`animate-flotar3d` continuo), y retroalimentaciones (iconos `bueno`/`malo`
+  estáticos). Si se añade un tipo, actualizar `PERSONAJES` en
+  `alfabetizacionActividades.ts`.
 - **Layout de páginas:** header sticky (`bg-white/95 backdrop-blur-md`) + footer de marca
   pegado al fondo (ver §5). El contenido principal vive en un `flex-1`.
 - **Marca UI:** logo `sintaxia-logo.png` enlaza a `/`; alias del proyecto
   "Gestión Empresarial" (títulos de página).
 
->>>>>>> 0037706b81782a3841af0b6947fe4b7bb7613fda
 ---
 
 ## 7. Sistema de contenido (bloques + `.lesson`) — lo más importante
@@ -350,9 +333,9 @@ Richtext inline (ver `richtext.ts`): `**negrita** *cursiva* __subrayado__`
 | Sesión | `localStorage` | `gestion-empresarial:session` (+ migración legacy de `sessionStorage`) |
 | Usuarios | IndexedDB `gestion-empresarial/kv:users-json` → `fetch /data/users.json` → import `src/data/users.json` | Roles `admin/profesor/estudiante/sin_asignar`; códigos profesor `100XXXX`, estudiante `600XXXX` |
 | Cursos/Actividades | IndexedDB `courses-json`, `activities-json` | Código curso auto 6 dígitos; tipos `tarea/actividad/evaluacion` |
-| Progreso alfabetización | `localStorage` | `gestion-empresarial:alfabetizacion-progress` |
-| Progreso actividades lab | `localStorage` | `gestion-empresarial:actividades-v2` |
-| Quizzes inline | `localStorage` | `gestion-empresarial:quiz` |
+| Progreso alfabetización | `localStorage` + IndexedDB `gestion-empresarial/kv` | Base `gestion-empresarial:alfabetizacion-progress`; en localStorage con sufijo por cuenta `:u:<userId>` (`scopedStorageKey`), en IndexedDB `alfabetizacion-progress:<userId>` |
+| Progreso actividades lab | `localStorage` | Base `gestion-empresarial:actividades-v2`, con sufijo por cuenta `:u:<userId>` (`scopedStorageKey`) |
+| Quizzes inline | `localStorage` | Base `gestion-empresarial:quiz`, con sufijo por cuenta `:u:<userId>` (`scopedStorageKey`) |
 | Overrides editor | `localStorage` | `gestion-empresarial:lessons-order`, `gestion-empresarial:lesson-custom:{id}`, `gestion-empresarial:lesson-draft:{id}` |
 | Split editor | `localStorage` | `gestion-empresarial:editor-split` |
 
@@ -404,11 +387,8 @@ Protecciones: validación de slug (anti path-traversal), `409` si existe,
    utils `camelCase.ts`, páginas `minusculas.astro`.
 8. Claves `localStorage` descriptivas con prefijo `gestion-empresarial:`.
    Serializar con `JSON.stringify/parse`, con defaults y try/catch.
-<<<<<<< HEAD
-=======
 9. **Identidad visual**: usar la paleta de marca Sintaxia de §6.4 (primario `#5932EA`)
    para elementos de identidad (logo, nav activo, botones, badges, progreso).
->>>>>>> 0037706b81782a3841af0b6947fe4b7bb7613fda
 
 ---
 
@@ -430,11 +410,8 @@ Protecciones: validación de slug (anti path-traversal), `409` si existe,
   (`slug` único dentro del tipo). Portadas, rutas `[slug]` e índice se generan solos.
 - **Nuevo curso/actividad académica**: vía UI (`ActividadesView`) o
   `createCourse/createActivity` en `utils/courses.ts`. Código de curso: auto 6 dígitos.
-<<<<<<< HEAD
-=======
   Opcional: `color` (clave de `COURSE_COLORS`) e `icon` (`logo-01.png`…`logo-15.png` de
   `public/images/logos/`, fuente original `public/Images/Logos/`).
->>>>>>> 0037706b81782a3841af0b6947fe4b7bb7613fda
 - **Nuevo rol/permiso**: `auth.ts` (`Role`, `normalizeRole`, `updateUserRole`) +
   `AppHeader.tsx` (nav) + `Auth.tsx` (redirecciones) + guard en `admin.astro`.
 - **Dashboard real**: sustituir el placeholder de `dashboard.astro` por un
@@ -465,9 +442,6 @@ Protecciones: validación de slug (anti path-traversal), `409` si existe,
 
 ## 13. Estado actual y deuda conocida
 
-<<<<<<< HEAD
-- `/dashboard` es placeholder (pendiente de implementar métricas).
-=======
 - Rediseño estético aplicado: `AppHeader` + `AppFooter` con marca Sintaxia y paleta
   violeta (§6.4); todas las páginas principales usan el layout header + `flex-1` + footer
   (excepto `/editor`, sin footer).
@@ -476,15 +450,10 @@ Protecciones: validación de slug (anti path-traversal), `409` si existe,
   búsqueda (lupa), notificaciones (campana) y el avatar duplicado de la izquierda; a la
   izquierda de "Cerrar Sesion" solo queda el botón y, a su derecha, el bloque de perfil.
 - `/dashboard` implementado: módulo analítico docente con KPIs, gráficas SVG y drill-down individual por estudiante.
->>>>>>> 0037706b81782a3841af0b6947fe4b7bb7613fda
 - `README.md` aún es el template de Astro (desactualizado; la doc real es este
   archivo + `RULES.md`).
 - `src/data/alfabetizacion.ts` es legacy (la vista usa `alfabetizacionContent.ts`
   desde `content/blocks/`).
-<<<<<<< HEAD
-- `public/lessons/` y `public/multimedia/` son assets legacy (las imágenes
-  actuales viven en `content/blocks/*/images/`).
-=======
 - `public/lessons/` es legacy (las imágenes de lecciones viven en
   `content/blocks/*/images/`). En `public/multimedia/` sí se usan
   `niveles/nivel-N.jpg` (cabecera de cards y hero de bloque en `AlfabetizacionView`,
@@ -492,7 +461,6 @@ Protecciones: validación de slug (anti path-traversal), `409` si existe,
   (cards de `ActividadesIndice` y hero de `TipoActividad`, vía `TipoTheme.imagen/capa`).
   `cursos/curso-NN.jpg` son las portadas de curso (tarjetas de `/ensenanza`, a color).
   La imagen va en blanco y negro con la `capa` de color del nivel/tipo encima.
->>>>>>> 0037706b81782a3841af0b6947fe4b7bb7613fda
 - `server/migrate-alfabetizacion.mjs` es script puntual (no parte del flujo).
 - `src/data/actividades-elegir.json` presenta caracteres con encoding corrupto
   (revisar antes de editar a mano; preferir edición vía script).

@@ -9,9 +9,8 @@ import {
   type Course,
   type Activity,
   type ActivitySubmission,
-  resetCourseSubmissions,
 } from "../utils/courses";
-import { seedMockDataForCourse, seedAlfabetizacionProgressForCourse, clearAlfabetizacionProgressForStudents } from "../utils/dashboardMock";
+import { seedMockDataForCourse, regenerateMockDataForCourse, seedAlfabetizacionProgressForCourse, clearAlfabetizacionProgressForStudents } from "../utils/dashboardMock";
 import {
   calculateCourseAnalytics,
   type CourseAnalyticsSummary,
@@ -146,10 +145,11 @@ export default function DashboardView() {
     if (!selectedCourse) return;
     setGeneratingMock(true);
 
-    // 1. Regenerar entregas de actividades
-    await resetCourseSubmissions(selectedCourse.id);
+    // 1. Regenerar entregas sintéticas SIN borrar las entregas reales
+    //    (las que tienen texto solo reciben nota + retroalimentación)
     const courseActs = activities.filter((a) => a.courseId === selectedCourse.id);
-    const newSubs = await seedMockDataForCourse(selectedCourse, courseActs, allUsers, []);
+    const courseSubs = submissions.filter((s) => s.courseId === selectedCourse.id);
+    const newSubs = await regenerateMockDataForCourse(selectedCourse, courseActs, allUsers, courseSubs);
     setSubmissions((prev) => [...prev.filter((s) => s.courseId !== selectedCourse.id), ...newSubs]);
 
     // 2. Regenerar progreso de alfabetización

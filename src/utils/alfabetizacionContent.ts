@@ -12,6 +12,7 @@
 
 import { getAllBlocks, getLessonsByBlock } from "./lessons";
 import type { Lesson } from "./lesson";
+import { scopedStorageKey } from "./userStorage";
 
 export interface Subtema {
   id: string;
@@ -181,16 +182,17 @@ function progressKeyForUser(userId: string): string {
 }
 
 /**
- * Guarda el progreso de alfabetización de un usuario tanto en localStorage
- * (para su propio uso) como en IndexedDB (para que el dashboard del profesor
- * pueda leerlo).
+ * Guarda el progreso de alfabetización de un usuario. Escribe en IndexedDB
+ * bajo su clave por usuario (para el dashboard del profesor) y en localStorage
+ * con clave acotada a su cuenta (ver utils/userStorage.ts): el avance NO se
+ * comparte entre cuentas del mismo navegador.
  */
 export async function saveAlfabetizacionProgress(
   userId: string,
   progress: Record<string, boolean>
 ): Promise<void> {
   const json = JSON.stringify(progress);
-  try { localStorage.setItem(STORAGE_KEY_PROGRESS, json); } catch { /* sin localStorage */ }
+  try { localStorage.setItem(scopedStorageKey(STORAGE_KEY_PROGRESS), json); } catch { /* sin localStorage */ }
   await idbSet(progressKeyForUser(userId), json);
 }
 

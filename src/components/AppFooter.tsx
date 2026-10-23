@@ -19,10 +19,7 @@ export default function AppFooter() {
               />
             </div>
             <p class="text-xs sm:text-sm text-slate-500 mt-3 max-w-sm leading-relaxed">
-              Aprende crea y avanza ahora<br />
-              No dejes que pase tu hora<br />
-              No pierdas jamás la esperanza<br />
-              Con Sintaxia todo se alcanza
+              Aprende crea y avanza
             </p>
           </div>
 
@@ -118,7 +115,7 @@ export default function AppFooter() {
 
         {/* Línea inferior con copyright */}
         <div class="mt-12 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
-          <p>© 2025 Sintaxia. Todos los derechos reservados.</p>
+          <p>© 2026 Sintaxia. Todos los derechos reservados.</p>
           <p class="text-slate-400">Plataforma de Gestión Empresarial y Alfabetización en IA</p>
         </div>
       </div>

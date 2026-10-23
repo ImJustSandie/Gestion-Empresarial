@@ -15,6 +15,28 @@ export interface Course {
   createdBy: string;
 }
 
+/** Tipos de actividadeslab de SintaxIA (alfabetización) vinculables a una actividad */
+export type SintaxiaToolTipo = "elegir" | "detector" | "promptlab";
+
+/** Referencia a una herramienta SintaxIA: tipo + caso concreto (slug opcional) */
+export interface SintaxiaToolRef {
+  tipo: SintaxiaToolTipo;
+  /** slug del caso concreto; undefined = cualquier caso (el estudiante elige uno al azar) */
+  slug?: string;
+}
+
+const SINTAXIA_SEGMENTS: Record<SintaxiaToolTipo, string> = {
+  elegir: "elegir",
+  detector: "detector",
+  promptlab: "prompt-lab",
+};
+
+/** URL de la herramienta SintaxIA vinculada (/alfabetizacion/actividades/...) */
+export function sintaxiaToolHref(ref?: SintaxiaToolRef): string {
+  if (!ref) return "/alfabetizacion/actividades";
+  return `/alfabetizacion/actividades/${SINTAXIA_SEGMENTS[ref.tipo]}${ref.slug ? `/${ref.slug}` : ""}`;
+}
+
 export interface Activity {
   id: string;
   courseId: string;
@@ -22,6 +44,8 @@ export interface Activity {
   description: string;
   type: "tarea" | "actividad" | "evaluacion";
   dueDate?: string;
+  locked?: boolean;    // el profesor bloqueó la edición de entregas para todos los estudiantes
+  sintaxia?: SintaxiaToolRef; // herramienta SintaxIA de alfabetización vinculada
   createdAt: string;
   createdBy: string;
 }
@@ -33,9 +57,11 @@ export interface ActivitySubmission {
   studentId: string;
   status: "pendiente" | "entregado" | "calificado" | "no_entregado";
   submittedAt?: string;
+  content?: string;    // texto de la entrega (actividad completada por el estudiante)
   score?: number;      // 0 a 100
   maxScore: number;    // 100 por defecto
   feedback?: string;
+  locked?: boolean;    // el profesor bloqueó la edición de ESTA entrega del estudiante
 }
 
 export const COURSE_COLORS: Record<string, { from: string; to: string; label: string }> = {
@@ -322,7 +348,7 @@ export async function getActivities(courseId?: string): Promise<Activity[]> {
   return [...activitiesCache];
 }
 
-export async function createActivity(data: { courseId: string; title: string; description: string; type: Activity["type"]; dueDate?: string; createdBy: string }): Promise<{ success: boolean; message: string; activity?: Activity }> {
+export async function createActivity(data: { courseId: string; title: string; description: string; type: Activity["type"]; dueDate?: string; sintaxia?: SintaxiaToolRef; createdBy: string }): Promise<{ success: boolean; message: string; activity?: Activity }> {
   await hydrate();
   const title = data.title.trim();
   if (!title) return { success: false, message: "Título obligatorio." };
@@ -334,6 +360,9 @@ export async function createActivity(data: { courseId: string; title: string; de
     description: data.description.trim(),
     type: data.type,
     dueDate: data.dueDate,
+    sintaxia: data.sintaxia?.tipo
+      ? { tipo: data.sintaxia.tipo, slug: data.sintaxia.slug || undefined }
+      : undefined,
     createdAt: new Date().toISOString(),
     createdBy: data.createdBy,
   };
@@ -349,6 +378,24 @@ export async function deleteActivity(activityId: string): Promise<{ success: boo
   await persistActivities();
   await persistSubmissions();
   return { success: true, message: "Actividad eliminada." };
+}
+
+/** Bloquea/desbloquea la edición de entregas de una actividad (para todos los estudiantes) */
+export async function setActivityLock(
+  activityId: string,
+  locked: boolean
+): Promise<{ success: boolean; message: string }> {
+  await hydrate();
+  const idx = activitiesCache.findIndex((a) => a.id === activityId);
+  if (idx === -1) return { success: false, message: "Actividad no encontrada." };
+  activitiesCache[idx] = { ...activitiesCache[idx], locked };
+  await persistActivities();
+  return {
+    success: true,
+    message: locked
+      ? "Entregas bloqueadas: los estudiantes no podrán editarlas."
+      : "Entregas desbloqueadas: los estudiantes pueden editar de nuevo.",
+  };
 }
 
 // Entregas y Calificaciones (Submissions)
@@ -375,9 +422,11 @@ export async function saveSubmission(
     studentId: sub.studentId,
     status: sub.status,
     submittedAt: sub.submittedAt,
+    content: sub.content,
     score: sub.score !== undefined ? Math.max(0, Math.min(100, sub.score)) : undefined,
     maxScore: sub.maxScore || 100,
     feedback: sub.feedback,
+    locked: sub.locked || undefined,
   };
   const idx = submissionsCache.findIndex(
     (s) => s.activityId === sub.activityId && s.studentId === sub.studentId

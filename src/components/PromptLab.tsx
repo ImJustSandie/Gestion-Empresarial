@@ -4,9 +4,10 @@
 // y ordena su selección. Al comprobar recibe evaluación por criterios
 // (selección, descarte y orden). Sin respuestas simuladas.
 import { useState } from "preact/hooks";
-import { loadActividades, saveActividades, type ActividadPromptLab } from "../utils/alfabetizacionActividades";
+import PersonajeIcon from "./PersonajeIcon";
+import { loadActividades, saveActividades, type ActividadPromptLab, type PersonajeRefs } from "../utils/alfabetizacionActividades";
 const FOCO = "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-teal-500/40";
-export default function PromptLab({ act, numero }: { act: ActividadPromptLab; numero: number }) {
+export default function PromptLab({ act, numero, personaje }: { act: ActividadPromptLab; numero: number; personaje: PersonajeRefs }) {
   const porId = new Map(act.piezas.map((p) => [p.id, p]));
   // El orden esperado lo define `orden`, no la posición en el banco (desordenado).
   const requeridas = act.piezas.filter((p) => p.requerida).sort((a, b) => (a.orden ?? 0) - (b.orden ?? 0));
@@ -70,7 +71,15 @@ export default function PromptLab({ act, numero }: { act: ActividadPromptLab; nu
       <div class="bg-gradient-to-br from-teal-600 via-emerald-700 to-green-800 text-white p-6 sm:p-9 relative overflow-hidden">
         <span class="pointer-events-none absolute -top-16 -right-10 w-64 h-64 rounded-full bg-white/20 blur-3xl" aria-hidden="true" />
         <span class="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle,white_1px,transparent_1px)] [background-size:16px_16px]" aria-hidden="true" />
-        <span class="absolute -right-3 -bottom-8 text-[120px] opacity-20 select-none leading-none" aria-hidden="true">⚗️</span>
+        <span class="absolute -right-3 -bottom-8 text-[120px] opacity-20 select-none leading-none sm:hidden" aria-hidden="true">⚗️</span>
+        {/* Personaje a la derecha de la descripción: levitación + rotación en X continuas */}
+        <div class="pointer-events-none absolute right-3 sm:right-10 bottom-2 sm:bottom-6 w-14 sm:w-24" aria-hidden="true">
+          <PersonajeIcon
+            src={personaje.icono}
+            alt=""
+            class="w-full h-auto animate-inclinar drop-shadow-xl"
+          />
+        </div>
         <span class="relative inline-block text-xs font-extrabold tracking-widest bg-white/20 px-3 py-1.5 rounded-full">ACTIVIDAD {numero} · GENERA TU PROMPT</span>
         <h2 class="relative text-2xl sm:text-4xl font-extrabold mt-3 leading-tight">{act.titulo}</h2>
         <p class="relative text-base sm:text-lg text-white/90 mt-3 max-w-2xl leading-relaxed">{act.introduccion}</p>
@@ -172,19 +181,34 @@ export default function PromptLab({ act, numero }: { act: ActividadPromptLab; nu
             </h3>
             <p class="text-base leading-8 bg-slate-900 text-slate-100 rounded-2xl p-5 font-mono">{promptFinal}</p>
             <div class={`mt-4 rounded-2xl p-5 sm:p-6 border-2 ${exito ? "bg-emerald-50 border-emerald-200" : "bg-amber-50 border-amber-200"}`} role="status">
-              <p class={`text-lg font-extrabold ${exito ? "text-emerald-800" : "text-amber-800"}`}>
-                {exito ? "✓ ¡Prompt de laboratorio aprobado! Lo armaste tú: completo, limpio y ordenado." : "✕ Tu prompt aún no está listo. Revisa los criterios y sigue editando."}
-              </p>
+              <div class="flex items-start gap-4">
+                <PersonajeIcon
+                  src={exito ? personaje.bueno : personaje.malo}
+                  alt=""
+                  class="w-20 h-20 sm:w-24 sm:h-24 object-contain shrink-0 -my-2"
+                />
+                <p class={`text-lg font-extrabold ${exito ? "text-emerald-800" : "text-amber-800"}`}>
+                  {exito ? "✓ ¡Prompt de laboratorio aprobado! Lo armaste tú: completo, limpio y ordenado." : "✕ Tu prompt aún no está listo. Revisa los criterios y sigue editando."}
+                </p>
+              </div>
               <ul class="mt-4 space-y-3 text-base leading-7">
-                <li class="flex gap-3">
-                  <span class={`w-7 h-7 rounded-full flex items-center justify-center text-sm font-extrabold text-white shrink-0 ${faltantes.length === 0 ? "bg-emerald-600" : "bg-rose-600"}`}>{faltantes.length === 0 ? "✓" : "✕"}</span>
+                <li class="flex gap-3 items-start">
+                  <PersonajeIcon
+                    src={faltantes.length === 0 ? personaje.bueno : personaje.malo}
+                    alt=""
+                    class="w-12 h-12 object-contain shrink-0"
+                  />
                   <span>
                     <b>Selección:</b>{" "}
                     {faltantes.length === 0 ? "incluiste las 4 piezas necesarias." : `te faltan: ${faltantes.map((p) => p.etiqueta).join(", ")}.`}
                   </span>
                 </li>
-                <li class="flex gap-3">
-                  <span class={`w-7 h-7 rounded-full flex items-center justify-center text-sm font-extrabold text-white shrink-0 ${intrusos.length === 0 ? "bg-emerald-600" : "bg-rose-600"}`}>{intrusos.length === 0 ? "✓" : "✕"}</span>
+                <li class="flex gap-3 items-start">
+                  <PersonajeIcon
+                    src={intrusos.length === 0 ? personaje.bueno : personaje.malo}
+                    alt=""
+                    class="w-12 h-12 object-contain shrink-0"
+                  />
                   <span>
                     <b>Descarte:</b>{" "}
                     {intrusos.length === 0 ? "ningún distractor en tu prompt." : `descarta: ${intrusos.map((p) => p.etiqueta).join(", ")}.`}
@@ -196,8 +220,12 @@ export default function PromptLab({ act, numero }: { act: ActividadPromptLab; nu
                     <span><b>{p.etiqueta}:</b> {p.porQue}</span>
                   </li>
                 ))}
-                <li class="flex gap-3">
-                  <span class={`w-7 h-7 rounded-full flex items-center justify-center text-sm font-extrabold text-white shrink-0 ${ordenOk ? "bg-emerald-600" : "bg-rose-600"}`}>{ordenOk ? "✓" : "✕"}</span>
+                <li class="flex gap-3 items-start">
+                  <PersonajeIcon
+                    src={ordenOk ? personaje.bueno : personaje.malo}
+                    alt=""
+                    class="w-12 h-12 object-contain shrink-0"
+                  />
                   <span>
                     <b>Orden:</b>{" "}
                     {ordenOk ? "objetivo → contexto → restricción → formato." : "reordena: primero el objetivo, luego el contexto y al final cómo entregarlo."}

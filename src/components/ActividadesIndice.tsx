@@ -4,6 +4,7 @@
 // actividad (con color de acento, progreso y CTA). Cada tipo tiene su propia
 // página con sus casos en /alfabetizacion/actividades/<tipo>.
 import { useState } from "preact/hooks";
+import PersonajeIcon from "./PersonajeIcon";
 import { loadActividades, resumenLaboratorio } from "../utils/alfabetizacionActividades";
 
 export default function ActividadesIndice() {
@@ -81,9 +82,17 @@ export default function ActividadesIndice() {
                   {total} casos
                 </span>
 
-                <h3 class="relative text-xl sm:text-2xl font-extrabold mt-3 leading-tight pr-10 drop-shadow-sm">
-                  {meta.titulo}
-                </h3>
+                {/* Nombre + personaje: icono a la derecha del título, levita al hover de la tarjeta */}
+                <div class="relative flex items-center justify-between gap-3 mt-3">
+                  <h3 class="text-xl sm:text-2xl font-extrabold leading-tight drop-shadow-sm">
+                    {meta.titulo}
+                  </h3>
+                  <PersonajeIcon
+                    src={meta.personaje.icono}
+                    alt=""
+                    class="w-20 sm:w-24 h-auto object-contain shrink-0 -my-2 drop-shadow-xl transition-transform duration-300 group-hover:animate-levitar"
+                  />
+                </div>
               </div>
 
               <div class="p-5 sm:p-6 flex-1 flex flex-col">

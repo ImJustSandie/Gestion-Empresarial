@@ -3,10 +3,12 @@
 // El estudiante clasifica cada afirmación (Correcta / Incorrecta / Necesita
 // verificación) y luego pulsa cada una para ver la explicación.
 import { useState } from "preact/hooks";
+import PersonajeIcon from "./PersonajeIcon";
 import {
   loadActividades,
   saveActividades,
   type ActividadDetector,
+  type PersonajeRefs,
   type Veredicto,
 } from "../utils/alfabetizacionActividades";
 
@@ -22,7 +24,7 @@ const PUNTO: Record<Veredicto, string> = {
   pendiente: "bg-amber-500",
 };
 
-export default function DetectorAlucinaciones({ act, numero }: { act: ActividadDetector; numero: number }) {
+export default function DetectorAlucinaciones({ act, numero, personaje }: { act: ActividadDetector; numero: number; personaje: PersonajeRefs }) {
   const [marcas, setMarcas] = useState<Record<string, Veredicto>>(() => loadActividades().detector[act.id] ?? {});
   const [revelado, setRevelado] = useState<boolean>(false);
   const [abierta, setAbierta] = useState<Record<string, boolean>>({});
@@ -63,6 +65,14 @@ export default function DetectorAlucinaciones({ act, numero }: { act: ActividadD
           </span>
           <h2 class="text-2xl sm:text-4xl font-extrabold mt-3 leading-tight">{act.titulo}</h2>
           <p class="text-base sm:text-lg text-slate-300 mt-3 max-w-2xl leading-relaxed">{act.introduccion}</p>
+          {/* Personaje a la derecha de la descripción: levitación + rotación en X continuas */}
+          <div class="pointer-events-none absolute right-4 sm:right-10 bottom-2 sm:bottom-5 w-14 sm:w-28" aria-hidden="true">
+            <PersonajeIcon
+              src={personaje.icono}
+              alt=""
+              class="w-full h-auto animate-inclinar drop-shadow-xl"
+            />
+          </div>
         </div>
       </div>
 
@@ -92,8 +102,13 @@ export default function DetectorAlucinaciones({ act, numero }: { act: ActividadD
                     <span class="font-mono text-sm text-emerald-300/80 shrink-0 mt-0.5 bg-slate-800 rounded-lg px-2 py-0.5">#{String(i + 1).padStart(2, "0")}</span>
                     <p class="text-base leading-7 flex-1 text-slate-100">{af.texto}</p>
                     {revelado && marca && (
-                      <span class={`shrink-0 text-sm font-extrabold px-3 py-1 rounded-full ${bien ? "bg-emerald-500/20 text-emerald-300" : "bg-rose-500/20 text-rose-300"}`}>
-                        {bien ? "✓ Acierto" : "✕ Fallo"}
+                      <span class={`shrink-0 inline-flex items-center gap-1.5 text-sm font-extrabold px-3 py-1 rounded-full ${bien ? "bg-emerald-500/20 text-emerald-300" : "bg-rose-500/20 text-rose-300"}`}>
+                        <PersonajeIcon
+                          src={bien ? personaje.bueno : personaje.malo}
+                          alt=""
+                          class="w-8 h-8 object-contain shrink-0 -my-1"
+                        />
+                        {bien ? "Acierto" : "Fallo"}
                       </span>
                     )}
                   </div>
@@ -126,15 +141,24 @@ export default function DetectorAlucinaciones({ act, numero }: { act: ActividadD
                 </div>
                 {revelado && esAbierta && (
                   <div class="px-5 pb-5">
-                    <div class="rounded-xl bg-slate-950 border border-slate-700 p-4">
-                      <p class="text-xs font-extrabold tracking-widest text-emerald-300">🧪 PERITAJE · CLASIFICACIÓN ESPERADA</p>
-                      <p class="text-base leading-7 mt-2 text-slate-100">
-                        <b>
-                          {af.veredicto === "correcta" ? "Correcta" : af.veredicto === "incorrecta" ? "Incorrecta" : "Necesita verificación"}
-                        </b>
-                        {" — "}
-                        {af.explicacion}
-                      </p>
+                    <div class="rounded-xl bg-slate-950 border border-slate-700 p-4 flex items-start gap-3">
+                      <PersonajeIcon
+                        src={bien ? personaje.bueno : personaje.malo}
+                        alt=""
+                        class="w-20 h-20 object-contain shrink-0"
+                      />
+                      <div class="min-w-0">
+                        <p class="text-xs font-extrabold tracking-widest text-emerald-300">
+                          {bien ? "PERITAJE · CLASIFICACIÓN CORRECTA" : "PERITAJE · AQUÍ FALLÓ TU CLASIFICACIÓN"}
+                        </p>
+                        <p class="text-base leading-7 mt-2 text-slate-100">
+                          <b>
+                            {af.veredicto === "correcta" ? "Correcta" : af.veredicto === "incorrecta" ? "Incorrecta" : "Necesita verificación"}
+                          </b>
+                          {" — "}
+                          {af.explicacion}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -155,8 +179,13 @@ export default function DetectorAlucinaciones({ act, numero }: { act: ActividadD
             </button>
           ) : (
             <>
-              <div class="px-5 py-3.5 rounded-2xl text-base font-bold bg-slate-800 border border-slate-600" role="status">
-                Caso cerrado: <b class="text-emerald-300">{aciertos}/{act.afirmaciones.length}</b> clasificaciones correctas
+              <div class="px-5 py-3.5 rounded-2xl text-base font-bold bg-slate-800 border border-slate-600 flex items-center gap-3" role="status">
+                <PersonajeIcon
+                  src={aciertos === act.afirmaciones.length ? personaje.bueno : personaje.malo}
+                  alt=""
+                  class="w-14 h-14 object-contain shrink-0"
+                />
+                <span>Caso cerrado: <b class="text-emerald-300">{aciertos}/{act.afirmaciones.length}</b> clasificaciones correctas</span>
               </div>
               <button onClick={reiniciar} class="px-6 py-3.5 rounded-2xl text-base font-bold bg-slate-100 text-slate-900 hover:bg-white transition cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-400/40">
                 ↩ Reabrir caso

@@ -264,11 +264,18 @@ export default function Auth() {
     <div class="w-full max-w-md mx-auto">
       <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
         <div class="px-8 pt-8 pb-6 text-center">
-          <div class="w-12 h-12 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-            <span class="text-white text-xl font-bold">S</span>
-          </div>
-          <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Gestión Empresarial</h1>
-          <p class="text-sm text-gray-500 mt-1">Plataforma educativa • Sintaxia</p>
+          <img
+            src="/Images/sintaxia-logo.png"
+            alt="Sintaxia"
+            class="h-14 w-auto mx-auto mb-2"
+            onError={(e) => {
+              const target = e.currentTarget as HTMLImageElement;
+              if (!target.src.includes("/images/sintaxia-logo.png")) {
+                target.src = "/images/sintaxia-logo.png";
+              }
+            }}
+          />
+          <p class="text-sm text-gray-500">Plataforma educativa</p>
         </div>
 
         <div class="px-6 sm:px-8">

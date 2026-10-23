@@ -83,63 +83,72 @@ export default function QuizBlock({ block, lessonId }: Props) {
     clearResultado(lessonId, block.id);
   };
 
-  return (
-    <div class="my-4 border-2 rounded-2xl overflow-hidden border-indigo-200 bg-indigo-50/40">
-      <div class="px-4 sm:px-5 pt-4">
-        <p class="text-[11px] font-extrabold tracking-widest text-indigo-600">✏️ COMPRUEBA LO APRENDIDO</p>
-        <p class="font-bold text-[15px] leading-snug mt-1">{block.question}</p>
+    return (
+    <div class="my-8 rounded-3xl overflow-hidden border-2 border-[#DDD6FE] bg-[#F7F5FF]">
+      <div class="px-5 sm:px-7 pt-6 pb-2">
+        <p class="inline-flex items-center gap-2 text-xs font-extrabold tracking-widest text-[#5932EA] bg-white border border-[#DDD6FE] px-3 py-1.5 rounded-full">✏️ COMPRUEBA LO APRENDIDO</p>
+        <p class="font-extrabold text-lg sm:text-xl leading-snug text-slate-900 mt-4">{block.question}</p>
+        {!comprobado && <p class="text-sm text-slate-500 mt-1">Elige una opción y pulsa “Comprobar respuesta”.</p>}
       </div>
-      <div class="p-4 sm:px-5 grid gap-2">
+      <div class="p-5 sm:px-7 sm:pb-7 grid gap-3">
         {block.options.map((op, i) => {
           const esSeleccion = seleccion === i;
           const esCorrecta = i === block.correct;
-          let estilo = "border-gray-200 hover:border-indigo-400 bg-white";
-          let insignia = "bg-gray-100 text-gray-600";
+          let estilo = "border-slate-200 hover:border-[#7C5CE9] hover:bg-[#FBFAFF] bg-white";
+          let insignia = "bg-slate-100 text-slate-600";
           if (comprobado && esCorrecta) {
             estilo = "border-emerald-500 bg-emerald-50";
             insignia = "bg-emerald-600 text-white";
           } else if (comprobado && esSeleccion && !esCorrecta) {
             estilo = "border-rose-500 bg-rose-50";
             insignia = "bg-rose-600 text-white";
-          } else if (!comprobado && esSeleccion) {
-            estilo = "border-indigo-600 bg-indigo-50 ring-2 ring-indigo-600";
-            insignia = "bg-indigo-600 text-white";
+          } else if (comprobado) {
+            estilo = "border-slate-200 bg-white opacity-60";
+          } else if (esSeleccion) {
+            estilo = "border-[#5932EA] bg-[#F3F0FF] ring-4 ring-[#5932EA]/15";
+            insignia = "bg-[#5932EA] text-white";
           }
           return (
             <button
               key={i}
               disabled={comprobado}
               onClick={() => setSeleccion(i)}
-              class={`w-full text-left border-2 rounded-xl p-3 flex items-start gap-3 transition ${estilo} ${comprobado ? "cursor-default" : "cursor-pointer"}`}
+              aria-pressed={esSeleccion}
+              class={`w-full text-left border-2 rounded-2xl p-4 flex items-start gap-4 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#5932EA]/40 ${estilo} ${comprobado ? "cursor-default" : "cursor-pointer"}`}
             >
-              <span class={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-extrabold shrink-0 ${insignia}`}>
-                {comprobado && esCorrecta ? "✓" : LETRAS[i] ?? i + 1}
+              <span class={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-extrabold uppercase shrink-0 ${insignia}`}>
+                {comprobado && esCorrecta ? "✓" : comprobado && esSeleccion ? "✕" : LETRAS[i] ?? i + 1}
               </span>
-              <span class="text-sm leading-relaxed">{op}</span>
+              <span class="text-base leading-7 text-slate-800 pt-0.5">{op}</span>
             </button>
           );
         })}
-        {!comprobado ? (
-          <button
-            onClick={comprobar}
-            disabled={seleccion === null}
-            class={`mt-1 px-5 py-2.5 rounded-xl text-sm font-bold transition w-fit ${seleccion === null ? "bg-gray-200 text-gray-400 cursor-not-allowed" : "bg-indigo-600 text-white hover:bg-indigo-700"}`}
-          >
-            Comprobar respuesta
-          </button>
-        ) : (
-          <button onClick={reintentar} class="mt-1 px-5 py-2.5 rounded-xl text-sm font-bold bg-gray-900 text-white hover:bg-gray-700 transition w-fit">
-            ↩ Intentar de nuevo
-          </button>
-        )}
+        <div class="mt-1">
+          {!comprobado ? (
+            <button
+              onClick={comprobar}
+              disabled={seleccion === null}
+              class={`px-7 py-3.5 rounded-2xl text-base font-bold transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#5932EA]/40 ${seleccion === null ? "bg-slate-200 text-slate-400 cursor-not-allowed" : "bg-[#5932EA] text-white hover:bg-[#4E2AD0] cursor-pointer shadow-sm"}`}
+            >
+              Comprobar respuesta
+            </button>
+          ) : (
+            <button onClick={reintentar} class="px-7 py-3.5 rounded-2xl text-base font-bold bg-white border-2 border-slate-300 text-slate-800 hover:border-slate-500 transition cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#5932EA]/40">
+              ↩ Intentar de nuevo
+            </button>
+          )}
+        </div>
         {comprobado && (
-          <div class={`rounded-xl p-4 border text-sm ${acierto ? "bg-emerald-50 border-emerald-200" : "bg-rose-50 border-rose-200"}`}>
-            <p class={`font-extrabold ${acierto ? "text-emerald-800" : "text-rose-800"}`}>
-              {acierto ? "✓ ¡Correcto!" : "✕ Aún no. Revisa la explicación e inténtalo de nuevo."}
-            </p>
-            {block.explanation && (
-              <p class={`mt-1 ${acierto ? "text-emerald-900" : "text-rose-900"}`}>{block.explanation}</p>
-            )}
+          <div class={`rounded-2xl p-5 border-2 flex gap-4 ${acierto ? "bg-emerald-50 border-emerald-200" : "bg-rose-50 border-rose-200"}`} role="status">
+            <span class="text-3xl leading-none shrink-0" aria-hidden="true">{acierto ? "🎉" : "🤔"}</span>
+            <div>
+              <p class={`text-lg font-extrabold ${acierto ? "text-emerald-800" : "text-rose-800"}`}>
+                {acierto ? "✓ ¡Correcto!" : "✕ Aún no. Revisa la explicación e inténtalo de nuevo."}
+              </p>
+              {block.explanation && (
+                <p class={`text-base leading-7 mt-1 ${acierto ? "text-emerald-900" : "text-rose-900"}`}>{block.explanation}</p>
+              )}
+            </div>
           </div>
         )}
       </div>

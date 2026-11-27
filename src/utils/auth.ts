@@ -13,6 +13,7 @@ export interface User {
   role: Role;
   codigo?: string; // 7 dígitos: profesor 100XXXX, estudiante 600XXXX
   createdAt: string;
+  dataPolicyAcceptedAt?: string; // fecha de aceptación de la Política de Tratamiento de Datos Personales
 }
 
 export interface Session {
@@ -321,12 +322,17 @@ export async function createUser(data: {
   name: string;
   email: string;
   password: string;
+  acceptedPolicy?: boolean;
 }): Promise<{ success: boolean; message: string; user?: User }> {
   await hydrateFromJson();
 
   const email = data.email.trim().toLowerCase();
   const name = data.name.trim();
   const password = data.password;
+
+  if (!data.acceptedPolicy) {
+    return { success: false, message: "Debes aceptar la Política de Tratamiento de Datos Personales para crear tu cuenta." };
+  }
 
   if (!name || !email || !password) {
     return { success: false, message: "Todos los campos son obligatorios." };
@@ -354,6 +360,7 @@ export async function createUser(data: {
     password,
     role,
     createdAt: new Date().toISOString(),
+    dataPolicyAcceptedAt: new Date().toISOString(),
   };
 
   usersCache = [...usersCache, newUser];

@@ -18,9 +18,14 @@ export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [acceptedPolicy, setAcceptedPolicy] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [loading, setLoading] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setAcceptedPolicy(false);
+  }, [mode]);
 
   useEffect(() => {
     (async () => {
@@ -48,6 +53,7 @@ export default function Auth() {
     setEmail("");
     setPassword("");
     setName("");
+    setAcceptedPolicy(false);
   };
 
   const handleSubmit = async (e: Event) => {
@@ -57,7 +63,11 @@ export default function Auth() {
 
     try {
       if (mode === "register") {
-        const result = await createUser({ name, email, password });
+        if (!acceptedPolicy) {
+          setMessage({ type: "error", text: "Debes aceptar la Política de Tratamiento de Datos Personales para crear tu cuenta." });
+          return;
+        }
+        const result = await createUser({ name, email, password, acceptedPolicy });
         if (result.success && result.user) {
           const loginResult = await loginUser({ email, password });
           if (loginResult.success && loginResult.session) {
@@ -362,6 +372,23 @@ export default function Auth() {
             </div>
           </div>
 
+          {mode === "register" && (
+            <div class="flex items-start gap-3">
+              <input
+                id="acceptedPolicy"
+                type="checkbox"
+                checked={acceptedPolicy}
+                onChange={(e) => setAcceptedPolicy((e.target as HTMLInputElement).checked)}
+                required
+                class="mt-1 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              />
+              <label for="acceptedPolicy" class="text-xs text-gray-600 leading-relaxed">
+                He leído y acepto la Política de Tratamiento de Datos Personales y autorizo de manera previa, expresa e informada a{" "}
+                <span class="font-semibold text-indigo-600">SintaxIA</span> para recolectar y tratar mis datos personales con el fin de gestionar mi cuenta y prestar los servicios de la plataforma, conforme a la Ley 1581 de 2012.
+              </label>
+            </div>
+          )}
+
           {message && (
             <div
               class={`p-3 rounded-xl text-sm ${
@@ -376,7 +403,7 @@ export default function Auth() {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || (mode === "register" && !acceptedPolicy)}
             class="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold shadow-lg shadow-indigo-200 hover:shadow-indigo-300 hover:from-indigo-700 hover:to-violet-700 disabled:opacity-60 disabled:cursor-not-allowed transition text-sm"
           >
             {loading ? (
